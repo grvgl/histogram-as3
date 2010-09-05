@@ -1,0 +1,54 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>ScrollPolicy.as</title>
+<link rel="stylesheet" type="text/css" href="../../../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="ActionScriptComment">// Copyright 2007. Adobe Systems Incorporated. All Rights Reserved.
+</span><span class="ActionScriptpackage">package</span> <span class="ActionScriptDefault_Text">fl</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">controls</span> <span class="ActionScriptBracket/Brace">{</span>
+    
+    <span class="ActionScriptASDoc">/**
+     * Values for the &lt;code&gt;horizontalScrollPolicy&lt;/code&gt; and &lt;code&gt;verticalScrollPolicy&lt;/code&gt; 
+     * properties of the BaseScrollPane class. 
+     *
+     * @see fl.containers.BaseScrollPane#horizontalScrollPolicy BaseScrollPane.horizontalScrollPolicy
+     * @see fl.containers.BaseScrollPane#verticalScrollPolicy BaseScrollPane.verticalScrollPolicy
+     *
+     * @langversion 3.0
+     * @playerversion Flash 9.0.28.0
+     */</span>
+    <span class="ActionScriptReserved">public</span> <span class="ActionScriptclass">class</span> <span class="ActionScriptDefault_Text">ScrollPolicy</span> <span class="ActionScriptBracket/Brace">{</span>
+        <span class="ActionScriptASDoc">/**
+         * Always show the scroll bar. The size of the scroll bar is automatically 
+         * added to the size of the owner's contents to determine the size of the 
+         * owner if explicit sizes are not specified.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">ON</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"on"</span>;
+        <span class="ActionScriptASDoc">/**
+         * Show the scroll bar if the children exceed the owner's dimensions.
+         * The size of the owner is not adjusted to account for the scroll bars 
+         * when they appear, so this may cause the scroll bar to obscure the contents 
+         * of the component or container.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">AUTO</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"auto"</span>;
+
+
+        <span class="ActionScriptASDoc">/**
+         * Never show the scroll bar.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">OFF</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"off"</span>;
+    <span class="ActionScriptBracket/Brace">}</span>
+<span class="ActionScriptBracket/Brace">}</span></pre></body>
+</html>

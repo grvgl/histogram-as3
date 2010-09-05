@@ -1,0 +1,1106 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>BaseScrollPane.as</title>
+<link rel="stylesheet" type="text/css" href="../../../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="ActionScriptComment">// Copyright 2007. Adobe Systems Incorporated. All Rights Reserved.
+</span><span class="ActionScriptpackage">package</span> <span class="ActionScriptDefault_Text">fl</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">containers</span> <span class="ActionScriptBracket/Brace">{</span>
+
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">fl</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">core</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">UIComponent</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">fl</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">controls</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">BaseButton</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">fl</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">controls</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ScrollBar</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">fl</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">events</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ScrollEvent</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">fl</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">controls</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ScrollPolicy</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">fl</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">controls</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ScrollBarDirection</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">fl</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">core</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">InvalidationType</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">display</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">DisplayObject</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">events</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">Event</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">events</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">MouseEvent</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">display</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">DisplayObject</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">display</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">Shape</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">display</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">Graphics</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">geom</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">Rectangle</span>;
+    
+    <span class="ActionScriptComment">//--------------------------------------
+</span>    <span class="ActionScriptComment">//  Events
+</span>    <span class="ActionScriptComment">//--------------------------------------
+</span>    
+    <span class="ActionScriptASDoc">/**
+     * Dispatched when the user scrolls content by using the scroll bars on the
+     * component or the wheel on a mouse device.
+     *
+     * @eventType fl.events.ScrollEvent.SCROLL
+     *
+     * @includeExample examples/ScrollPane.scroll.1.as -noswf
+     *
+     * @langversion 3.0
+     * @playerversion Flash 9.0.28.0
+     */</span>
+    <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Event</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"scroll"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">type</span><span class="ActionScriptOperator">=</span><span class="ActionScriptString">"fl.events.ScrollEvent"</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+    
+    
+    <span class="ActionScriptComment">//--------------------------------------
+</span>    <span class="ActionScriptComment">//  Styles
+</span>    <span class="ActionScriptComment">//--------------------------------------
+</span>    <span class="ActionScriptASDoc">/**
+     * @copy fl.controls.ScrollBar#style:downArrowDisabledSkin
+     *
+     * @default ScrollArrowDown_disabledSkin
+     *
+     * @langversion 3.0
+     * @playerversion Flash 9.0.28.0
+     */</span>
+    <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Style</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"downArrowDisabledSkin"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">type</span><span class="ActionScriptOperator">=</span><span class="ActionScriptString">"Class"</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+    
+    
+    <span class="ActionScriptASDoc">/**
+     * @copy fl.controls.ScrollBar#style:downArrowDownSkin
+     *
+     * @default ScrollArrowDown_downSkin
+     *
+     * @langversion 3.0
+     * @playerversion Flash 9.0.28.0
+     */</span>
+    <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Style</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"downArrowDownSkin"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">type</span><span class="ActionScriptOperator">=</span><span class="ActionScriptString">"Class"</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+    
+    
+    <span class="ActionScriptASDoc">/**
+     * @copy fl.controls.ScrollBar#style:downArrowOverSkin
+     *
+     * @default ScrollArrowDown_overSkin
+     *
+     * @langversion 3.0
+     * @playerversion Flash 9.0.28.0
+     */</span>
+    <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Style</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"downArrowOverSkin"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">type</span><span class="ActionScriptOperator">=</span><span class="ActionScriptString">"Class"</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+
+    <span class="ActionScriptASDoc">/**
+     * @copy fl.controls.ScrollBar#style:downArrowUpSkin
+     *
+     * @default ScrollArrowDown_upSkin
+     *
+     * @langversion 3.0
+     * @playerversion Flash 9.0.28.0
+     */</span>
+    <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Style</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"downArrowUpSkin"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">type</span><span class="ActionScriptOperator">=</span><span class="ActionScriptString">"Class"</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+
+    <span class="ActionScriptASDoc">/**
+     * @copy fl.controls.ScrollBar#style:thumbDisabledSkin
+     *
+     * @default ScrollThumb_upSkin
+     *
+     * @langversion 3.0
+     * @playerversion Flash 9.0.28.0
+     */</span>
+    <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Style</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"thumbDisabledSkin"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">type</span><span class="ActionScriptOperator">=</span><span class="ActionScriptString">"Class"</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+
+    <span class="ActionScriptASDoc">/**
+     * @copy fl.controls.ScrollBar#style:thumbDownSkin
+     *
+     * @default ScrollThumb_downSkin
+     *
+     * @langversion 3.0
+     * @playerversion Flash 9.0.28.0
+     */</span>
+    <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Style</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"thumbDownSkin"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">type</span><span class="ActionScriptOperator">=</span><span class="ActionScriptString">"Class"</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+
+    <span class="ActionScriptASDoc">/**
+     * @copy fl.controls.ScrollBar#style:thumbOverSkin
+     *
+     * @default ScrollThumb_overSkin
+     *
+     * @langversion 3.0
+     * @playerversion Flash 9.0.28.0
+     */</span>
+    <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Style</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"thumbOverSkin"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">type</span><span class="ActionScriptOperator">=</span><span class="ActionScriptString">"Class"</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+
+    <span class="ActionScriptASDoc">/**
+     * @copy fl.controls.ScrollBar#style:thumbUpSkin
+     *
+     * @default ScrollThumb_upSkin
+     * 
+     * @langversion 3.0
+     * @playerversion Flash 9.0.28.0
+     */</span>
+    <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Style</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"thumbUpSkin"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">type</span><span class="ActionScriptOperator">=</span><span class="ActionScriptString">"Class"</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+
+    <span class="ActionScriptASDoc">/**
+     * @copy fl.controls.ScrollBar#style:trackDisabledSkin
+     *
+     * @default ScrollTrack_Skin
+     *
+     * @langversion 3.0
+     * @playerversion Flash 9.0.28.0
+     */</span>
+    <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Style</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"trackDisabledSkin"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">type</span><span class="ActionScriptOperator">=</span><span class="ActionScriptString">"Class"</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+
+    <span class="ActionScriptASDoc">/**
+     * @copy fl.controls.ScrollBar#style:trackDownSkin
+     *
+     * @default ScrollTrack_Skin
+     *
+     * @langversion 3.0
+     * @playerversion Flash 9.0.28.0
+     */</span>
+    <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Style</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"trackDownSkin"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">type</span><span class="ActionScriptOperator">=</span><span class="ActionScriptString">"Class"</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+    <span class="ActionScriptASDoc">/**
+     * @copy fl.controls.ScrollBar#style:trackOverSkin
+     *
+     * @default ScrollTrack_Skin
+     *
+     * @langversion 3.0
+     * @playerversion Flash 9.0.28.0
+     */</span>
+    <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Style</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"trackOverSkin"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">type</span><span class="ActionScriptOperator">=</span><span class="ActionScriptString">"Class"</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+    <span class="ActionScriptASDoc">/**
+     * @copy fl.controls.ScrollBar#style:trackUpSkin
+     *
+     * @default ScrollTrack_Skin
+     *
+     * @langversion 3.0
+     * @playerversion Flash 9.0.28.0
+     */</span>
+    <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Style</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"trackUpSkin"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">type</span><span class="ActionScriptOperator">=</span><span class="ActionScriptString">"Class"</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+    <span class="ActionScriptASDoc">/**
+     * @copy fl.controls.ScrollBar#style:upArrowDisabledSkin
+     *
+     * @default ScrollArrowUp_disabledSkin
+     *
+     * @langversion 3.0
+     * @playerversion Flash 9.0.28.0
+     */</span>
+    <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Style</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"upArrowDisabledSkin"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">type</span><span class="ActionScriptOperator">=</span><span class="ActionScriptString">"Class"</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+    <span class="ActionScriptASDoc">/**
+     * @copy fl.controls.ScrollBar#style:upArrowDownSkin
+     *
+     * @default ScrollArrowUp_downSkin
+     *
+     * @langversion 3.0
+     * @playerversion Flash 9.0.28.0
+     */</span>
+    <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Style</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"upArrowDownSkin"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">type</span><span class="ActionScriptOperator">=</span><span class="ActionScriptString">"Class"</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+    <span class="ActionScriptASDoc">/**
+     * @copy fl.controls.ScrollBar#style:upArrowOverSkin
+     *
+     * @default ScrollArrowUp_overSkin
+     *
+     * @langversion 3.0
+     * @playerversion Flash 9.0.28.0
+     */</span>
+    <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Style</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"upArrowOverSkin"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">type</span><span class="ActionScriptOperator">=</span><span class="ActionScriptString">"Class"</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+    <span class="ActionScriptASDoc">/**
+     * @copy fl.controls.ScrollBar#style:upArrowUpSkin
+     *
+     * @default ScrollArrowUp_upSkin
+     *
+     * @langversion 3.0
+     * @playerversion Flash 9.0.28.0
+     */</span>
+    <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Style</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"upArrowUpSkin"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">type</span><span class="ActionScriptOperator">=</span><span class="ActionScriptString">"Class"</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+    <span class="ActionScriptASDoc">/**
+     * @copy fl.controls.ScrollBar#style:thumbIcon
+     *
+     * @default ScrollBar_thumbIcon
+     *
+     * @langversion 3.0
+     * @playerversion Flash 9.0.28.0
+     */</span>
+    <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Style</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"thumbIcon"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">type</span><span class="ActionScriptOperator">=</span><span class="ActionScriptString">"Class"</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+       
+    <span class="ActionScriptASDoc">/**
+     * @copy fl.controls.BaseButton#style:repeatDelay
+     * 
+     * @default 500
+     *
+     * @langversion 3.0
+     * @playerversion Flash 9.0.28.0
+     */</span>
+    <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Style</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"repeatDelay"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">type</span><span class="ActionScriptOperator">=</span><span class="ActionScriptString">"Number"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">format</span><span class="ActionScriptOperator">=</span><span class="ActionScriptString">"Time"</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+     
+     <span class="ActionScriptASDoc">/**
+     * @copy fl.controls.BaseButton#style:repeatInterval
+     * 
+     * @default 35
+     *
+     * @langversion 3.0
+     * @playerversion Flash 9.0.28.0
+     */</span>
+    <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Style</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"repeatInterval"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">type</span><span class="ActionScriptOperator">=</span><span class="ActionScriptString">"Number"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">format</span><span class="ActionScriptOperator">=</span><span class="ActionScriptString">"Time"</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+    
+    <span class="ActionScriptASDoc">/**
+     * The skin to be used as the background of the scroll pane.
+     *
+     * @default ScrollPane_upSkin
+     *
+     * @langversion 3.0
+     * @playerversion Flash 9.0.28.0
+     */</span>
+    <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Style</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"skin"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">type</span><span class="ActionScriptOperator">=</span><span class="ActionScriptString">"Class"</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+    
+    <span class="ActionScriptASDoc">/**
+     * Padding between the content (the component and scroll bar), and the outside edge of the background, in pixels.
+     *
+     * @default 0
+     *
+     * @langversion 3.0
+     * @playerversion Flash 9.0.28.0
+     * @internal [kenos] What does "control and scrollbar" mean here -- what is the relationship between these
+     *                   elements and the content? I'd like to make this more understandable
+     *                   but don't know how it should be written based on the current description.
+     */</span>
+    <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Style</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"contentPadding"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">type</span><span class="ActionScriptOperator">=</span><span class="ActionScriptString">"Number"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">format</span><span class="ActionScriptOperator">=</span><span class="ActionScriptString">"Length"</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+    
+    <span class="ActionScriptASDoc">/**
+     * When the &lt;code&gt;enabled&lt;/code&gt; property is set to &lt;code&gt;false&lt;/code&gt;, 
+     * interaction with the component is prevented and a white overlay is 
+     * displayed over the component, dimming the component contents.  The 
+     * &lt;code&gt;disabledAlpha&lt;/code&gt; style specifies the level of transparency
+     * that is applied to this overlay. Valid values range from 0, for an 
+     * overlay that is completely transparent, to 1 for an overlay that is opaque. 
+     *
+     * @default 0.5
+     *
+     * @langversion 3.0
+     * @playerversion Flash 9.0.28.0
+     */</span>
+    <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Style</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"disabledAlpha"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">type</span><span class="ActionScriptOperator">=</span><span class="ActionScriptString">"Number"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">format</span><span class="ActionScriptOperator">=</span><span class="ActionScriptString">"Length"</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+
+
+    <span class="ActionScriptComment">//--------------------------------------
+</span>    <span class="ActionScriptComment">//  Class description
+</span>    <span class="ActionScriptComment">//--------------------------------------
+</span>    <span class="ActionScriptASDoc">/**
+     * The BaseScrollPane class handles basic scroll pane functionality including events, styling, 
+     * drawing the mask and background, the layout of scroll bars, and the handling of scroll positions.
+     * 
+     * &lt;p&gt;By default, the BaseScrollPane class is extended by the ScrollPane and SelectableList classes,
+     * for all list-based components.  This means that any component that uses horizontal or vertical 
+     * scrolling does not need to implement any scrolling, masking or layout logic, except for behavior
+     * that is specific to the component.&lt;/p&gt;
+     *
+     * @langversion 3.0
+     * @playerversion Flash 9.0.28.0
+     */</span>
+    <span class="ActionScriptReserved">public</span> <span class="ActionScriptclass">class</span> <span class="ActionScriptDefault_Text">BaseScrollPane</span> <span class="ActionScriptReserved">extends</span> <span class="ActionScriptDefault_Text">UIComponent</span> <span class="ActionScriptBracket/Brace">{</span>
+        
+        <span class="ActionScriptASDoc">/**
+         * @private (protected)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_verticalScrollBar</span>:<span class="ActionScriptDefault_Text">ScrollBar</span>;
+        <span class="ActionScriptASDoc">/**
+         * @private (protected)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_horizontalScrollBar</span>:<span class="ActionScriptDefault_Text">ScrollBar</span>;
+        <span class="ActionScriptASDoc">/**
+         * @private (protected)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">contentScrollRect</span>:<span class="ActionScriptDefault_Text">Rectangle</span>;
+        <span class="ActionScriptASDoc">/**
+         * @private (protected)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">disabledOverlay</span>:<span class="ActionScriptDefault_Text">Shape</span>;
+        <span class="ActionScriptASDoc">/**
+         * @private (protected)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">background</span>:<span class="ActionScriptDefault_Text">DisplayObject</span>;
+        <span class="ActionScriptASDoc">/**
+         * @private (protected)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">contentWidth</span>:<span class="ActionScriptDefault_Text">Number</span><span class="ActionScriptOperator">=</span>0;
+        <span class="ActionScriptASDoc">/**
+         * @private (protected)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">contentHeight</span>:<span class="ActionScriptDefault_Text">Number</span><span class="ActionScriptOperator">=</span>0;
+        <span class="ActionScriptASDoc">/**
+         * @private (protected)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_horizontalScrollPolicy</span>:<span class="ActionScriptDefault_Text">String</span>;
+        <span class="ActionScriptASDoc">/**
+         * @private (protected)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_verticalScrollPolicy</span>:<span class="ActionScriptDefault_Text">String</span>;
+        <span class="ActionScriptASDoc">/**
+         * @private (protected)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">contentPadding</span>:<span class="ActionScriptDefault_Text">Number</span><span class="ActionScriptOperator">=</span>0;
+        <span class="ActionScriptASDoc">/**
+         * @private (protected)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">availableWidth</span>:<span class="ActionScriptDefault_Text">Number</span>;
+        <span class="ActionScriptASDoc">/**
+         * @private (protected)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">availableHeight</span>:<span class="ActionScriptDefault_Text">Number</span>;
+        <span class="ActionScriptASDoc">/**
+         * @private (protected)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">vOffset</span>:<span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptOperator">=</span> 0;
+        <span class="ActionScriptASDoc">/**
+         * @private (protected)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">vScrollBar</span>:<span class="ActionScriptDefault_Text">Boolean</span>;
+        <span class="ActionScriptASDoc">/**
+         * @private (protected)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">hScrollBar</span>:<span class="ActionScriptDefault_Text">Boolean</span>;
+        <span class="ActionScriptASDoc">/**
+         * @private (protected)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_maxHorizontalScrollPosition</span>:<span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptOperator">=</span> 0;        
+        <span class="ActionScriptASDoc">/**
+         * @private (protected)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_horizontalPageScrollSize</span>:<span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptOperator">=</span> 0;    
+        <span class="ActionScriptASDoc">/**
+         * @private (protected)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_verticalPageScrollSize</span>:<span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptOperator">=</span> 0;
+        <span class="ActionScriptASDoc">/**
+         * @private (protected)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">defaultLineScrollSize</span>:<span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptOperator">=</span> 4;
+        
+        <span class="ActionScriptASDoc">/**
+         * @private (protected)
+         *
+         * If &lt;code&gt;false&lt;/code&gt;, uses &lt;code&gt;contentWidth&lt;/code&gt; to determine hscroll, otherwise uses fixed &lt;code&gt;_maxHorizontalScroll&lt;/code&gt; value.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">useFixedHorizontalScrolling</span>:<span class="ActionScriptDefault_Text">Boolean</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">false</span>; <span class="ActionScriptComment">// if false, uses contentWidth to determine hscroll, otherwise uses fixed _maxHorizontalScroll value
+</span>        
+        <span class="ActionScriptASDoc">/**
+         * @private (protected)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_useBitmpScrolling</span>:<span class="ActionScriptDefault_Text">Boolean</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">false</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * @private
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">defaultStyles</span>:<span class="ActionScriptDefault_Text">Object</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptBracket/Brace">{</span>     
+                                            <span class="ActionScriptDefault_Text">repeatDelay</span>:500<span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">repeatInterval</span>:35<span class="ActionScriptOperator">,</span>
+                                            <span class="ActionScriptDefault_Text">skin</span>:<span class="ActionScriptString">"ScrollPane_upSkin"</span><span class="ActionScriptOperator">,</span>
+                                            <span class="ActionScriptDefault_Text">contentPadding</span>:0<span class="ActionScriptOperator">,</span>
+                                            <span class="ActionScriptDefault_Text">disabledAlpha</span>:0.5
+                                            <span class="ActionScriptBracket/Brace">}</span>;
+        <span class="ActionScriptASDoc">/**
+         * @copy fl.core.UIComponent#getStyleDefinition()
+         *
+         * @includeExample ../core/examples/UIComponent.getStyleDefinition.1.as -noswf
+         *
+         * @see fl.core.UIComponent#getStyle() UIComponent.getStyle()
+         * @see fl.core.UIComponent#setStyle() UIComponent.setStyle()
+         * @see fl.managers.StyleManager StyleManager
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">getStyleDefinition</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">Object</span> <span class="ActionScriptBracket/Brace">{</span> 
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">mergeStyles</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">defaultStyles</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">ScrollBar</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">getStyleDefinition</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        
+        <span class="ActionScriptASDoc">/**
+         * @private (protected)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">SCROLL_BAR_STYLES</span>:<span class="ActionScriptDefault_Text">Object</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptBracket/Brace">{</span>
+                                            <span class="ActionScriptDefault_Text">upArrowDisabledSkin</span>: <span class="ActionScriptString">"upArrowDisabledSkin"</span><span class="ActionScriptOperator">,</span>
+                                            <span class="ActionScriptDefault_Text">upArrowDownSkin</span>:<span class="ActionScriptString">"upArrowDownSkin"</span><span class="ActionScriptOperator">,</span>
+                                            <span class="ActionScriptDefault_Text">upArrowOverSkin</span>:<span class="ActionScriptString">"upArrowOverSkin"</span><span class="ActionScriptOperator">,</span>
+                                            <span class="ActionScriptDefault_Text">upArrowUpSkin</span>:<span class="ActionScriptString">"upArrowUpSkin"</span><span class="ActionScriptOperator">,</span>
+                                            <span class="ActionScriptDefault_Text">downArrowDisabledSkin</span>:<span class="ActionScriptString">"downArrowDisabledSkin"</span><span class="ActionScriptOperator">,</span>
+                                            <span class="ActionScriptDefault_Text">downArrowDownSkin</span>:<span class="ActionScriptString">"downArrowDownSkin"</span><span class="ActionScriptOperator">,</span>
+                                            <span class="ActionScriptDefault_Text">downArrowOverSkin</span>:<span class="ActionScriptString">"downArrowOverSkin"</span><span class="ActionScriptOperator">,</span>
+                                            <span class="ActionScriptDefault_Text">downArrowUpSkin</span>:<span class="ActionScriptString">"downArrowUpSkin"</span><span class="ActionScriptOperator">,</span>
+                                            <span class="ActionScriptDefault_Text">thumbDisabledSkin</span>:<span class="ActionScriptString">"thumbDisabledSkin"</span><span class="ActionScriptOperator">,</span>
+                                            <span class="ActionScriptDefault_Text">thumbDownSkin</span>:<span class="ActionScriptString">"thumbDownSkin"</span><span class="ActionScriptOperator">,</span>
+                                            <span class="ActionScriptDefault_Text">thumbOverSkin</span>:<span class="ActionScriptString">"thumbOverSkin"</span><span class="ActionScriptOperator">,</span>
+                                            <span class="ActionScriptDefault_Text">thumbUpSkin</span>:<span class="ActionScriptString">"thumbUpSkin"</span><span class="ActionScriptOperator">,</span>
+                                            <span class="ActionScriptDefault_Text">thumbIcon</span>:<span class="ActionScriptString">"thumbIcon"</span><span class="ActionScriptOperator">,</span>
+                                            <span class="ActionScriptDefault_Text">trackDisabledSkin</span>:<span class="ActionScriptString">"trackDisabledSkin"</span><span class="ActionScriptOperator">,</span>
+                                            <span class="ActionScriptDefault_Text">trackDownSkin</span>:<span class="ActionScriptString">"trackDownSkin"</span><span class="ActionScriptOperator">,</span>
+                                            <span class="ActionScriptDefault_Text">trackOverSkin</span>:<span class="ActionScriptString">"trackOverSkin"</span><span class="ActionScriptOperator">,</span>
+                                            <span class="ActionScriptDefault_Text">trackUpSkin</span>:<span class="ActionScriptString">"trackUpSkin"</span><span class="ActionScriptOperator">,</span>
+                                            <span class="ActionScriptDefault_Text">repeatDelay</span>:<span class="ActionScriptString">"repeatDelay"</span><span class="ActionScriptOperator">,</span>
+                                            <span class="ActionScriptDefault_Text">repeatInterval</span>:<span class="ActionScriptString">"repeatInterval"</span>
+                                            <span class="ActionScriptBracket/Brace">}</span>;
+
+
+        <span class="ActionScriptASDoc">/**
+         * Creates a new BaseScrollPane component instance.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">BaseScrollPane</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">super</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Inspectable</span><span class="ActionScriptBracket/Brace">(</span>
+        <span class="ActionScriptASDoc">/**
+         * @private
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">override</span> <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">set</span> <span class="ActionScriptDefault_Text">enabled</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">value</span>:<span class="ActionScriptDefault_Text">Boolean</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">enabled</span> <span class="ActionScriptOperator">==</span> <span class="ActionScriptDefault_Text">value</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span> 
+                <span class="ActionScriptReserved">return</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            <span class="ActionScriptDefault_Text">_verticalScrollBar</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">enabled</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">value</span>;
+            <span class="ActionScriptDefault_Text">_horizontalScrollBar</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">enabled</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">value</span>;
+            <span class="ActionScriptReserved">super</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">enabled</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">value</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Inspectable</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"auto"</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">enumeration</span><span class="ActionScriptOperator">=</span><span class="ActionScriptString">"on,off,auto"</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+        <span class="ActionScriptASDoc">/**
+         * Gets or sets a value that indicates the state of the horizontal scroll
+         * bar. A value of &lt;code&gt;ScrollPolicy.ON&lt;/code&gt; indicates that the horizontal 
+         * scroll bar is always on; a value of &lt;code&gt;ScrollPolicy.OFF&lt;/code&gt; indicates
+         * that the horizontal scroll bar is always off; and a value of &lt;code&gt;ScrollPolicy.AUTO&lt;/code&gt;
+         * indicates that its state automatically changes. This property is used with 
+         * other scrolling properties to set the &lt;code&gt;setScrollProperties()&lt;/code&gt; method
+         * of the scroll bar.
+         *
+         * @default ScrollPolicy.AUTO
+         *
+         * @see #verticalScrollPolicy
+         * @see fl.controls.ScrollPolicy ScrollPolicy
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">horizontalScrollPolicy</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">_horizontalScrollPolicy</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * @private (setter)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">set</span> <span class="ActionScriptDefault_Text">horizontalScrollPolicy</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">value</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">_horizontalScrollPolicy</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">value</span>;
+            <span class="ActionScriptDefault_Text">invalidate</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">InvalidationType</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">SIZE</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Inspectable</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"auto"</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">enumeration</span><span class="ActionScriptOperator">=</span><span class="ActionScriptString">"on,off,auto"</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+        <span class="ActionScriptASDoc">/**
+         * Gets or sets a value that indicates the state of the vertical scroll
+         * bar. A value of &lt;code&gt;ScrollPolicy.ON&lt;/code&gt; indicates that the vertical
+         * scroll bar is always on; a value of &lt;code&gt;ScrollPolicy.OFF&lt;/code&gt; indicates
+         * that the vertical scroll bar is always off; and a value of &lt;code&gt;ScrollPolicy.AUTO&lt;/code&gt;
+         * indicates that its state automatically changes. This property is used with 
+         * other scrolling properties to set the &lt;code&gt;setScrollProperties()&lt;/code&gt; method
+         * of the scroll bar.
+         *
+         * @default ScrollPolicy.AUTO
+         *
+         * @see #horizontalScrollPolicy
+         * @see fl.controls.ScrollPolicy ScrollPolicy
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">verticalScrollPolicy</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">_verticalScrollPolicy</span>;
+        <span class="ActionScriptBracket/Brace">}</span>        
+        <span class="ActionScriptASDoc">/**
+         * @private
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">set</span> <span class="ActionScriptDefault_Text">verticalScrollPolicy</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">value</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">_verticalScrollPolicy</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">value</span>;
+            <span class="ActionScriptDefault_Text">invalidate</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">InvalidationType</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">SIZE</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Inspectable</span><span class="ActionScriptBracket/Brace">(</span>
+        <span class="ActionScriptASDoc">/**
+         * Gets or sets a value that describes the amount of content to be scrolled,
+         * horizontally, when a scroll arrow is clicked. This value is measured in pixels.
+         *
+         * @default 4
+         *
+         * @see #horizontalPageScrollSize
+         * @see #verticalLineScrollSize
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">horizontalLineScrollSize</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">_horizontalScrollBar</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">lineScrollSize</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptASDoc">/**
+         * @private (setter)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">set</span> <span class="ActionScriptDefault_Text">horizontalLineScrollSize</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">value</span>:<span class="ActionScriptDefault_Text">Number</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">_horizontalScrollBar</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">lineScrollSize</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">value</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Inspectable</span><span class="ActionScriptBracket/Brace">(</span>
+        <span class="ActionScriptASDoc">/**
+         * Gets or sets a value that describes how many pixels to scroll vertically when a scroll arrow is clicked. 
+         *
+         * @default 4
+         *
+         * @see #horizontalLineScrollSize
+         * @see #verticalPageScrollSize
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">verticalLineScrollSize</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">_verticalScrollBar</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">lineScrollSize</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        <span class="ActionScriptASDoc">/**
+         * @private (setter)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">set</span> <span class="ActionScriptDefault_Text">verticalLineScrollSize</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">value</span>:<span class="ActionScriptDefault_Text">Number</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">_verticalScrollBar</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">lineScrollSize</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">value</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptASDoc">/**
+         * Gets or sets a value that describes the horizontal position of the 
+         * horizontal scroll bar in the scroll pane, in pixels.
+         *
+         * @default 0
+         *
+         * @includeExample examples/BaseScrollPane.horizontalScrollPosition.1.as -noswf
+         *
+         * @see #maxHorizontalScrollPosition
+         * @see #verticalScrollPosition
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">horizontalScrollPosition</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">_horizontalScrollBar</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">scrollPosition</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * @private (setter)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">set</span> <span class="ActionScriptDefault_Text">horizontalScrollPosition</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">value</span>:<span class="ActionScriptDefault_Text">Number</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptComment">// We must force a redraw to ensure that the size is up to date.
+</span>            <span class="ActionScriptDefault_Text">drawNow</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptDefault_Text">_horizontalScrollBar</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">scrollPosition</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">value</span>;
+            <span class="ActionScriptDefault_Text">setHorizontalScrollPosition</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">_horizontalScrollBar</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">scrollPosition</span><span class="ActionScriptOperator">,</span><span class="ActionScriptReserved">false</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+
+        <span class="ActionScriptASDoc">/**
+         * Gets or sets a value that describes the vertical position of the 
+         * vertical scroll bar in the scroll pane, in pixels.
+         *
+         * @default 0
+         *
+         * @includeExample examples/BaseScrollPane.horizontalScrollPosition.1.as -noswf
+         *
+         * @see #horizontalScrollPosition
+         * @see #maxVerticalScrollPosition
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">verticalScrollPosition</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">_verticalScrollBar</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">scrollPosition</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * @private (setter)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">set</span> <span class="ActionScriptDefault_Text">verticalScrollPosition</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">value</span>:<span class="ActionScriptDefault_Text">Number</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptComment">// We must force a redraw to ensure that the size is up to date.
+</span>            <span class="ActionScriptDefault_Text">drawNow</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptDefault_Text">_verticalScrollBar</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">scrollPosition</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">value</span>;
+            <span class="ActionScriptDefault_Text">setVerticalScrollPosition</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">_verticalScrollBar</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">scrollPosition</span><span class="ActionScriptOperator">,</span><span class="ActionScriptReserved">false</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+
+        <span class="ActionScriptASDoc">/**
+         * Gets the maximum horizontal scroll position for the current content, in pixels.
+         *
+         * @see #horizontalScrollPosition
+         * @see #maxVerticalScrollPosition
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">maxHorizontalScrollPosition</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">drawNow</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">Math</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">max</span><span class="ActionScriptBracket/Brace">(</span>0<span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">contentWidth</span><span class="ActionScriptOperator">-</span><span class="ActionScriptDefault_Text">availableWidth</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * Gets the maximum vertical scroll position for the current content, in pixels.
+         *
+         * @see #maxHorizontalScrollPosition
+         * @see #verticalScrollPosition
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">maxVerticalScrollPosition</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">drawNow</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">Math</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">max</span><span class="ActionScriptBracket/Brace">(</span>0<span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">contentHeight</span><span class="ActionScriptOperator">-</span><span class="ActionScriptDefault_Text">availableHeight</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptASDoc">/**
+         * When set to &lt;code&gt;true&lt;/code&gt;, the &lt;code&gt;cacheAsBitmap&lt;/code&gt; property for the scrolling content is set 
+         * to &lt;code&gt;true&lt;/code&gt;; when set to &lt;code&gt;false&lt;/code&gt; this value is turned off.
+         *
+         * &lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; Setting this property to &lt;code&gt;true&lt;/code&gt; increases scrolling performance.&lt;/p&gt;
+         *
+         * @default false
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">useBitmapScrolling</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">Boolean</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">_useBitmpScrolling</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptASDoc">/**
+         * @private (setter)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">set</span> <span class="ActionScriptDefault_Text">useBitmapScrolling</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">value</span>:<span class="ActionScriptDefault_Text">Boolean</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">_useBitmpScrolling</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">value</span>;
+            <span class="ActionScriptDefault_Text">invalidate</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">InvalidationType</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">STATE</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Inspectable</span><span class="ActionScriptBracket/Brace">(</span>
+        <span class="ActionScriptASDoc">/**
+         * Gets or sets the count of pixels by which to move the scroll thumb 
+         * on the horizontal scroll bar when the scroll bar track is pressed. When 
+         * this value is 0, this property retrieves the available width of the component.
+         *
+         * @default 0
+         *
+         * @see #horizontalLineScrollSize
+         * @see #verticalPageScrollSize
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">horizontalPageScrollSize</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">isNaN</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">availableWidth</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span> <span class="ActionScriptDefault_Text">drawNow</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>; <span class="ActionScriptBracket/Brace">}</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">_horizontalPageScrollSize</span> <span class="ActionScriptOperator">==</span> 0 <span class="ActionScriptOperator">&amp;&amp;</span> <span class="ActionScriptOperator">!</span><span class="ActionScriptDefault_Text">isNaN</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">availableWidth</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptOperator">?</span> <span class="ActionScriptDefault_Text">availableWidth</span> : <span class="ActionScriptDefault_Text">_horizontalPageScrollSize</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        <span class="ActionScriptASDoc">/**
+         * @private (setter)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">set</span> <span class="ActionScriptDefault_Text">horizontalPageScrollSize</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">value</span>:<span class="ActionScriptDefault_Text">Number</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">_horizontalPageScrollSize</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">value</span>;
+            <span class="ActionScriptDefault_Text">invalidate</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">InvalidationType</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">SIZE</span><span class="ActionScriptBracket/Brace">)</span>;    
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Inspectable</span><span class="ActionScriptBracket/Brace">(</span>
+        <span class="ActionScriptASDoc">/**
+         * Gets or sets the count of pixels by which to move the scroll thumb 
+         * on the vertical scroll bar when the scroll bar track is pressed. When 
+         * this value is 0, this property retrieves the available height of the component.
+         *
+         * @default 0
+         *
+         * @see #horizontalPageScrollSize
+         * @see #verticalLineScrollSize
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         * @internal [kenos] Is available height specified in pixels?
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">verticalPageScrollSize</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">isNaN</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">availableHeight</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span> <span class="ActionScriptDefault_Text">drawNow</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>; <span class="ActionScriptBracket/Brace">}</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">_verticalPageScrollSize</span> <span class="ActionScriptOperator">==</span> 0 <span class="ActionScriptOperator">&amp;&amp;</span> <span class="ActionScriptOperator">!</span><span class="ActionScriptDefault_Text">isNaN</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">availableHeight</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptOperator">?</span> <span class="ActionScriptDefault_Text">availableHeight</span> : <span class="ActionScriptDefault_Text">_verticalPageScrollSize</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        <span class="ActionScriptASDoc">/**
+         * @private (setter)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">set</span> <span class="ActionScriptDefault_Text">verticalPageScrollSize</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">value</span>:<span class="ActionScriptDefault_Text">Number</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">_verticalPageScrollSize</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">value</span>;
+            <span class="ActionScriptDefault_Text">invalidate</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">InvalidationType</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">SIZE</span><span class="ActionScriptBracket/Brace">)</span>;    
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptASDoc">/**
+         * Gets a reference to the horizontal scroll bar.
+         *
+         * @see #verticalScrollBar
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">horizontalScrollBar</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">ScrollBar</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">_horizontalScrollBar</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        <span class="ActionScriptASDoc">/**
+         * Gets a reference to the vertical scroll bar.
+         *
+         * @see #horizontalScrollBar
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">verticalScrollBar</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">ScrollBar</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">_verticalScrollBar</span>;
+        <span class="ActionScriptBracket/Brace">}</span>        
+        
+        <span class="ActionScriptASDoc">/**
+         * @private (protected)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">override</span> <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">configUI</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">super</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">configUI</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+
+            <span class="ActionScriptComment">//contentScrollRect is not actually used by BaseScrollPane, only by subclasses.
+</span>            <span class="ActionScriptDefault_Text">contentScrollRect</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">Rectangle</span><span class="ActionScriptBracket/Brace">(</span>0<span class="ActionScriptOperator">,</span>0<span class="ActionScriptOperator">,</span>85<span class="ActionScriptOperator">,</span>85<span class="ActionScriptBracket/Brace">)</span>;
+
+            <span class="ActionScriptComment">// set up vertical scroll bar:
+</span>            <span class="ActionScriptDefault_Text">_verticalScrollBar</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">ScrollBar</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">_verticalScrollBar</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">addEventListener</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">ScrollEvent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">SCROLL</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">handleScroll</span><span class="ActionScriptOperator">,</span><span class="ActionScriptReserved">false</span><span class="ActionScriptOperator">,</span>0<span class="ActionScriptOperator">,</span><span class="ActionScriptReserved">true</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">_verticalScrollBar</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">visible</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">false</span>;
+            <span class="ActionScriptDefault_Text">_verticalScrollBar</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">lineScrollSize</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">defaultLineScrollSize</span>;
+            <span class="ActionScriptDefault_Text">addChild</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">_verticalScrollBar</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">copyStylesToChild</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">_verticalScrollBar</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">SCROLL_BAR_STYLES</span><span class="ActionScriptBracket/Brace">)</span>;
+
+            <span class="ActionScriptComment">// set up horizontal scroll bar:
+</span>            <span class="ActionScriptDefault_Text">_horizontalScrollBar</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">ScrollBar</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">_horizontalScrollBar</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">direction</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">ScrollBarDirection</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">HORIZONTAL</span>;
+            <span class="ActionScriptDefault_Text">_horizontalScrollBar</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">addEventListener</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">ScrollEvent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">SCROLL</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">handleScroll</span><span class="ActionScriptOperator">,</span><span class="ActionScriptReserved">false</span><span class="ActionScriptOperator">,</span>0<span class="ActionScriptOperator">,</span><span class="ActionScriptReserved">true</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">_horizontalScrollBar</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">visible</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">false</span>;
+            <span class="ActionScriptDefault_Text">_horizontalScrollBar</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">lineScrollSize</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">defaultLineScrollSize</span>;
+            <span class="ActionScriptDefault_Text">addChild</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">_horizontalScrollBar</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">copyStylesToChild</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">_horizontalScrollBar</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">SCROLL_BAR_STYLES</span><span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptComment">// Create the disabled overlay
+</span>            <span class="ActionScriptDefault_Text">disabledOverlay</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">Shape</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">g</span>:<span class="ActionScriptDefault_Text">Graphics</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">disabledOverlay</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">graphics</span>;
+            <span class="ActionScriptDefault_Text">g</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">beginFill</span><span class="ActionScriptBracket/Brace">(</span>0xFFFFFF<span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">g</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">drawRect</span><span class="ActionScriptBracket/Brace">(</span>0<span class="ActionScriptOperator">,</span>0<span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">width</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">height</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">g</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">endFill</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptDefault_Text">addEventListener</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">MouseEvent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">MOUSE_WHEEL</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">handleWheel</span><span class="ActionScriptOperator">,</span><span class="ActionScriptReserved">false</span><span class="ActionScriptOperator">,</span>0<span class="ActionScriptOperator">,</span><span class="ActionScriptReserved">true</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * @private (protected)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">setContentSize</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">width</span>:<span class="ActionScriptDefault_Text">Number</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">height</span>:<span class="ActionScriptDefault_Text">Number</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">contentWidth</span> <span class="ActionScriptOperator">==</span> <span class="ActionScriptDefault_Text">width</span> <span class="ActionScriptOperator">||</span> <span class="ActionScriptDefault_Text">useFixedHorizontalScrolling</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptOperator">&amp;&amp;</span> <span class="ActionScriptDefault_Text">contentHeight</span> <span class="ActionScriptOperator">==</span> <span class="ActionScriptDefault_Text">height</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span> <span class="ActionScriptReserved">return</span>; <span class="ActionScriptBracket/Brace">}</span>
+            
+            <span class="ActionScriptDefault_Text">contentWidth</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">width</span>;
+            <span class="ActionScriptDefault_Text">contentHeight</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">height</span>;
+            <span class="ActionScriptDefault_Text">invalidate</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">InvalidationType</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">SIZE</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * @private (protected)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">handleScroll</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">event</span>:<span class="ActionScriptDefault_Text">ScrollEvent</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">event</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">target</span> <span class="ActionScriptOperator">==</span> <span class="ActionScriptDefault_Text">_verticalScrollBar</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">setVerticalScrollPosition</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">event</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">position</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptBracket/Brace">}</span> <span class="ActionScriptReserved">else</span> <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">setHorizontalScrollPosition</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">event</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">position</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * @private (protected)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">handleWheel</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">event</span>:<span class="ActionScriptDefault_Text">MouseEvent</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptOperator">!</span><span class="ActionScriptDefault_Text">enabled</span> <span class="ActionScriptOperator">||</span> <span class="ActionScriptOperator">!</span><span class="ActionScriptDefault_Text">_verticalScrollBar</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">visible</span> <span class="ActionScriptOperator">||</span> <span class="ActionScriptDefault_Text">contentHeight</span> <span class="ActionScriptOperator">&lt;=</span> <span class="ActionScriptDefault_Text">availableHeight</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptReserved">return</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            <span class="ActionScriptDefault_Text">_verticalScrollBar</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">scrollPosition</span> <span class="ActionScriptOperator">-=</span> <span class="ActionScriptDefault_Text">event</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">delta</span> <span class="ActionScriptOperator">*</span> <span class="ActionScriptDefault_Text">verticalLineScrollSize</span>;
+            <span class="ActionScriptDefault_Text">setVerticalScrollPosition</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">_verticalScrollBar</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">scrollPosition</span><span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptDefault_Text">dispatchEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">ScrollEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">ScrollBarDirection</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">VERTICAL</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">event</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">delta</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">horizontalScrollPosition</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptComment">// These are meant to be overriden by subclasses:
+</span>        <span class="ActionScriptASDoc">/**
+         * @private (protected)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">setHorizontalScrollPosition</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">scroll</span>:<span class="ActionScriptDefault_Text">Number</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">fireEvent</span>:<span class="ActionScriptDefault_Text">Boolean</span><span class="ActionScriptOperator">=</span><span class="ActionScriptReserved">false</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> {}
+        <span class="ActionScriptASDoc">/**
+         * @private (protected)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">setVerticalScrollPosition</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">scroll</span>:<span class="ActionScriptDefault_Text">Number</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">fireEvent</span>:<span class="ActionScriptDefault_Text">Boolean</span><span class="ActionScriptOperator">=</span><span class="ActionScriptReserved">false</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> {}
+
+        
+        <span class="ActionScriptASDoc">/**
+         * @private (protected)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">override</span> <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">draw</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">isInvalid</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">InvalidationType</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">STYLES</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">setStyles</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptDefault_Text">drawBackground</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptComment">// drawLayout is expensive, so only do it if padding has changed:
+</span>                <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">contentPadding</span> <span class="ActionScriptOperator">!=</span> <span class="ActionScriptDefault_Text">getStyleValue</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"contentPadding"</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+                    <span class="ActionScriptDefault_Text">invalidate</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">InvalidationType</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">SIZE</span><span class="ActionScriptOperator">,</span><span class="ActionScriptReserved">false</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptBracket/Brace">}</span>
+            <span class="ActionScriptBracket/Brace">}</span>
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">isInvalid</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">InvalidationType</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">SIZE</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">InvalidationType</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">STATE</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">drawLayout</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            <span class="ActionScriptComment">// Call drawNow() on nested components to get around problems with nested render events:
+</span>            <span class="ActionScriptDefault_Text">updateChildren</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptReserved">super</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">draw</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * @private (protected)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">setStyles</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">copyStylesToChild</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">_verticalScrollBar</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">SCROLL_BAR_STYLES</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">copyStylesToChild</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">_horizontalScrollBar</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">SCROLL_BAR_STYLES</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * @private (protected)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">drawBackground</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">bg</span>:<span class="ActionScriptDefault_Text">DisplayObject</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">background</span>;
+            
+            <span class="ActionScriptDefault_Text">background</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">getDisplayObjectInstance</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">getStyleValue</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"skin"</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">background</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">width</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">width</span>;
+            <span class="ActionScriptDefault_Text">background</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">height</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">height</span>;
+            <span class="ActionScriptDefault_Text">addChildAt</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">background</span><span class="ActionScriptOperator">,</span>0<span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">bg</span> <span class="ActionScriptOperator">!=</span> <span class="ActionScriptReserved">null</span> <span class="ActionScriptOperator">&amp;&amp;</span> <span class="ActionScriptDefault_Text">bg</span> <span class="ActionScriptOperator">!=</span> <span class="ActionScriptDefault_Text">background</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span> <span class="ActionScriptDefault_Text">removeChild</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">bg</span><span class="ActionScriptBracket/Brace">)</span>; <span class="ActionScriptBracket/Brace">}</span>
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * @private (protected)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">drawLayout</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">calculateAvailableSize</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">calculateContentWidth</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptDefault_Text">background</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">width</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">width</span>;
+            <span class="ActionScriptDefault_Text">background</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">height</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">height</span>;
+
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">vScrollBar</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">_verticalScrollBar</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">visible</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">true</span>;
+                <span class="ActionScriptDefault_Text">_verticalScrollBar</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">x</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">width</span> <span class="ActionScriptOperator">-</span> <span class="ActionScriptDefault_Text">ScrollBar</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">WIDTH</span> <span class="ActionScriptOperator">-</span> <span class="ActionScriptDefault_Text">contentPadding</span>;
+                <span class="ActionScriptDefault_Text">_verticalScrollBar</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">y</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">contentPadding</span>;
+                <span class="ActionScriptDefault_Text">_verticalScrollBar</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">height</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">availableHeight</span>;
+            <span class="ActionScriptBracket/Brace">}</span> <span class="ActionScriptReserved">else</span> <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">_verticalScrollBar</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">visible</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">false</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            
+            <span class="ActionScriptDefault_Text">_verticalScrollBar</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">setScrollProperties</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">availableHeight</span><span class="ActionScriptOperator">,</span> 0<span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">contentHeight</span> <span class="ActionScriptOperator">-</span> <span class="ActionScriptDefault_Text">availableHeight</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">verticalPageScrollSize</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">setVerticalScrollPosition</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">_verticalScrollBar</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">scrollPosition</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptReserved">false</span><span class="ActionScriptBracket/Brace">)</span>;
+
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">hScrollBar</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">_horizontalScrollBar</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">visible</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">true</span>;
+                <span class="ActionScriptDefault_Text">_horizontalScrollBar</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">x</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">contentPadding</span>;
+                <span class="ActionScriptDefault_Text">_horizontalScrollBar</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">y</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">height</span> <span class="ActionScriptOperator">-</span> <span class="ActionScriptDefault_Text">ScrollBar</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">WIDTH</span> <span class="ActionScriptOperator">-</span> <span class="ActionScriptDefault_Text">contentPadding</span>;
+                <span class="ActionScriptDefault_Text">_horizontalScrollBar</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">width</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">availableWidth</span>;
+            <span class="ActionScriptBracket/Brace">}</span> <span class="ActionScriptReserved">else</span> <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">_horizontalScrollBar</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">visible</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">false</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            
+            <span class="ActionScriptDefault_Text">_horizontalScrollBar</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">setScrollProperties</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">availableWidth</span><span class="ActionScriptOperator">,</span> 0<span class="ActionScriptOperator">,</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">useFixedHorizontalScrolling</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptOperator">?</span> <span class="ActionScriptDefault_Text">_maxHorizontalScrollPosition</span> : <span class="ActionScriptDefault_Text">contentWidth</span> <span class="ActionScriptOperator">-</span> <span class="ActionScriptDefault_Text">availableWidth</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">horizontalPageScrollSize</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">setHorizontalScrollPosition</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">_horizontalScrollBar</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">scrollPosition</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptReserved">false</span><span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptDefault_Text">drawDisabledOverlay</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptASDoc">/**
+         * @private (protected)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">drawDisabledOverlay</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">enabled</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">contains</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">disabledOverlay</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span> <span class="ActionScriptDefault_Text">removeChild</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">disabledOverlay</span><span class="ActionScriptBracket/Brace">)</span>; <span class="ActionScriptBracket/Brace">}</span>
+            <span class="ActionScriptBracket/Brace">}</span> <span class="ActionScriptReserved">else</span> <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">disabledOverlay</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">x</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">disabledOverlay</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">y</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">contentPadding</span>;
+                <span class="ActionScriptDefault_Text">disabledOverlay</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">width</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">availableWidth</span>;
+                <span class="ActionScriptDefault_Text">disabledOverlay</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">height</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">availableHeight</span>;
+                <span class="ActionScriptDefault_Text">disabledOverlay</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">alpha</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">getStyleValue</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"disabledAlpha"</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptReserved">as</span> <span class="ActionScriptDefault_Text">Number</span>;
+                <span class="ActionScriptDefault_Text">addChild</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">disabledOverlay</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * @private (protected)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">calculateAvailableSize</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">scrollBarWidth</span>:<span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">ScrollBar</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">WIDTH</span>;
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">padding</span>:<span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">contentPadding</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">Number</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">getStyleValue</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"contentPadding"</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptComment">// figure out which scrollbars we need
+</span>            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">availHeight</span>:<span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">height</span><span class="ActionScriptOperator">-</span>2<span class="ActionScriptOperator">*</span><span class="ActionScriptDefault_Text">padding</span> <span class="ActionScriptOperator">-</span> <span class="ActionScriptDefault_Text">vOffset</span>;
+            <span class="ActionScriptDefault_Text">vScrollBar</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">_verticalScrollPolicy</span> <span class="ActionScriptOperator">==</span> <span class="ActionScriptDefault_Text">ScrollPolicy</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ON</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptOperator">||</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">_verticalScrollPolicy</span> <span class="ActionScriptOperator">==</span> <span class="ActionScriptDefault_Text">ScrollPolicy</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">AUTO</span> <span class="ActionScriptOperator">&amp;&amp;</span> <span class="ActionScriptDefault_Text">contentHeight</span> <span class="ActionScriptOperator">&gt;</span> <span class="ActionScriptDefault_Text">availHeight</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">availWidth</span>:<span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">width</span> <span class="ActionScriptOperator">-</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">vScrollBar</span> <span class="ActionScriptOperator">?</span> <span class="ActionScriptDefault_Text">scrollBarWidth</span> : 0<span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptOperator">-</span> 2 <span class="ActionScriptOperator">*</span> <span class="ActionScriptDefault_Text">padding</span>;
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">maxHScroll</span>:<span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">useFixedHorizontalScrolling</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptOperator">?</span> <span class="ActionScriptDefault_Text">_maxHorizontalScrollPosition</span> : <span class="ActionScriptDefault_Text">contentWidth</span> <span class="ActionScriptOperator">-</span> <span class="ActionScriptDefault_Text">availWidth</span>;
+            <span class="ActionScriptDefault_Text">hScrollBar</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">_horizontalScrollPolicy</span> <span class="ActionScriptOperator">==</span> <span class="ActionScriptDefault_Text">ScrollPolicy</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ON</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptOperator">||</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">_horizontalScrollPolicy</span> <span class="ActionScriptOperator">==</span> <span class="ActionScriptDefault_Text">ScrollPolicy</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">AUTO</span> <span class="ActionScriptOperator">&amp;&amp;</span> <span class="ActionScriptDefault_Text">maxHScroll</span> <span class="ActionScriptOperator">&gt;</span> 0<span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">hScrollBar</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span> <span class="ActionScriptDefault_Text">availHeight</span> <span class="ActionScriptOperator">-=</span> <span class="ActionScriptDefault_Text">scrollBarWidth</span>; <span class="ActionScriptBracket/Brace">}</span>
+            <span class="ActionScriptComment">// catch the edge case of the horizontal scroll bar necessitating a vertical one:
+</span>            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">hScrollBar</span> <span class="ActionScriptOperator">&amp;&amp;</span> <span class="ActionScriptOperator">!</span><span class="ActionScriptDefault_Text">vScrollBar</span> <span class="ActionScriptOperator">&amp;&amp;</span> <span class="ActionScriptDefault_Text">_verticalScrollPolicy</span> <span class="ActionScriptOperator">==</span> <span class="ActionScriptDefault_Text">ScrollPolicy</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">AUTO</span> <span class="ActionScriptOperator">&amp;&amp;</span> <span class="ActionScriptDefault_Text">contentHeight</span> <span class="ActionScriptOperator">&gt;</span> <span class="ActionScriptDefault_Text">availHeight</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">vScrollBar</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">true</span>;
+                <span class="ActionScriptDefault_Text">availWidth</span> <span class="ActionScriptOperator">-=</span> <span class="ActionScriptDefault_Text">scrollBarWidth</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            <span class="ActionScriptDefault_Text">availableHeight</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">availHeight</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptDefault_Text">vOffset</span>;
+            <span class="ActionScriptDefault_Text">availableWidth</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">availWidth</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptASDoc">/**
+         * @private (protected)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">calculateContentWidth</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptComment">// Meant to be overriden by subclasses
+</span>        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptASDoc">/**
+         * @private (protected)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">updateChildren</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">_verticalScrollBar</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">enabled</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">_horizontalScrollBar</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">enabled</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">enabled</span>;
+            <span class="ActionScriptDefault_Text">_verticalScrollBar</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">drawNow</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">_horizontalScrollBar</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">drawNow</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+    <span class="ActionScriptBracket/Brace">}</span>
+<span class="ActionScriptBracket/Brace">}</span></pre></body>
+</html>

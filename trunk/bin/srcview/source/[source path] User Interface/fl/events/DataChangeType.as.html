@@ -1,0 +1,117 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>DataChangeType.as</title>
+<link rel="stylesheet" type="text/css" href="../../../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="ActionScriptComment">// Copyright 2007. Adobe Systems Incorporated. All Rights Reserved.
+</span><span class="ActionScriptpackage">package</span> <span class="ActionScriptDefault_Text">fl</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">events</span> <span class="ActionScriptBracket/Brace">{</span>
+
+    <span class="ActionScriptASDoc">/**
+     * The DataChangeType class defines constants for the &lt;code&gt;DataChangeEvent.changeType&lt;/code&gt;
+     * event. These constants are used by the DataChangeEvent class to identify the type
+     * of change that was applied to the data in a list-based component such as a List, ComboBox,
+     * TileList, or DataGrid.
+     *
+     * @see DataChangeEvent#changeType
+     *
+     * @langversion 3.0
+     * @playerversion Flash 9.0.28.0
+     */</span>
+    <span class="ActionScriptReserved">public</span> <span class="ActionScriptclass">class</span> <span class="ActionScriptDefault_Text">DataChangeType</span> <span class="ActionScriptBracket/Brace">{</span>
+
+        <span class="ActionScriptASDoc">/**
+         * A change was made to the component data. This value does not affect the
+         * component data that it describes.
+         *
+         * @eventType change
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">CHANGE</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"change"</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * A change was made to the data contained in an item.
+         *
+         * @eventType invalidate
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">INVALIDATE</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"invalidate"</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * The data set is invalid.
+         *
+         * @eventType invalidateAll
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">INVALIDATE_ALL</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"invalidateAll"</span>;
+
+        <span class="ActionScriptASDoc">/**
+         * Items were added to the data provider.
+         *
+         * @eventType add
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         * @internal The word "model" was replaced with "data provider" above. What should it say?
+         * @internal If this indicates "one or more" items were added, we should use that string.
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">ADD</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"add"</span>;
+
+        <span class="ActionScriptASDoc">/**
+         * Items were removed from the data provider.
+         *
+         * @eventType remove
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         * @internal The word "model" was replaced with "data provider" above. What should it say?
+         * @internal If this indicates "one or more" items were removed, we should use that string.
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">REMOVE</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"remove"</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * All items were removed from the data provider.
+         *
+         * @eventType removeAll
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         * @internal The word "model" was replaced with "data provider" above. What should it say?
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">REMOVE_ALL</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"removeAll"</span>;
+
+        <span class="ActionScriptASDoc">/**
+         * The items in the data provider were replaced by new items.
+         *
+         * @eventType replace
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         * @internal I used "data provider" here instead of the word "model". Correct?
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">REPLACE</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"replace"</span>;
+
+        <span class="ActionScriptASDoc">/**
+         * The data provider was sorted. This constant is used to indicate
+         * a change in the order of the data, not a change in
+         * the data itself.
+         *
+         * @eventType sort
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         * @internal The word "model" was replaced with "data provider" above. What should it say?
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">SORT</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"sort"</span>;
+    <span class="ActionScriptBracket/Brace">}</span>
+<span class="ActionScriptBracket/Brace">}</span></pre></body>
+</html>

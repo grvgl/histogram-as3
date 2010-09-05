@@ -1,0 +1,188 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>CheckBoxAccImpl.as</title>
+<link rel="stylesheet" type="text/css" href="../../../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="ActionScriptComment">// Copyright 2007. Adobe Systems Incorporated. All Rights Reserved.
+</span><span class="ActionScriptpackage">package</span> <span class="ActionScriptDefault_Text">fl</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">accessibility</span> <span class="ActionScriptBracket/Brace">{</span>
+    
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">fl</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">controls</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">LabelButton</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">fl</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">controls</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">CheckBox</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">fl</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">core</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">UIComponent</span>;
+
+    <span class="ActionScriptASDoc">/**
+     *  The CheckBoxAccImpl class, also called the CheckBox Accessibility Implementation class,
+     *  is used to make a CheckBox component accessible. This class enables communication 
+     *  between a CheckBox component and a screen reader. Screen readers are used to translate
+     *  screen content into synthesized speech or braille for visually impaired users. 
+     * 
+     * &lt;p&gt;The CheckBoxAccImpl class supports system roles, object-based events, and states.&lt;/p&gt;
+     * 
+     * &lt;p&gt;A CheckBox reports the role &lt;code&gt;ROLE_SYSTEM_CHECKBUTTON&lt;/code&gt; (0x2C) to a screen 
+     * reader.&lt;/p&gt;
+     *
+     * &lt;p&gt;A CheckBox reports the following states to a screen reader:&lt;/p&gt;
+     * &lt;ul&gt;
+     *     &lt;li&gt;&lt;code&gt;STATE_SYSTEM_NORMAL&lt;/code&gt; (0x00000000)&lt;/li&gt;
+     *     &lt;li&gt;&lt;code&gt;STATE_SYSTEM_UNAVAILABLE&lt;/code&gt; (0x00000001)&lt;/li&gt;
+     *     &lt;li&gt;&lt;code&gt;STATE_SYSTEM_FOCUSED&lt;/code&gt; (0x00000004)&lt;/li&gt;
+     *     &lt;li&gt;&lt;code&gt;STATE_SYSTEM_PRESSED&lt;/code&gt; (0x00000008)&lt;/li&gt;
+     *     &lt;li&gt;&lt;code&gt;STATE_SYSTEM_CHECKED&lt;/code&gt; (0x00000010)&lt;/li&gt;
+     *     &lt;li&gt;&lt;code&gt;STATE_SYSTEM_FOCUSABLE&lt;/code&gt; (0x00100000)&lt;/li&gt;
+     * &lt;/ul&gt;
+     *
+     * &lt;p&gt;A CheckBox dispatches the following events to a screen reader:&lt;/p&gt;
+     * &lt;ul&gt;
+     *     &lt;li&gt;&lt;code&gt;EVENT_OBJECT_STATECHANGE&lt;/code&gt; (0x800A)&lt;/li&gt;
+     *     &lt;li&gt;&lt;code&gt;EVENT_OBJECT_NAMECHANGE&lt;/code&gt; (0x800C)&lt;/li&gt;
+     * &lt;/ul&gt;
+     * 
+     * &lt;p&gt;Screen reader users can activate a Checkbox component with the spacebar or the Enter key.&lt;/p&gt;
+     *
+     * @see fl.controls.CheckBox CheckBox
+     *
+     * @langversion 3.0
+     * @playerversion Flash 9.0.28.0
+     */</span>
+    <span class="ActionScriptReserved">public</span> <span class="ActionScriptclass">class</span> <span class="ActionScriptDefault_Text">CheckBoxAccImpl</span> <span class="ActionScriptReserved">extends</span> <span class="ActionScriptDefault_Text">LabelButtonAccImpl</span> <span class="ActionScriptBracket/Brace">{</span>
+        <span class="ActionScriptASDoc">/**
+         *  @private
+         *  Static variable triggering the &lt;code&gt;hookAccessibility()&lt;/code&gt; method.
+         *  This is used for initializing CheckBoxAccImpl class to hook its
+         *  &lt;code&gt;createAccessibilityImplementation()&lt;/code&gt; method to CheckBox class 
+         *  before it gets called from UIComponent.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">accessibilityHooked</span>:<span class="ActionScriptDefault_Text">Boolean</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">hookAccessibility</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+
+        <span class="ActionScriptASDoc">/**
+         *  @private
+         *  Static method for swapping the &lt;code&gt;createAccessibilityImplementation()&lt;/code&gt;
+         *  method of CheckBox with the CheckBoxAccImpl class.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">hookAccessibility</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">Boolean</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">CheckBox</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">createAccessibilityImplementation</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">createAccessibilityImplementation</span>;
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptReserved">true</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptComment">//--------------------------------------------------------------------------
+</span>        <span class="ActionScriptComment">//  Class constants
+</span>        <span class="ActionScriptComment">//--------------------------------------------------------------------------
+</span>
+        <span class="ActionScriptASDoc">/**
+         *  @private
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">STATE_SYSTEM_CHECKED</span>:<span class="ActionScriptDefault_Text">uint</span> <span class="ActionScriptOperator">=</span> 0x00000010;
+
+        <span class="ActionScriptComment">//--------------------------------------------------------------------------
+</span>        <span class="ActionScriptComment">//  Class methods
+</span>        <span class="ActionScriptComment">//--------------------------------------------------------------------------
+</span>
+        <span class="ActionScriptASDoc">/**
+         *  @private
+         *  Method for creating the Accessibility class.
+         *  This method is called from UIComponent.
+         * 
+         *  @param component The UIComponent instance that this AccImpl instance
+         *  is making accessible.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">createAccessibilityImplementation</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">component</span>:<span class="ActionScriptDefault_Text">UIComponent</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">component</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">accessibilityImplementation</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">CheckBoxAccImpl</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">component</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+    
+        <span class="ActionScriptASDoc">/**
+         *  Enables accessibility for a CheckBox component.
+         *  This method is required for the compiler to activate
+         *  the accessibility classes for a component.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">enableAccessibility</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+        <span class="ActionScriptBracket/Brace">}</span>
+    
+        <span class="ActionScriptComment">//--------------------------------------------------------------------------
+</span>        <span class="ActionScriptComment">//  Constructor
+</span>        <span class="ActionScriptComment">//--------------------------------------------------------------------------
+</span>    
+        <span class="ActionScriptASDoc">/**
+         * @private
+         * @internal Nivesh says: I don't think we should document the constructors 
+         *           for the accessibility classes.  End-users just have to call the 
+         *           static enableAccessibility method.  They don't really create an 
+         *           instance of the classes.
+         *
+         *  Creates a CheckBoxAccImpl instance for the specified CheckBox component.
+         *
+         *  @param component The CheckBox instance that this CheckBoxAccImpl instance
+         *  makes accessible.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">CheckBoxAccImpl</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">component</span>:<span class="ActionScriptDefault_Text">UIComponent</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">super</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">component</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">role</span> <span class="ActionScriptOperator">=</span> 0x2C;
+        <span class="ActionScriptBracket/Brace">}</span>
+    
+        <span class="ActionScriptComment">//--------------------------------------------------------------------------
+</span>        <span class="ActionScriptComment">//  Overridden methods: AccessibilityImplementation
+</span>        <span class="ActionScriptComment">//--------------------------------------------------------------------------
+</span>    
+        <span class="ActionScriptASDoc">/**
+         *  @private
+         *  IAccessible method for returning the state of the CheckBox.
+         *  States are predefined for all the components in MSAA.
+         *  Values are assigned to each state.
+         *  Depending upon whether the CheckBox is checked or unchecked,
+         *  a value is returned.
+         *
+         *  @param childID The child id.
+         *
+         *  @return State.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">override</span> <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">get_accState</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">childID</span>:<span class="ActionScriptDefault_Text">uint</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">uint</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">accState</span>:<span class="ActionScriptDefault_Text">uint</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">getState</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">childID</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">LabelButton</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">master</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">selected</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">accState</span> <span class="ActionScriptOperator">|=</span> <span class="ActionScriptDefault_Text">STATE_SYSTEM_CHECKED</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">accState</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+    
+        <span class="ActionScriptASDoc">/**
+         *  @private
+         *  IAccessible method for returning the default action of
+         *  the CheckBox, which is Check or UnCheck depending on the state.
+         *
+         *  @param childID The child id.
+         *
+         *  @return DefaultAction.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">override</span> <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">get_accDefaultAction</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">childID</span>:<span class="ActionScriptDefault_Text">uint</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">LabelButton</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">master</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">selected</span> <span class="ActionScriptOperator">?</span> <span class="ActionScriptString">"UnCheck"</span> : <span class="ActionScriptString">"Check"</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+    <span class="ActionScriptBracket/Brace">}</span>
+<span class="ActionScriptBracket/Brace">}</span>
+</pre></body>
+</html>

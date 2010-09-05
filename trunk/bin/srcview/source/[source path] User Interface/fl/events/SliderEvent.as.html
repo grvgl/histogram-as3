@@ -1,0 +1,319 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>SliderEvent.as</title>
+<link rel="stylesheet" type="text/css" href="../../../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="ActionScriptComment">// Copyright 2007. Adobe Systems Incorporated. All Rights Reserved.
+</span><span class="ActionScriptpackage">package</span> <span class="ActionScriptDefault_Text">fl</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">events</span> <span class="ActionScriptBracket/Brace">{</span>
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">events</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">Event</span>;
+
+    <span class="ActionScriptASDoc">/**
+     * The SliderEvent class defines events that are associated with the Slider component.
+     * These include the following:
+     * &lt;ul&gt;
+     * &lt;li&gt;&lt;code&gt;SliderEvent.CHANGE&lt;/code&gt;: dispatched after there is a change in the position of the slider.&lt;/li&gt;
+     * &lt;li&gt;&lt;code&gt;SliderEvent.THUMB_DRAG&lt;/code&gt;: dispatched when a user drags the thumb of the slider.&lt;/li&gt;
+     * &lt;li&gt;&lt;code&gt;SliderEvent.THUMB_PRESS&lt;/code&gt;: dispatched when a user presses the thumb of the slider.&lt;/li&gt;
+     * &lt;li&gt;&lt;code&gt;SliderEvent.THUMB_RELEASE&lt;/code&gt;: dispatched when the user releases the thumb of the slider.&lt;/li&gt;
+     * &lt;/ul&gt;   
+     * @see SliderEventClickTarget
+     *
+     * @langversion 3.0
+     * @playerversion Flash 9.0.28.0
+     */</span>
+    <span class="ActionScriptReserved">public</span> <span class="ActionScriptclass">class</span> <span class="ActionScriptDefault_Text">SliderEvent</span> <span class="ActionScriptReserved">extends</span> <span class="ActionScriptDefault_Text">Event</span> <span class="ActionScriptBracket/Brace">{</span>
+
+        <span class="ActionScriptASDoc">/**
+         * Defines the value of the &lt;code&gt;type&lt;/code&gt; property of a &lt;code&gt;change&lt;/code&gt; event object. 
+         * 
+         * &lt;p&gt;This event has the following properties:&lt;/p&gt;
+         *  &lt;table class="innertable" width="100%"&gt;
+         *    &lt;tr&gt;&lt;th&gt;Property&lt;/th&gt;&lt;th&gt;Value&lt;/th&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;bubbles&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;false&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;cancelable&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;false&lt;/code&gt;; there is no default
+         *             behavior to cancel.&lt;/td&gt;&lt;/tr&gt;
+         *       &lt;tr&gt;&lt;td&gt;&lt;code&gt;clickTarget&lt;/code&gt;&lt;/td&gt;&lt;td&gt;Identifies whether the slider track
+         *             or a slider thumb was pressed.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;currentTarget&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The object that is actively processing 
+         *          the event object with an event listener. &lt;/td&gt;&lt;/tr&gt;
+         *      &lt;tr&gt;&lt;td&gt;&lt;code&gt;keyCode&lt;/code&gt;&lt;/td&gt;&lt;td&gt;If the event was triggered by a key press,
+         *           the code for the key that was pressed.&lt;/td&gt;&lt;/tr&gt;
+         *       &lt;tr&gt;&lt;td&gt;&lt;code&gt;target&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The object that dispatched the event. The target is 
+         *           not always the object listening for the event. Use the &lt;code&gt;currentTarget&lt;/code&gt;
+         *             property to access the object that is listening for the event.&lt;/td&gt;&lt;/tr&gt;
+         *       &lt;tr&gt;&lt;td&gt;&lt;code&gt;triggerEvent&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The type of device that triggered the event. A value 
+         *          of &lt;code&gt;InteractionInputType.MOUSE&lt;/code&gt; indicates that a mouse was the source of input;  
+         *             a value of &lt;code&gt;InteractionInputType.KEYBOARD&lt;/code&gt; indicates that a keyboard was
+         *          the source of input.&lt;/td&gt;&lt;/tr&gt;
+         *       &lt;tr&gt;&lt;td&gt;&lt;code&gt;value&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The value of the slider after the event.&lt;/td&gt;&lt;/tr&gt;
+         *  &lt;/table&gt;
+         *
+         * @eventType change
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">CHANGE</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"change"</span>;
+
+        <span class="ActionScriptASDoc">/**
+         * Defines the value of the &lt;code&gt;type&lt;/code&gt; property of a &lt;code&gt;thumbDrag&lt;/code&gt; event
+         * object. 
+         * 
+         * &lt;p&gt;This event has the following properties:&lt;/p&gt;
+         *  &lt;table class="innertable" width="100%"&gt;
+         *     &lt;tr&gt;&lt;th&gt;Property&lt;/th&gt;&lt;th&gt;Value&lt;/th&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;bubbles&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;false&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;cancelable&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;false&lt;/code&gt;; there is no default
+         *             behavior to cancel.&lt;/td&gt;&lt;/tr&gt;
+         *       &lt;tr&gt;&lt;td&gt;&lt;code&gt;clickTarget&lt;/code&gt;&lt;/td&gt;&lt;td&gt;Identifies whether the slider track
+         *             or a slider thumb was pressed.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;currentTarget&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The object that is actively processing 
+         *          the event object with an event listener. &lt;/td&gt;&lt;/tr&gt;
+         *      &lt;tr&gt;&lt;td&gt;&lt;code&gt;keyCode&lt;/code&gt;&lt;/td&gt;&lt;td&gt;If the event was triggered by a key press,
+         *           the code for the key that was pressed.&lt;/td&gt;&lt;/tr&gt;
+         *       &lt;tr&gt;&lt;td&gt;&lt;code&gt;target&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The object that dispatched the event. The target is 
+         *           not always the object listening for the event. Use the &lt;code&gt;currentTarget&lt;/code&gt;
+         *             property to access the object that is listening for the event.&lt;/td&gt;&lt;/tr&gt;
+         *       &lt;tr&gt;&lt;td&gt;&lt;code&gt;triggerEvent&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The type of device that triggered the event. A value 
+         *          of &lt;code&gt;InteractionInputType.MOUSE&lt;/code&gt; indicates that a mouse was the source of the
+         *          input; a value of &lt;code&gt;InteractionInputType.KEYBOARD&lt;/code&gt; indicates that a keyboard
+         *          was the source of the input.&lt;/td&gt;&lt;/tr&gt;
+         *       &lt;tr&gt;&lt;td&gt;&lt;code&gt;value&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The value of the slider after the event.&lt;/td&gt;&lt;/tr&gt;
+         *  &lt;/table&gt;
+         *
+         * @eventType thumbDrag
+         * 
+         * @see #THUMB_PRESS
+         * @see #THUMB_RELEASE
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">THUMB_DRAG</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"thumbDrag"</span>;
+
+        <span class="ActionScriptASDoc">/**
+         * Defines the value of the &lt;code&gt;type&lt;/code&gt; property of a &lt;code&gt;thumbPress&lt;/code&gt; 
+         * event object. 
+         * 
+         * &lt;p&gt;This event has the following properties:&lt;/p&gt;
+         *  &lt;table class="innertable" width="100%"&gt;
+         *     &lt;tr&gt;&lt;th&gt;Property&lt;/th&gt;&lt;th&gt;Value&lt;/th&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;bubbles&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;false&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;cancelable&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;false&lt;/code&gt;; there is no default
+         *             behavior to cancel.&lt;/td&gt;&lt;/tr&gt;
+         *       &lt;tr&gt;&lt;td&gt;&lt;code&gt;clickTarget&lt;/code&gt;&lt;/td&gt;&lt;td&gt;Identifies whether the slider track
+         *             or a slider thumb was pressed.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;currentTarget&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The object that is actively processing 
+         *          the event object with an event listener. &lt;/td&gt;&lt;/tr&gt;
+         *      &lt;tr&gt;&lt;td&gt;&lt;code&gt;keyCode&lt;/code&gt;&lt;/td&gt;&lt;td&gt;If the event was triggered by a key press,
+         *           the code for the key that was pressed.&lt;/td&gt;&lt;/tr&gt;
+         *       &lt;tr&gt;&lt;td&gt;&lt;code&gt;target&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The object that dispatched the event. The target is 
+         *           not always the object listening for the event. Use the &lt;code&gt;currentTarget&lt;/code&gt;
+         *             property to access the object that is listening for the event.&lt;/td&gt;&lt;/tr&gt;
+         *       &lt;tr&gt;&lt;td&gt;&lt;code&gt;triggerEvent&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The type of device that triggered the event. A value 
+         *          of &lt;code&gt;InteractionInputType.MOUSE&lt;/code&gt; indicates that a mouse was the source of the
+         *          input; a value of &lt;code&gt;InteractionInputType.KEYBOARD&lt;/code&gt; indicates that a keyboard
+         *          was the source of the input.&lt;/td&gt;&lt;/tr&gt;
+         *       &lt;tr&gt;&lt;td&gt;&lt;code&gt;value&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The value of the slider after the event.&lt;/td&gt;&lt;/tr&gt;
+         *  &lt;/table&gt;
+         *
+         * @eventType thumbPress
+         * 
+         * @see #THUMB_DRAG
+         * @see #THUMB_RELEASE
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">THUMB_PRESS</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"thumbPress"</span>;
+
+        <span class="ActionScriptASDoc">/**
+         * Defines the value of the &lt;code&gt;type&lt;/code&gt; property of a &lt;code&gt;thumbRelease&lt;/code&gt;
+         * event object. 
+         * 
+         * &lt;p&gt;This event has the following properties:&lt;/p&gt;
+           *  &lt;table class="innertable" width="100%"&gt;
+         *     &lt;tr&gt;&lt;th&gt;Property&lt;/th&gt;&lt;th&gt;Value&lt;/th&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;bubbles&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;false&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;cancelable&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;false&lt;/code&gt;; there is no default
+         *             behavior to cancel.&lt;/td&gt;&lt;/tr&gt;
+         *       &lt;tr&gt;&lt;td&gt;&lt;code&gt;clickTarget&lt;/code&gt;&lt;/td&gt;&lt;td&gt;Identifies whether the slider track
+         *             or a slider thumb was pressed.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;currentTarget&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The object that is actively processing 
+         *          the event object with an event listener.&lt;/td&gt;&lt;/tr&gt;
+         *      &lt;tr&gt;&lt;td&gt;&lt;code&gt;keyCode&lt;/code&gt;&lt;/td&gt;&lt;td&gt;If the event was triggered by a key press,
+         *           the code for the key that was pressed.&lt;/td&gt;&lt;/tr&gt;
+         *       &lt;tr&gt;&lt;td&gt;&lt;code&gt;target&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The object that dispatched the event. The target is 
+         *           not always the object listening for the event. Use the &lt;code&gt;currentTarget&lt;/code&gt;
+         *             property to access the object that is listening for the event.&lt;/td&gt;&lt;/tr&gt;
+         *       &lt;tr&gt;&lt;td&gt;&lt;code&gt;triggerEvent&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The type of device that triggered the event. A value 
+         *          of &lt;code&gt;InteractionInputType.MOUSE&lt;/code&gt; indicates that a mouse was the source of the
+         *          input; a value of &lt;code&gt;InteractionInputType.KEYBOARD&lt;/code&gt; indicates that a keyboard
+         *          was the source of the input.&lt;/td&gt;&lt;/tr&gt;
+         *       &lt;tr&gt;&lt;td&gt;&lt;code&gt;value&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The value of the slider after the event.&lt;/td&gt;&lt;/tr&gt;
+         *  &lt;/table&gt;
+         *
+         * @eventType thumbRelease
+         * 
+         * @see #THUMB_DRAG
+         * @see #THUMB_PRESS
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">THUMB_RELEASE</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"thumbRelease"</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * @private (protected)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_triggerEvent</span>:<span class="ActionScriptDefault_Text">String</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * @private (protected)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_value</span>:<span class="ActionScriptDefault_Text">Number</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * @private (protected)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_keyCode</span>:<span class="ActionScriptDefault_Text">Number</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * @private (protected)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_clickTarget</span>:<span class="ActionScriptDefault_Text">String</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * Gets the new value of the slider, based on its position.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+         <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">value</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">_value</span>; 
+         <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * Gets the key code for the key that was pressed to trigger the event.
+         * A key code is a numeric value that identifies the key that was pressed.
+         *
+         * @see flash.events.KeyboardEvent#keyCode
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+         <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">keyCode</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptBracket/Brace">{</span>
+             <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">_keyCode</span>;
+         <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * Gets the type of device that was used to send the input. A value of &lt;code&gt;InteractionInputType.MOUSE&lt;/code&gt; 
+         * indicates that a mouse was the source of the input; a value of &lt;code&gt;InteractionInputType.KEYBOARD&lt;/code&gt;
+         * indicates that a keyboard was the source of the input.
+         *
+         * @see SliderEventClickTarget SliderEventClickTarget
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+         <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">triggerEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptBracket/Brace">{</span>
+             <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">_triggerEvent</span>;
+         <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * Gets a string that indicates whether the slider thumb or a slider track was pressed. 
+         * A value of &lt;code&gt;SliderEventClickTarget.THUMB&lt;/code&gt; indicates that the slider thumb was
+         * pressed; a value of &lt;code&gt;SliderEventClickTarget.TRACK&lt;/code&gt; indicates that the slider
+         * track was pressed.
+         *
+         * @see SliderEventClickTarget SliderEventClickTarget
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+         <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">clickTarget</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptBracket/Brace">{</span>
+             <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">_clickTarget</span>;
+         <span class="ActionScriptBracket/Brace">}</span>
+
+
+        <span class="ActionScriptASDoc">/**
+         * Creates a new SliderEvent object with the specified parameters.
+         *
+         * @param type The event type; this value identifies the action that triggered the event.
+         *
+         * @param value The new value of the slider.
+         *
+         * @param clickTarget Indicates whether a slider thumb or the slider track was
+         *        pressed. A value of &lt;code&gt;SliderEventClickTarget.THUMB&lt;/code&gt; indicates that 
+         *        the slider thumb was pressed; a value of &lt;code&gt;SliderEventClickTarget.TRACK&lt;/code&gt;
+         *        indicates that the slider track was pressed.
+         * 
+         * @param triggerEvent A String that indicates the source of the input. A value of
+         *        &lt;code&gt;InteractionInputType.MOUSE&lt;/code&gt; indicates that the mouse was the source of input;
+         *        a value of &lt;code&gt;InteractionInputType.KEYBOARD&lt;/code&gt; indicates that the keyboard was
+         *        the source of input. 
+         *
+         * @param keyCode If the event was triggered by a key press, this value is the key code 
+         *        that identifies that key.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">SliderEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">type</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">value</span>:<span class="ActionScriptDefault_Text">Number</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">clickTarget</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">triggerEvent</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">keyCode</span>:<span class="ActionScriptDefault_Text">int</span><span class="ActionScriptOperator">=</span>0<span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">_value</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">value</span>;
+            <span class="ActionScriptDefault_Text">_keyCode</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">keyCode</span>;
+            <span class="ActionScriptDefault_Text">_triggerEvent</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">triggerEvent</span>;
+            <span class="ActionScriptDefault_Text">_clickTarget</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">clickTarget</span>;
+            <span class="ActionScriptReserved">super</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">type</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+
+        <span class="ActionScriptASDoc">/**
+         * Returns a string that contains all the properties of the SliderEvent object. The 
+         * string is in the following format:
+         * 
+         * &lt;p&gt;[&lt;code&gt;SliderEvent type=&lt;em&gt;value&lt;/em&gt; value=&lt;em&gt;value&lt;/em&gt;
+         * bubbles=&lt;em&gt;value&lt;/em&gt; cancelable=&lt;em&gt;value&lt;/em&gt; keycode=&lt;em&gt;value&lt;/em&gt;
+         * triggerEvent=&lt;em&gt;value&lt;/em&gt; clickTarget=&lt;em&gt;value&lt;/em&gt;&lt;/code&gt;]&lt;/p&gt;
+         *
+         * @return A string representation of the SliderEvent object.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">override</span> <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">toString</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">formatToString</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"SliderEvent"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptString">"type"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptString">"value"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptString">"bubbles"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptString">"cancelable"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptString">"keyCode"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptString">"triggerEvent"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptString">"clickTarget"</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+
+        <span class="ActionScriptASDoc">/**
+         * Creates a copy of the SliderEvent object and sets the value of each parameter to match
+         * the original.
+         *
+         * @return A copy of the current SliderEvent instance.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">override</span> <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">clone</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">Event</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">SliderEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">type</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">_value</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">_clickTarget</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">_triggerEvent</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">_keyCode</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+    <span class="ActionScriptBracket/Brace">}</span>
+<span class="ActionScriptBracket/Brace">}</span></pre></body>
+</html>

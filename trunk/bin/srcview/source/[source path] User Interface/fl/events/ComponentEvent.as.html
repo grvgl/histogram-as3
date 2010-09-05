@@ -1,0 +1,270 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>ComponentEvent.as</title>
+<link rel="stylesheet" type="text/css" href="../../../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="ActionScriptComment">// Copyright 2007. Adobe Systems Incorporated. All Rights Reserved.
+</span><span class="ActionScriptpackage">package</span> <span class="ActionScriptDefault_Text">fl</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">events</span> <span class="ActionScriptBracket/Brace">{</span>
+
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">events</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">Event</span>;
+
+    <span class="ActionScriptASDoc">/**
+     * The ComponentEvent class defines events that are associated with the UIComponent class.
+     * These include the following events:
+     * &lt;ul&gt;
+     *     &lt;li&gt;&lt;code&gt;ComponentEvent.BUTTON_DOWN&lt;/code&gt;: dispatched after a button is pressed.&lt;/li&gt;
+     *     &lt;li&gt;&lt;code&gt;ComponentEvent.ENTER&lt;/code&gt;: dispatched after the Enter key is pressed.&lt;/li&gt;
+     *     &lt;li&gt;&lt;code&gt;ComponentEvent.HIDE&lt;/code&gt;: dispatched after the visible property of a component is set to &lt;code&gt;false&lt;/code&gt;.&lt;/li&gt;
+     *     &lt;li&gt;&lt;code&gt;ComponentEvent.LABEL_CHANGE&lt;/code&gt;: dispatched after the Enter key is pressed.&lt;/li&gt;
+     *     &lt;li&gt;&lt;code&gt;ComponentEvent.MOVE&lt;/code&gt;: dispatched after there is a change in the x or y properties that identify the component location.&lt;/li&gt;
+     *     &lt;li&gt;&lt;code&gt;ComponentEvent.RESIZE&lt;/code&gt;: dispatched after a component is resized.&lt;/li&gt;
+     *     &lt;li&gt;&lt;code&gt;ComponentEvent.SHOW&lt;/code&gt;: dispatched after the &lt;code&gt;visible&lt;/code&gt; property of a component is set to &lt;code&gt;true&lt;/code&gt;.&lt;/li&gt;
+     * &lt;/ul&gt;
+     * 
+     * @langversion 3.0
+     * @playerversion Flash 9.0.28.0
+     */</span>
+    <span class="ActionScriptReserved">public</span> <span class="ActionScriptclass">class</span> <span class="ActionScriptDefault_Text">ComponentEvent</span> <span class="ActionScriptReserved">extends</span> <span class="ActionScriptDefault_Text">Event</span> <span class="ActionScriptBracket/Brace">{</span>
+
+        <span class="ActionScriptASDoc">/**
+         * Defines the value of the &lt;code&gt;type&lt;/code&gt; property of a &lt;code&gt;buttonDown&lt;/code&gt;
+         * event object. 
+         * 
+         * &lt;p&gt;This event has the following properties:&lt;/p&gt;
+         *  &lt;table class="innertable" width="100%"&gt;
+         *     &lt;tr&gt;&lt;th&gt;Property&lt;/th&gt;&lt;th&gt;Value&lt;/th&gt;&lt;/tr&gt;
+         *       &lt;tr&gt;&lt;td&gt;&lt;code&gt;bubbles&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;false&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;cancelable&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;false&lt;/code&gt;; there is no default
+         *             behavior to cancel.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;currentTarget&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The object that is actively processing 
+         *             the event object with an event listener. &lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;target&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The object that dispatched the event. The target is 
+         *           not always the object listening for the event. Use the &lt;code&gt;currentTarget&lt;/code&gt;
+         *             property to access the object that is listening for the event.&lt;/td&gt;&lt;/tr&gt;
+         *  &lt;/table&gt;
+         *
+         * @eventType buttonDown
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">BUTTON_DOWN</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"buttonDown"</span>;
+
+        <span class="ActionScriptASDoc">/**
+         * Defines the value of the &lt;code&gt;type&lt;/code&gt; property of a &lt;code&gt;labelChange&lt;/code&gt;
+         * event object. 
+         * 
+         * &lt;p&gt;This event has the following properties:&lt;/p&gt;
+         *  &lt;table class="innertable" width="100%"&gt;
+         *     &lt;tr&gt;&lt;th&gt;Property&lt;/th&gt;&lt;th&gt;Value&lt;/th&gt;&lt;/tr&gt;
+         *       &lt;tr&gt;&lt;td&gt;&lt;code&gt;bubbles&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;false&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;cancelable&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;false&lt;/code&gt;; there is no default
+         *             behavior to cancel.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;currentTarget&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The object that is actively processing 
+         *             the event object with an event listener.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;target&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The object that dispatched the event. The target is 
+         *           not always the object listening for the event. Use the &lt;code&gt;currentTarget&lt;/code&gt;
+         *             property to access the object that is listening for the event.&lt;/td&gt;&lt;/tr&gt;
+         *  &lt;/table&gt;
+         *
+         * @eventType labelChange
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">LABEL_CHANGE</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"labelChange"</span>;
+
+        <span class="ActionScriptASDoc">/**
+         * Defines the value of the &lt;code&gt;type&lt;/code&gt; property of a &lt;code&gt;hide&lt;/code&gt;
+         * event object. 
+         * 
+         * &lt;p&gt;This event has the following properties:&lt;/p&gt;
+         *  &lt;table class="innertable" width="100%"&gt;
+         *     &lt;tr&gt;&lt;th&gt;Property&lt;/th&gt;&lt;th&gt;Value&lt;/th&gt;&lt;/tr&gt;
+         *       &lt;tr&gt;&lt;td&gt;&lt;code&gt;bubbles&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;false&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;cancelable&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;false&lt;/code&gt;; there is no default
+         *             behavior to cancel.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;currentTarget&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The object that is actively processing 
+         *             the event object with an event listener.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;target&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The object that dispatched the event. The target is 
+         *           not always the object listening for the event. Use the &lt;code&gt;currentTarget&lt;/code&gt;
+         *             property to access the object that is listening for the event.&lt;/td&gt;&lt;/tr&gt;
+         *  &lt;/table&gt;
+         *
+         * @eventType hide
+         *
+         * @includeExample ../core/examples/UIComponent.HIDE.1.as -noswf
+         *
+         * @see #SHOW
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">HIDE</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"hide"</span>;
+
+        <span class="ActionScriptASDoc">/**
+         * Defines the value of the &lt;code&gt;type&lt;/code&gt; property of a &lt;code&gt;show&lt;/code&gt; event
+         * object. 
+         * 
+         * &lt;p&gt;This event has the following properties:&lt;/p&gt;
+         *  &lt;table class="innertable" width="100%"&gt;
+         *     &lt;tr&gt;&lt;th&gt;Property&lt;/th&gt;&lt;th&gt;Value&lt;/th&gt;&lt;/tr&gt;
+         *       &lt;tr&gt;&lt;td&gt;&lt;code&gt;bubbles&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;false&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;cancelable&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;false&lt;/code&gt;; there is no default
+         *             behavior to cancel.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;currentTarget&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The object that is actively processing 
+         *             the event object with an event listener.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;target&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The object that dispatched the event. The target is 
+         *           not always the object listening for the event. Use the &lt;code&gt;currentTarget&lt;/code&gt;
+         *             property to access the object that is listening for the event.&lt;/td&gt;&lt;/tr&gt;
+         *  &lt;/table&gt;
+         *
+         * @eventType show
+         *
+         * @includeExample ../core/examples/UIComponent.HIDE.1.as -noswf
+         *
+         * @see #HIDE
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">SHOW</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"show"</span>;
+
+        <span class="ActionScriptASDoc">/**
+         * Defines the value of the &lt;code&gt;type&lt;/code&gt; property of a &lt;code&gt;resize&lt;/code&gt; 
+         * event object. 
+         * 
+         * &lt;p&gt;This event has the following properties:&lt;/p&gt;
+         *  &lt;table class="innertable" width="100%"&gt;
+         *     &lt;tr&gt;&lt;th&gt;Property&lt;/th&gt;&lt;th&gt;Value&lt;/th&gt;&lt;/tr&gt;
+         *       &lt;tr&gt;&lt;td&gt;&lt;code&gt;bubbles&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;false&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;cancelable&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;false&lt;/code&gt;; there is no default
+         *             behavior to cancel.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;currentTarget&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The object that is actively processing 
+         *             the event object with an event listener. &lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;target&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The object that dispatched the event. The target is 
+         *           not always the object listening for the event. Use the &lt;code&gt;currentTarget&lt;/code&gt;
+         *             property to access the object that is listening for the event.&lt;/td&gt;&lt;/tr&gt;
+         *  &lt;/table&gt;
+         *
+         * @eventType resize
+         *
+         * @includeExample ../core/examples/UIComponent.RESIZE.1.as -noswf
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">RESIZE</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"resize"</span>;
+
+        <span class="ActionScriptASDoc">/**
+         * Defines the value of the &lt;code&gt;type&lt;/code&gt; property of a &lt;code&gt;move&lt;/code&gt;
+         * event object. 
+         * 
+         * &lt;p&gt;This event has the following properties:&lt;/p&gt;
+         *  &lt;table class="innertable" width="100%"&gt;
+         *     &lt;tr&gt;&lt;th&gt;Property&lt;/th&gt;&lt;th&gt;Value&lt;/th&gt;&lt;/tr&gt;
+         *       &lt;tr&gt;&lt;td&gt;&lt;code&gt;bubbles&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;false&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;cancelable&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;false&lt;/code&gt;; there is no default
+         *             behavior to cancel.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;currentTarget&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The object that is actively processing 
+         *             the event object with an event listener. &lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;target&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The object that dispatched the event. The target is 
+         *           not always the object listening for the event. Use the &lt;code&gt;currentTarget&lt;/code&gt;
+         *             property to access the object that is listening for the event.&lt;/td&gt;&lt;/tr&gt;
+         *  &lt;/table&gt;
+         *
+         * @eventType move
+         *
+         * @includeExample ../core/examples/UIComponent.MOVE.1.as -noswf
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">MOVE</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"move"</span>;
+
+        <span class="ActionScriptASDoc">/**
+         * Defines the value of the &lt;code&gt;type&lt;/code&gt; property of an &lt;code&gt;enter&lt;/code&gt;
+         * event object. 
+         * 
+         * &lt;p&gt;This event has the following properties:&lt;/p&gt;
+         *  &lt;table class="innertable" width="100%"&gt;
+         *     &lt;tr&gt;&lt;th&gt;Property&lt;/th&gt;&lt;th&gt;Value&lt;/th&gt;&lt;/tr&gt;
+         *       &lt;tr&gt;&lt;td&gt;&lt;code&gt;bubbles&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;false&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;cancelable&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;false&lt;/code&gt;; there is no default
+         *         behavior to cancel.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;currentTarget&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The object that is actively processing 
+         *         the event object with an event listener.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;target&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The object that dispatched the event. The target is 
+         *         not always the object listening for the event. Use the &lt;code&gt;currentTarget&lt;/code&gt;
+         *            property to access the object that is listening for the event.&lt;/td&gt;&lt;/tr&gt;
+         *  &lt;/table&gt;
+         * 
+         * @eventType enter
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">ENTER</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"enter"</span>;
+
+        <span class="ActionScriptASDoc">/**
+         * Creates a new ComponentEvent object that contains information about a component 
+         * event. A ComponentEvent object is passed as a parameter to an event listener.
+         *
+         * @param type The type of the event. Event listeners can access this information 
+         *        through the &lt;code&gt;type&lt;/code&gt; property of the event object. A component can 
+         *        have the following types of events: &lt;code&gt;ComponentEvent.BUTTON_DOWN&lt;/code&gt;, 
+         *        &lt;code&gt;ComponentEvent.ENTER&lt;/code&gt;, &lt;code&gt;ComponentEvent.HIDE&lt;/code&gt;, 
+         *        &lt;code&gt;ComponentEvent.LABEL_CHANGE&lt;/code&gt;, &lt;code&gt;ComponentEvent.MOVE&lt;/code&gt;, 
+         *        &lt;code&gt;ComponentEvent.RESIZE&lt;/code&gt;, &lt;code&gt;ComponentEvent.SHOW&lt;/code&gt;.
+         *
+         * @param bubbles Determines whether the ComponentEvent object participates in the 
+         *        bubbling phase of the event flow. Event listeners can access this information 
+         *        through the &lt;code&gt;bubbles&lt;/code&gt; property of the event object.
+         *
+         * @param cancelable Determines whether the ComponentEvent object can be canceled. Event 
+         *        listeners can access this information through the &lt;code&gt;cancelable&lt;/code&gt; property
+         *        of the event object.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">ComponentEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">type</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">bubbles</span>:<span class="ActionScriptDefault_Text">Boolean</span><span class="ActionScriptOperator">=</span><span class="ActionScriptReserved">false</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">cancelable</span>:<span class="ActionScriptDefault_Text">Boolean</span><span class="ActionScriptOperator">=</span><span class="ActionScriptReserved">false</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">super</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">type</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">bubbles</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">cancelable</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+
+        <span class="ActionScriptASDoc">/**
+         * Returns a string that contains all the properties of the ComponentEvent object. The 
+         * string is in the following format:
+         * &lt;code&gt;&lt;p&gt;[ComponentEvent type=&lt;em&gt;value&lt;/em&gt; bubbles=&lt;em&gt;value&lt;/em&gt; cancelable=&lt;em&gt;value&lt;/em&gt;]&lt;/p&gt;&lt;/code&gt;
+         * 
+         * @return A string representation of the ComponentEvent object.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">override</span> <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">toString</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">formatToString</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"ComponentEvent"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptString">"type"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptString">"bubbles"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptString">"cancelable"</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+
+        <span class="ActionScriptASDoc">/**
+         * Creates a copy of the ComponentEvent object and sets the value of each parameter to
+         * match the original.
+         *
+         * @return A new ComponentEvent object with property values that match those of the
+         * original.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">override</span> <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">clone</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">Event</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">ComponentEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">type</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">bubbles</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">cancelable</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+    <span class="ActionScriptBracket/Brace">}</span>
+<span class="ActionScriptBracket/Brace">}</span></pre></body>
+</html>

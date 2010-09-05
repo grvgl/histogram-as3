@@ -1,0 +1,419 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>DataGridEvent.as</title>
+<link rel="stylesheet" type="text/css" href="../../../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="ActionScriptComment">// Copyright 2007. Adobe Systems Incorporated. All Rights Reserved.
+</span><span class="ActionScriptpackage">package</span> <span class="ActionScriptDefault_Text">fl</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">events</span> <span class="ActionScriptBracket/Brace">{</span>
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">events</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">Event</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">fl</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">events</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ListEvent</span>;
+
+    <span class="ActionScriptASDoc">/**
+     * The DataGridEvent class defines events that are associated with the DataGrid component. 
+     * These include the following events:
+     * &lt;ul&gt;
+     * &lt;li&gt;&lt;code&gt;DataGridEvent.COLUMN_STRETCH&lt;/code&gt;: dispatched after a user resizes a column horizontally.&lt;/li&gt;
+     * &lt;li&gt;&lt;code&gt;DataGridEvent.HEADER_RELEASE&lt;/code&gt;: dispatched after the user presses and releases the mouse on a column header.&lt;/li&gt;
+     * &lt;li&gt;&lt;code&gt;DataGridEvent.ITEM_EDIT_BEGIN&lt;/code&gt;: dispatched when an item is ready to be edited.&lt;/li&gt;
+     * &lt;li&gt;&lt;code&gt;DataGridEvent.ITEM_EDIT_BEGINNING&lt;/code&gt;: dispatched after the user is prepared to edit an item; this is indicated, 
+     * for example, by the user releasing the mouse button when the mouse is over the item.&lt;/li&gt;
+     * &lt;li&gt;&lt;code&gt;DataGridEvent.ITEM_EDIT_END&lt;/code&gt;: dispatched when an edit session is ending.&lt;/li&gt;
+     * &lt;li&gt;&lt;code&gt;DataGridEvent.ITEM_FOCUS_IN&lt;/code&gt;: dispatched after an item receives focus.&lt;/li&gt;
+     * &lt;li&gt;&lt;code&gt;DataGridEvent.ITEM_FOCUS_OUT&lt;/code&gt;: dispatched after an item loses focus.&lt;/li&gt;
+     * &lt;/ul&gt;
+     *
+     * @see fl.controls.DataGrid
+     * @see DataGridEventReason
+     *
+     * @includeExample examples/DataGridEventExample.as
+     *
+     * @langversion 3.0
+     * @playerversion Flash 9.0.28.0
+     */</span>
+    <span class="ActionScriptReserved">public</span> <span class="ActionScriptclass">class</span> <span class="ActionScriptDefault_Text">DataGridEvent</span> <span class="ActionScriptReserved">extends</span> <span class="ActionScriptDefault_Text">ListEvent</span> <span class="ActionScriptBracket/Brace">{</span>
+        <span class="ActionScriptASDoc">/**
+         * The &lt;code&gt;DataGridEvent.COLUMN_STRETCH&lt;/code&gt; constant defines the value of the &lt;code&gt;type&lt;/code&gt; property
+         * of a &lt;code&gt;columnStretch&lt;/code&gt; event object. 
+         * 
+         * &lt;p&gt;This event has the following properties:&lt;/p&gt;
+         *  &lt;table class="innertable" width="100%"&gt;
+         *     &lt;tr&gt;&lt;th&gt;Property&lt;/th&gt;&lt;th&gt;Value&lt;/th&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;bubbles&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;false&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;cancelable&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;false&lt;/code&gt;; there is no default
+         *          behavior to cancel.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;columnIndex&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The zero-based index of the header column 
+         *          in the &lt;code&gt;columns&lt;/code&gt; array of the DataGrid object.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;currentTarget&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The object that is actively processing 
+         *          the event object with an event listener. &lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;dataField&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The name of the field or property in the data 
+         *          associated with the column of the item.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;itemRenderer&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The header renderer for the column that
+         *             was stretched.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;reason&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;null&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;rowIndex&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The zero-based index of the item in the 
+         *          data provider.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;target&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The object that dispatched the event. The target is 
+         *           not always the object listening for the event. Use the &lt;code&gt;currentTarget&lt;/code&gt;
+         *             property to access the object that is listening for the event.&lt;/td&gt;&lt;/tr&gt;
+         *  &lt;/table&gt;
+         *
+         * @includeExample ../controls/examples/DataGrid.columnStretch.1.as -noswf
+         *
+         * @eventType columnStretch
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">COLUMN_STRETCH</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"columnStretch"</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * The &lt;code&gt;DataGridEvent.HEADER_RELEASE&lt;/code&gt; constant defines the value of the &lt;code&gt;type&lt;/code&gt; property
+         * of a &lt;code&gt;headerRelease&lt;/code&gt; event object. 
+         * 
+         * &lt;p&gt;This event has the following properties:&lt;/p&gt;
+         *  &lt;table class="innertable" width="100%"&gt;
+         *     &lt;tr&gt;&lt;th&gt;Property&lt;/th&gt;&lt;th&gt;Value&lt;/th&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;bubbles&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;false&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;cancelable&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;false&lt;/code&gt;; there is no default
+         *          behavior to cancel.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;columnIndex&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The zero-based index of the header column 
+         *          in the &lt;code&gt;columns&lt;/code&gt; array of the DataGrid object.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;currentTarget&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The object that is actively processing 
+         *          the event object with an event listener. &lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;dataField&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The name of the field or property in the data 
+         *          associated with the column of the item.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;itemRenderer&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The header renderer that was clicked.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;reason&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;null&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;rowIndex&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;-1&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;target&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The object that dispatched the event. The target is 
+         *          not always the object listening for the event. Use the &lt;code&gt;currentTarget&lt;/code&gt;
+         *             property to access the object that is listening for the event.&lt;/td&gt;&lt;/tr&gt;
+         *  &lt;/table&gt;
+         *
+         * @includeExample ../controls/examples/DataGrid.headerRelease.1.as -noswf
+         *
+         * @eventType headerRelease
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">HEADER_RELEASE</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"headerRelease"</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * The &lt;code&gt;DataGridEvent.ITEM__EDIT_BEGINNING&lt;/code&gt; constant defines the value of the 
+         * &lt;code&gt;type&lt;/code&gt; property of an &lt;code&gt;itemEditBeginning&lt;/code&gt; event object. 
+         * 
+         * &lt;p&gt;This event has the following properties:&lt;/p&gt;
+         *  &lt;table class="innertable" width="100%"&gt;
+         *     &lt;tr&gt;&lt;th&gt;Property&lt;/th&gt;&lt;th&gt;Value&lt;/th&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;bubbles&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;false&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;cancelable&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;false&lt;/code&gt;; there is no default
+         *          behavior to cancel.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;columnIndex&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The zero-based index of the header column 
+         *          in the &lt;code&gt;columns&lt;/code&gt; array of the DataGrid object.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;currentTarget&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The object that is actively processing 
+         *          the event object with an event listener. &lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;dataField&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The name of the field or property in the data 
+         *          associated with the column of the item.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;itemRenderer&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The item renderer for the item to  
+         *          be edited.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;reason&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;null&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;rowIndex&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The zero-based index of the item in the 
+         *          data provider.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;target&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The object that dispatched the event. The target is 
+         *           not always the object listening for the event. Use the &lt;code&gt;currentTarget&lt;/code&gt;
+         *             property to access the object that is listening for the event.&lt;/td&gt;&lt;/tr&gt;
+         *  &lt;/table&gt;
+         *
+         * @eventType itemEditBeginning
+         *
+         * @see #ITEM_EDIT_BEGIN
+         * @see #ITEM_EDIT_END
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">ITEM_EDIT_BEGINNING</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"itemEditBeginning"</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * The &lt;code&gt;DataGridEvent.ITEM_EDIT_BEGIN&lt;/code&gt; constant defines the value of
+         * the &lt;code&gt;type&lt;/code&gt; property of an &lt;code&gt;itemEditBegin&lt;/code&gt; event object.
+         * 
+         * &lt;p&gt;This event has the following properties:&lt;/p&gt;
+         *  &lt;table class="innertable" width="100%"&gt;
+         *     &lt;tr&gt;&lt;th&gt;Property&lt;/th&gt;&lt;th&gt;Value&lt;/th&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;bubbles&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;false&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;cancelable&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;false&lt;/code&gt;; there is no default
+         *          behavior to cancel.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;columnIndex&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The zero-based index of the header column 
+         *          in the &lt;code&gt;columns&lt;/code&gt; array of the DataGrid object.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;currentTarget&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The object that is actively processing 
+         *          the event object with an event listener. &lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;dataField&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;null&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;itemRenderer&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The item renderer for the item to  
+         *          be edited.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;reason&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;null&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;rowIndex&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The zero-based index of the item in the 
+         *          data provider.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;target&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The object that dispatched the event. The target is 
+         *           not always the object listening for the event. Use the &lt;code&gt;currentTarget&lt;/code&gt;
+         *             property to access the object that is listening for the event.&lt;/td&gt;&lt;/tr&gt;
+         *  &lt;/table&gt;
+         *
+         * @eventType itemEditBegin
+         *
+         * @see #ITEM_EDIT_BEGINNING
+         * @see #ITEM_EDIT_END
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">ITEM_EDIT_BEGIN</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"itemEditBegin"</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * The &lt;code&gt;DataGridEvent.ITEM_EDIT_END&lt;/code&gt; constant defines the value of the &lt;code&gt;type&lt;/code&gt; 
+         * property of an &lt;code&gt;itemEditEnd&lt;/code&gt; event object. 
+         * 
+         * &lt;p&gt;This event has the following properties:&lt;/p&gt;
+         *  &lt;table class="innertable" width="100%"&gt;
+         *     &lt;tr&gt;&lt;th&gt;Property&lt;/th&gt;&lt;th&gt;Value&lt;/th&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;bubbles&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;false&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;cancelable&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;false&lt;/code&gt;; there is no default
+         *          behavior to cancel.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;columnIndex&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The zero-based index of the header column 
+         *          in the &lt;code&gt;columns&lt;/code&gt; array of the DataGrid object.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;currentTarget&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The object that is actively processing 
+         *          the event object with an event listener. &lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;dataField&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The name of the field or property in the data 
+         *          associated with the column of the item.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;itemRenderer&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The item renderer for the item to  
+         *          be edited.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;reason&lt;/code&gt;&lt;/td&gt;&lt;td&gt;A constant defining the reason for the event. The 
+         *          value must be a member of the &lt;code&gt;DataGridEventReason&lt;/code&gt; class.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;rowIndex&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The zero-based index of the item in the 
+         *          data provider.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;target&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The object that dispatched the event. The target is 
+         *           not always the object listening for the event. Use the &lt;code&gt;currentTarget&lt;/code&gt;
+         *             property to access the object that is listening for the event.&lt;/td&gt;&lt;/tr&gt;
+         *  &lt;/table&gt;
+         *
+         * @eventType itemEditEnd
+         *
+         * @see #ITEM_EDIT_BEGIN
+         * @see #ITEM_EDIT_BEGINNING
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">ITEM_EDIT_END</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"itemEditEnd"</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * The &lt;code&gt;DataGridEvent.ITEM_FOCUS_IN&lt;/code&gt; constant defines the value of the &lt;code&gt;type&lt;/code&gt; 
+         * property of a &lt;code&gt;itemFocusIn&lt;/code&gt; event object. 
+         * 
+         * &lt;p&gt;This event has the following properties:&lt;/p&gt;
+         *  &lt;table class="innertable" width="100%"&gt;
+         *     &lt;tr&gt;&lt;th&gt;Property&lt;/th&gt;&lt;th&gt;Value&lt;/th&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;bubbles&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;false&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;cancelable&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;false&lt;/code&gt;; there is no default
+         *          behavior to cancel.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;columnIndex&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The zero-based index of the header column 
+         *          in the &lt;code&gt;columns&lt;/code&gt; array of the DataGrid object.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;currentTarget&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The object that is actively processing 
+         *          the event object with an event listener. &lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;dataField&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;null&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;itemRenderer&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The item renderer for the item to  
+         *          be edited.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;reason&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;null&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;rowIndex&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The zero-based index of the item in the 
+         *          data provider.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;target&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The object that dispatched the event. The target is 
+         *           not always the object listening for the event. Use the &lt;code&gt;currentTarget&lt;/code&gt;
+         *             property to access the object that is listening for the event.&lt;/td&gt;&lt;/tr&gt;
+         *  &lt;/table&gt;
+         *
+         * @eventType itemFocusIn
+         *
+         * @see #ITEM_FOCUS_OUT
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">ITEM_FOCUS_IN</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"itemFocusIn"</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * The &lt;code&gt;DataGridEvent.ITEM_FOCUS_OUT&lt;/code&gt; constant defines the value of the &lt;code&gt;type&lt;/code&gt;
+         * property of an &lt;code&gt;itemFocusOut&lt;/code&gt; event object. 
+         * 
+         * &lt;p&gt;This event has the following properties:&lt;/p&gt;
+         *  &lt;table class="innertable" width="100%"&gt;
+         *     &lt;tr&gt;&lt;th&gt;Property&lt;/th&gt;&lt;th&gt;Value&lt;/th&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;bubbles&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;false&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;cancelable&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;false&lt;/code&gt;; there is no default
+         *          behavior to cancel.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;columnIndex&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The zero-based index of the header column 
+         *          in the &lt;code&gt;columns&lt;/code&gt; array of the DataGrid object.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;currentTarget&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The object that is actively processing 
+         *          the event object with an event listener. &lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;dataField&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;null&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;itemRenderer&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The item renderer for the item to  
+         *          be edited.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;reason&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;null&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;rowIndex&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The zero-based index of the item in the 
+         *          data provider.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;target&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The object that dispatched the event. The target is 
+         *           not always the object listening for the event. Use the &lt;code&gt;currentTarget&lt;/code&gt;
+         *             property to access the object that is listening for the event.&lt;/td&gt;&lt;/tr&gt;
+         *  &lt;/table&gt;
+         *
+         * @eventType itemFocusOut
+         *
+         * @see #ITEM_FOCUS_IN
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">ITEM_FOCUS_OUT</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"itemFocusOut"</span>;
+
+
+
+        <span class="ActionScriptASDoc">/**
+         * @private (protected)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_dataField</span>:<span class="ActionScriptDefault_Text">String</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * @private (protected)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_itemRenderer</span>:<span class="ActionScriptDefault_Text">Object</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * @private (protected)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_reason</span>:<span class="ActionScriptDefault_Text">String</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * Gets the item renderer for the item that is being edited or the 
+         * header renderer that is being clicked or resized.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+         <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">itemRenderer</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">Object</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span>  <span class="ActionScriptDefault_Text">_itemRenderer</span>;
+         <span class="ActionScriptBracket/Brace">}</span>
+            
+        <span class="ActionScriptASDoc">/**
+         * Gets or sets the name of the field or property in the data associated with the column.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+         <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">dataField</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptBracket/Brace">{</span>
+             <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">_dataField</span>;
+         <span class="ActionScriptBracket/Brace">}</span>
+         
+         <span class="ActionScriptASDoc">/**
+          * @private (setter)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+          */</span>
+         <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">set</span> <span class="ActionScriptDefault_Text">dataField</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">value</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+             <span class="ActionScriptDefault_Text">_dataField</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">value</span>;
+         <span class="ActionScriptBracket/Brace">}</span>
+            
+        <span class="ActionScriptASDoc">/**
+         *  Gets the reason the &lt;code&gt;itemEditEnd&lt;/code&gt; event was dispatched. 
+         *  This property is only valid for events of type &lt;code&gt;DataGridEvent.ITEM_EDIT_END&lt;/code&gt;.
+         *  &lt;p&gt;The possible values are defined in the DataGridEventReason class.&lt;/p&gt;
+         *
+         *  @see fl.controls.DataGrid#event:itemEditEnd
+         *  @see DataGridEventReason
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+         <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">reason</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptBracket/Brace">{</span>
+             <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">_reason</span>;
+         <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptASDoc">/**
+         * Creates a new DataGridEvent object with the specified parameters. 
+         * 
+         * @param type The event type; this value indicates the action that caused the event.
+         *
+         * @param bubbles Indicates whether the event can bubble up the display list hierarchy.
+         *
+         * @param cancelable Indicates whether the behavior associated with the event can be
+         *        prevented.
+         * 
+         * @param columnIndex The zero-based index of the column that contains the renderer.
+         *
+         * @param rowIndex The zero-based index of the row that contains the renderer.
+         *
+         * @param itemRenderer The item renderer for the item that is being edited or the header
+         *        render that is being clicked or stretched.
+         *
+         * @param dataField The name of the field or property in the data associated with the column.
+         *
+         * @param reason The reason the &lt;code&gt;itemEditEnd&lt;/code&gt; event was dispatched.
+         *
+         * @see DataGridEventReason
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">DataGridEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">type</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">bubbles</span>:<span class="ActionScriptDefault_Text">Boolean</span><span class="ActionScriptOperator">=</span><span class="ActionScriptReserved">false</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">cancelable</span>:<span class="ActionScriptDefault_Text">Boolean</span><span class="ActionScriptOperator">=</span><span class="ActionScriptReserved">false</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">columnIndex</span>:<span class="ActionScriptDefault_Text">int</span><span class="ActionScriptOperator">=</span>-1<span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">rowIndex</span>:<span class="ActionScriptDefault_Text">int</span><span class="ActionScriptOperator">=</span>-1<span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">itemRenderer</span>:<span class="ActionScriptDefault_Text">Object</span><span class="ActionScriptOperator">=</span><span class="ActionScriptReserved">null</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">dataField</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptOperator">=</span><span class="ActionScriptReserved">null</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">reason</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptOperator">=</span><span class="ActionScriptReserved">null</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">super</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">type</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">bubbles</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">cancelable</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">columnIndex</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">rowIndex</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">_itemRenderer</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">itemRenderer</span>;
+            <span class="ActionScriptDefault_Text">_dataField</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">dataField</span>;
+            <span class="ActionScriptDefault_Text">_reason</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">reason</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * Returns a string that contains all the properties of the DataGridEvent object. The
+         * string is in the following format:
+         * 
+         * &lt;p&gt;[&lt;code&gt;DataGridEvent type=&lt;em&gt;value&lt;/em&gt; bubbles=&lt;em&gt;value&lt;/em&gt; 
+         * cancelable=&lt;em&gt;value&lt;/em&gt; columnIndex=&lt;em&gt;value&lt;/em&gt; rowIndex=&lt;em&gt;value&lt;/em&gt;
+         * itemRenderer=&lt;em&gt;value&lt;/em&gt; dataField=&lt;em&gt;value&lt;/em&gt; reason=&lt;em&gt;value&lt;/em&gt;&lt;/code&gt;]&lt;/p&gt;
+         *
+         * @return A string that contains all the properties of the DataGridEvent object.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">override</span> <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">toString</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">formatToString</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"DataGridEvent"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptString">"type"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptString">"bubbles"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptString">"cancelable"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptString">"columnIndex"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptString">"rowIndex"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptString">"itemRenderer"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptString">"dataField"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptString">"reason"</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * Creates a copy of the DataGridEvent object and sets the value of each 
+         * property to match the original.
+         *
+         * @return A new DataGridEvent object with parameter values that match those of the original.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">override</span> <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">clone</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">Event</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">DataGridEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">type</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">bubbles</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">cancelable</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">columnIndex</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">int</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">rowIndex</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">_itemRenderer</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">_dataField</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">_reason</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+    <span class="ActionScriptBracket/Brace">}</span>
+<span class="ActionScriptBracket/Brace">}</span>
+</pre></body>
+</html>

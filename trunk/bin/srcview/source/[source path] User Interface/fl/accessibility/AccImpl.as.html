@@ -1,0 +1,301 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>AccImpl.as</title>
+<link rel="stylesheet" type="text/css" href="../../../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="ActionScriptComment">// Copyright 2007. Adobe Systems Incorporated. All Rights Reserved.
+</span><span class="ActionScriptpackage">package</span> <span class="ActionScriptDefault_Text">fl</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">accessibility</span> <span class="ActionScriptBracket/Brace">{</span>
+    
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">accessibility</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">Accessibility</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">accessibility</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">AccessibilityImplementation</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">accessibility</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">AccessibilityProperties</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">events</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">Event</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">fl</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">core</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">UIComponent</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">display</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">MovieClip</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TextField</span>;
+
+    <span class="ActionScriptASDoc">/**
+     *  The AccImpl class, also called the Accessibility Implementation class, is the base class 
+     *  for the implementation of accessibility in components. This class enables communication between
+     *  a component and a screen reader. Screen readers are used to translate
+     *  screen content into synthesized speech or braille for visually impaired users. 
+     * 
+     * @langversion 3.0
+     * @playerversion Flash 9.0.28.0
+     */</span> 
+    <span class="ActionScriptReserved">public</span> <span class="ActionScriptclass">class</span> <span class="ActionScriptDefault_Text">AccImpl</span> <span class="ActionScriptReserved">extends</span> <span class="ActionScriptDefault_Text">AccessibilityImplementation</span> <span class="ActionScriptBracket/Brace">{</span>
+        <span class="ActionScriptComment">//--------------------------------------------------------------------------
+</span>        <span class="ActionScriptComment">//  Class constants
+</span>        <span class="ActionScriptComment">//--------------------------------------------------------------------------
+</span>    
+        <span class="ActionScriptASDoc">/**
+         *  @private
+         *  Default state for all the components.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">STATE_SYSTEM_NORMAL</span>:<span class="ActionScriptDefault_Text">uint</span> <span class="ActionScriptOperator">=</span> 0x00000000;
+    
+        <span class="ActionScriptASDoc">/**
+         *  @private
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">STATE_SYSTEM_FOCUSABLE</span>:<span class="ActionScriptDefault_Text">uint</span> <span class="ActionScriptOperator">=</span> 0x00100000;
+        
+        <span class="ActionScriptASDoc">/**
+         *  @private
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">STATE_SYSTEM_FOCUSED</span>:<span class="ActionScriptDefault_Text">uint</span> <span class="ActionScriptOperator">=</span> 0x00000004;
+        
+        <span class="ActionScriptASDoc">/**
+         *  @private
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">STATE_SYSTEM_UNAVAILABLE</span>:<span class="ActionScriptDefault_Text">uint</span> <span class="ActionScriptOperator">=</span> 0x00000001;
+        
+        <span class="ActionScriptASDoc">/**
+         *  @private
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">EVENT_OBJECT_NAMECHANGE</span>:<span class="ActionScriptDefault_Text">uint</span> <span class="ActionScriptOperator">=</span> 0x800C;
+
+
+        <span class="ActionScriptComment">//--------------------------------------------------------------------------
+</span>        <span class="ActionScriptComment">//  Variables
+</span>        <span class="ActionScriptComment">//--------------------------------------------------------------------------
+</span>    
+        <span class="ActionScriptASDoc">/**
+         *  @private (protected)
+         *  A reference to the UIComponent instance that this AccImpl instance
+         *  is making accessible.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">master</span>:<span class="ActionScriptDefault_Text">UIComponent</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         *  @private (protected)
+         *  Accessibility Role of the component being made accessible.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">role</span>:<span class="ActionScriptDefault_Text">uint</span>;
+
+
+        <span class="ActionScriptComment">//--------------------------------------------------------------------------
+</span>        <span class="ActionScriptComment">//  Properties
+</span>        <span class="ActionScriptComment">//--------------------------------------------------------------------------
+</span>    
+        <span class="ActionScriptASDoc">/**
+         *  @private (protected)
+         *  All subclasses must override this property by returning an array
+         *  of strings that contains the events for which to listen.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">eventsToHandle</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">Array</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> [];
+        <span class="ActionScriptBracket/Brace">}</span>
+
+
+        <span class="ActionScriptComment">//--------------------------------------------------------------------------
+</span>        <span class="ActionScriptComment">//  Class methods
+</span>        <span class="ActionScriptComment">//--------------------------------------------------------------------------
+</span>    
+        <span class="ActionScriptASDoc">/**
+         *  @private
+         *  All subclasses must implement this function.
+         * 
+         *  @param component The UIComponent instance that this AccImpl instance
+         *  is making accessible.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>    
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">createAccessibilityImplementation</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">component</span>:<span class="ActionScriptDefault_Text">UIComponent</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+        <span class="ActionScriptBracket/Brace">}</span>
+    
+        <span class="ActionScriptASDoc">/**
+         * Enables accessibility for a component.
+         * This method is required for the compiler to activate
+         * the accessibility classes for a component.
+         * 
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">enableAccessibility</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+        <span class="ActionScriptBracket/Brace">}</span>    
+    
+        <span class="ActionScriptComment">//--------------------------------------------------------------------------
+</span>        <span class="ActionScriptComment">//  Constructor
+</span>        <span class="ActionScriptComment">//--------------------------------------------------------------------------
+</span>    
+        <span class="ActionScriptASDoc">/**
+         * @private
+         * @internal Nivesh says: I don't think we should document the constructors 
+         *           for the accessibility classes.  End-users just have to call the 
+         *           static enableAccessibility method.  They don't really create an 
+         *           instance of the classes.
+         *
+         *  Creates a new Accessibility Implementation instance for the specified component.
+         *
+         *  @param component The UIComponent instance that this AccImpl instance
+         *  makes accessible.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">AccImpl</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">component</span>:<span class="ActionScriptDefault_Text">UIComponent</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">super</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">stub</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">false</span>;
+            <span class="ActionScriptDefault_Text">master</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">component</span>;
+            <span class="ActionScriptDefault_Text">master</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">accessibilityProperties</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">UIComponentAccImpl</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">master</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptComment">// Hookup events to listen for
+</span>            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">events</span>:<span class="ActionScriptDefault_Text">Array</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">eventsToHandle</span>;
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">events</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">n</span>:<span class="ActionScriptDefault_Text">int</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">events</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">length</span>;
+                <span class="ActionScriptReserved">for</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">i</span>:<span class="ActionScriptDefault_Text">int</span> <span class="ActionScriptOperator">=</span> 0; <span class="ActionScriptDefault_Text">i</span> <span class="ActionScriptOperator">&lt;</span> <span class="ActionScriptDefault_Text">n</span>; <span class="ActionScriptDefault_Text">i</span><span class="ActionScriptOperator">++</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+                    <span class="ActionScriptDefault_Text">master</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">addEventListener</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">events</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptDefault_Text">i</span><span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">eventHandler</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptBracket/Brace">}</span>
+            <span class="ActionScriptBracket/Brace">}</span>
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        
+        <span class="ActionScriptComment">//--------------------------------------------------------------------------
+</span>        <span class="ActionScriptComment">//  Overridden methods: AccessibilityImplementation
+</span>        <span class="ActionScriptComment">//--------------------------------------------------------------------------
+</span>    
+        <span class="ActionScriptASDoc">/**
+         *  @private
+         *  Returns the system role for the component.
+         *
+         *  @param childID The child id.
+         *
+         *  @return Role associated with the component.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">override</span> <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">get_accRole</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">childID</span>:<span class="ActionScriptDefault_Text">uint</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">uint</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">role</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptASDoc">/**
+         *  @private
+         *  Returns the name of the component.
+         *
+         *  @param childID The child id.
+         *
+         *  @return Name of the component.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">override</span> <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">get_accName</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">childID</span>:<span class="ActionScriptDefault_Text">uint</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">accName</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">""</span>;
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">childID</span> <span class="ActionScriptOperator">==</span> 0
+                    <span class="ActionScriptOperator">&amp;&amp;</span> <span class="ActionScriptDefault_Text">master</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">accessibilityProperties</span> 
+                    <span class="ActionScriptOperator">&amp;&amp;</span> <span class="ActionScriptDefault_Text">master</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">accessibilityProperties</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">name</span> 
+                    <span class="ActionScriptOperator">&amp;&amp;</span> <span class="ActionScriptDefault_Text">master</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">accessibilityProperties</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">name</span> <span class="ActionScriptOperator">!=</span> <span class="ActionScriptString">""</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">accName</span> <span class="ActionScriptOperator">+=</span> <span class="ActionScriptDefault_Text">master</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">accessibilityProperties</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">name</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptString">" "</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            <span class="ActionScriptDefault_Text">accName</span> <span class="ActionScriptOperator">+=</span> <span class="ActionScriptDefault_Text">getName</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">childID</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptDefault_Text">getStatusName</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">accName</span> <span class="ActionScriptOperator">!=</span> <span class="ActionScriptReserved">null</span> <span class="ActionScriptOperator">&amp;&amp;</span> <span class="ActionScriptDefault_Text">accName</span> <span class="ActionScriptOperator">!=</span> <span class="ActionScriptString">""</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptOperator">?</span> <span class="ActionScriptDefault_Text">accName</span> : <span class="ActionScriptReserved">null</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+
+        <span class="ActionScriptComment">//--------------------------------------------------------------------------
+</span>        <span class="ActionScriptComment">//  Methods
+</span>        <span class="ActionScriptComment">//--------------------------------------------------------------------------
+</span>    
+        <span class="ActionScriptASDoc">/**
+         *  @private (protected)
+         *  Returns the name of the accessible component. All subclasses must 
+         *  implement this instead of implementing get_accName.
+         * 
+         *  @param childID The child id.
+         * 
+         *  @return Name.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">getName</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">childID</span>:<span class="ActionScriptDefault_Text">uint</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptReserved">null</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptASDoc">/**
+         *  @private (protected)
+         *  Returns the state of the accessible component.
+         * 
+         *  @param childID The child id.
+         * 
+         *  @return State.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">getState</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">childID</span>:<span class="ActionScriptDefault_Text">uint</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">uint</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">accState</span>:<span class="ActionScriptDefault_Text">uint</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">STATE_SYSTEM_NORMAL</span>;
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptOperator">!</span><span class="ActionScriptDefault_Text">UIComponent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">master</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">enabled</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">accState</span> <span class="ActionScriptOperator">|=</span> <span class="ActionScriptDefault_Text">STATE_SYSTEM_UNAVAILABLE</span>;
+            <span class="ActionScriptBracket/Brace">}</span> <span class="ActionScriptReserved">else</span> <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">accState</span> <span class="ActionScriptOperator">|=</span> <span class="ActionScriptDefault_Text">STATE_SYSTEM_FOCUSABLE</span>
+                <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">UIComponent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">master</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptOperator">==</span> <span class="ActionScriptDefault_Text">UIComponent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">master</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">getFocus</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+                    <span class="ActionScriptDefault_Text">accState</span> <span class="ActionScriptOperator">|=</span> <span class="ActionScriptDefault_Text">STATE_SYSTEM_FOCUSED</span>;
+                <span class="ActionScriptBracket/Brace">}</span>
+            <span class="ActionScriptBracket/Brace">}</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">accState</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+    
+        <span class="ActionScriptASDoc">/**
+         *  @private
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">getStatusName</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptString">""</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+
+        <span class="ActionScriptComment">//--------------------------------------------------------------------------
+</span>        <span class="ActionScriptComment">//  Event handlers
+</span>        <span class="ActionScriptComment">//--------------------------------------------------------------------------
+</span>    
+        <span class="ActionScriptASDoc">/**
+         *  @private (protected)
+         *  Handles events from the master component.
+         *  All AccImpl subclasses must implement this
+         *  to listen for events from its master component. 
+         * 
+         *  @param event The event object.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">eventHandler</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">event</span>:<span class="ActionScriptDefault_Text">Event</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+        <span class="ActionScriptBracket/Brace">}</span>
+    <span class="ActionScriptBracket/Brace">}</span>
+
+<span class="ActionScriptBracket/Brace">}</span>
+</pre></body>
+</html>

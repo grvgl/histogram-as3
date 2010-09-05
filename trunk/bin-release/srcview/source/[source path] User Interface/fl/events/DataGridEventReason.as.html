@@ -1,0 +1,97 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>DataGridEventReason.as</title>
+<link rel="stylesheet" type="text/css" href="../../../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="ActionScriptComment">// Copyright 2007. Adobe Systems Incorporated. All Rights Reserved.
+</span><span class="ActionScriptpackage">package</span> <span class="ActionScriptDefault_Text">fl</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">events</span> <span class="ActionScriptBracket/Brace">{</span>
+    <span class="ActionScriptASDoc">/**
+     *  The DataGridEventReason class defines constants that are used for the  
+     *  values of the &lt;code&gt;reason&lt;/code&gt; property of the DataGridEvent object 
+     *  when the value of the &lt;code&gt;type&lt;/code&gt; property is &lt;code&gt;itemEditEnd&lt;/code&gt;.
+     * 
+     * @see fl.controls.DataGrid
+     * @see DataGridEvent
+     *
+     * @langversion 3.0
+     * @playerversion Flash 9.0.28.0
+     */</span>
+    <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">final</span> <span class="ActionScriptclass">class</span> <span class="ActionScriptDefault_Text">DataGridEventReason</span> <span class="ActionScriptBracket/Brace">{</span>
+        <span class="ActionScriptASDoc">/**
+         *  The user canceled editing and does not want to save the edited 
+         *  data. 
+         *
+         *  &lt;p&gt;Even if you call the &lt;code&gt;preventDefault()&lt;/code&gt; method 
+         *  from your event listener for the &lt;code&gt;itemEditEnd&lt;/code&gt; event, 
+         *  Flash still calls the &lt;code&gt;destroyItemEditor()&lt;/code&gt; editor to close the editor.&lt;/p&gt;
+         *
+         * @see flash.events.Event#preventDefault() Event.preventDefault()
+         * @see fl.controls.DataGrid#destroyItemEditor() DataGrid.destroyItemEditor()
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">CANCELLED</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"cancelled"</span>;
+
+        <span class="ActionScriptASDoc">/**
+         *  The list component lost focus, was scrolled, or is in a state where 
+         *  editing is not allowed. 
+         *
+         *  &lt;p&gt;Even if you call the &lt;code&gt;preventDefault()&lt;/code&gt; method from your event 
+         *  listener for the &lt;code&gt;itemEditEnd&lt;/code&gt; event, Flash still calls the 
+         *  &lt;code&gt;destroyItemEditor()&lt;/code&gt; editor to close the editor.&lt;/p&gt;
+         *
+         * @see flash.events.Event#preventDefault() Event.preventDefault()
+         * @see fl.controls.DataGrid#destroyItemEditor() DataGrid.destroyItemEditor()
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">OTHER</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"other"</span>;
+
+        <span class="ActionScriptASDoc">/**
+         *  The user moved focus to a new column in the same row.
+         *
+         *  &lt;p&gt;Your event listener can include logic that permits a change in focus
+         *  or that stops it. For example, if an event listener detects that the user
+         *  entered an invalid value, the event listener can make a call to the 
+         *  &lt;code&gt;preventDefault()&lt;/code&gt; method to stop focus from being moved to a  
+         *  new item. The item editor remains open and the user continues to edit the
+         *  current item. To close the editor that is associated with the current item,
+         *  call the &lt;code&gt;destroyItemEditor()&lt;/code&gt; method.&lt;/p&gt;
+         *
+         * @see #NEW_ROW
+         * @see flash.events.Event#preventDefault() Event.preventDefault()
+         * @see fl.controls.DataGrid#destroyItemEditor() DataGrid.destroyItemEditor()
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">NEW_COLUMN</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"newColumn"</span>;
+
+        <span class="ActionScriptASDoc">/**
+         *  Indicates that the user moved focus to a new row.
+         * 
+         *  &lt;p&gt;Your event listener can include logic that permits a change in focus
+         *  or that stops it. For example, if an event listener detects that the user
+         *  entered an invalid value, the event listener can make a call to the 
+         *  &lt;code&gt;preventDefault()&lt;/code&gt; method to stop focus from being moved to a  
+         *  new row. The item editor remains open and the user continues to edit the
+         *  current item. To close the editor that is associated with the current item,
+         *  call the &lt;code&gt;destroyItemEditor()&lt;/code&gt; method.&lt;/p&gt;
+         *
+         * @see #NEW_COLUMN
+         * @see flash.events.Event#preventDefault() Event.preventDefault()
+         * @see fl.controls.DataGrid#destroyItemEditor() DataGrid.destroyItemEditor()
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">NEW_ROW</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"newRow"</span>;
+    <span class="ActionScriptBracket/Brace">}</span>
+<span class="ActionScriptBracket/Brace">}</span></pre></body>
+</html>

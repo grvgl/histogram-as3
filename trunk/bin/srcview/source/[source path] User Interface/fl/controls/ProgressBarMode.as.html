@@ -1,0 +1,90 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>ProgressBarMode.as</title>
+<link rel="stylesheet" type="text/css" href="../../../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="ActionScriptComment">// Copyright 2007. Adobe Systems Incorporated. All Rights Reserved.
+</span><span class="ActionScriptpackage">package</span> <span class="ActionScriptDefault_Text">fl</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">controls</span> <span class="ActionScriptBracket/Brace">{</span>
+    
+    <span class="ActionScriptASDoc">/**
+     * The ProgressBarMode class defines the values for the &lt;code&gt;mode&lt;/code&gt; 
+     * property of the ProgressBar class.
+     *
+     * @see ProgressBar#mode ProgressBar.mode
+     *
+     * @langversion 3.0
+     * @playerversion Flash 9.0.28.0
+     */</span>
+    <span class="ActionScriptReserved">public</span> <span class="ActionScriptclass">class</span> <span class="ActionScriptDefault_Text">ProgressBarMode</span> <span class="ActionScriptBracket/Brace">{</span>
+        <span class="ActionScriptASDoc">/**
+         * Manually update the status of the ProgressBar component. In this mode, you specify the 
+         * &lt;code&gt;minimum&lt;/code&gt; and &lt;code&gt;maximum&lt;/code&gt; properties and use the 
+         * &lt;code&gt;setProgress()&lt;/code&gt; method to specify the status.
+         *
+         * @includeExample examples/ProgressBar.percentComplete.1.as -noswf
+         *
+         * @see ProgressBar#maximum ProgressBar.maximum
+         * @see ProgressBar#minimum ProgressBar.minimum
+         * @see ProgressBar#setProgress() ProgressBar.setProgress()
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">MANUAL</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"manual"</span>;
+
+        <span class="ActionScriptASDoc">/**
+         * The component specified by the &lt;code&gt;source&lt;/code&gt; property must dispatch 
+         * &lt;code&gt;progress&lt;/code&gt; and &lt;code&gt;complete&lt;/code&gt; 
+         * events. The ProgressBar uses these events to update its status.
+         *
+         * @includeExample examples/ProgressBarMode.EVENT.1.as -noswf
+         *
+         * @see fl.containers.ScrollPane#event:complete ScrollPane complete event
+         * @see fl.containers.ScrollPane#event:progress ScrollPane progress event
+         * @see fl.containers.UILoader#event:complete UILoader complete event
+         * @see fl.containers.UILoader#event:progress UILoader progress event
+         * @see flash.display.LoaderInfo#event:complete LoaderInfo complete event
+         * @see flash.display.LoaderInfo#event:progress LoaderInfo progress event
+         * @see flash.media.Sound#event:complete Sound complete event
+         * @see flash.media.Sound#event:progress Sound progress event
+         * @see flash.net.FileReference#event:complete FileReference complete event
+         * @see flash.net.FileReference#event:progress FileReference progress event
+         * @see flash.net.URLLoader#event:complete URLLoader complete event
+         * @see flash.net.URLLoader#event:progress URLLoader progress event
+         * @see flash.net.URLStream#event:complete URLStream complete event
+         * @see flash.net.URLStream#event:progress URLStream progress event
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">EVENT</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"event"</span>;
+
+        <span class="ActionScriptASDoc">/**
+         * Progress is updated by polling the source. The &lt;code&gt;source&lt;/code&gt; 
+         * property must specify an object that exposes the &lt;code&gt;bytesLoaded&lt;/code&gt;
+         * and &lt;code&gt;bytesTotal&lt;/code&gt; properties.
+         *
+         * @includeExample examples/ProgressBarMode.POLLED.1.as -noswf
+         *
+         * @see fl.containers.ScrollPane#bytesLoaded ScrollPane.bytesLoaded
+         * @see fl.containers.ScrollPane#bytesTotal ScrollPane.bytesTotal
+         * @see fl.containers.UILoader#bytesLoaded UILoader.bytesLoaded
+         * @see fl.containers.UILoader#bytesTotal UILoader.bytesTotal
+         * @see flash.media.Sound#bytesLoaded Sound.bytesLoaded
+         * @see flash.media.Sound#bytesTotal Sound.bytesTotal
+         * @see flash.net.NetStream#bytesLoaded NetStream.bytesLoaded
+         * @see flash.net.NetStream#bytesTotal NetStream.bytesTotal
+         * @see flash.net.URLLoader#bytesLoaded URLLoader.bytesLoaded
+         * @see flash.net.URLLoader#bytesTotal URLLoader.bytesTotal
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">POLLED</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"polled"</span>;
+    <span class="ActionScriptBracket/Brace">}</span>
+<span class="ActionScriptBracket/Brace">}</span></pre></body>
+</html>

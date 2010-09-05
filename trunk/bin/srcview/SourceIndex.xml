@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<index>
+	<title>Source of histogram</title>
+	<nodes>
+		<node icon="classpathIcon" label="[source path] User Interface" expanded="true">
+			<node icon="packageIcon" label="fl.accessibility" expanded="true">
+				<node icon="actionScriptIcon" label="AccImpl.as" url="source/[source path] User Interface/fl/accessibility/AccImpl.as.html"/>
+				<node icon="actionScriptIcon" label="ButtonAccImpl.as" url="source/[source path] User Interface/fl/accessibility/ButtonAccImpl.as.html"/>
+				<node icon="actionScriptIcon" label="CheckBoxAccImpl.as" url="source/[source path] User Interface/fl/accessibility/CheckBoxAccImpl.as.html"/>
+				<node icon="actionScriptIcon" label="ComboBoxAccImpl.as" url="source/[source path] User Interface/fl/accessibility/ComboBoxAccImpl.as.html"/>
+				<node icon="actionScriptIcon" label="DataGridAccImpl.as" url="source/[source path] User Interface/fl/accessibility/DataGridAccImpl.as.html"/>
+				<node icon="actionScriptIcon" label="LabelButtonAccImpl.as" url="source/[source path] User Interface/fl/accessibility/LabelButtonAccImpl.as.html"/>
+				<node icon="actionScriptIcon" label="ListAccImpl.as" url="source/[source path] User Interface/fl/accessibility/ListAccImpl.as.html"/>
+				<node icon="actionScriptIcon" label="RadioButtonAccImpl.as" url="source/[source path] User Interface/fl/accessibility/RadioButtonAccImpl.as.html"/>
+				<node icon="actionScriptIcon" label="SelectableListAccImpl.as" url="source/[source path] User Interface/fl/accessibility/SelectableListAccImpl.as.html"/>
+				<node icon="actionScriptIcon" label="TileListAccImpl.as" url="source/[source path] User Interface/fl/accessibility/TileListAccImpl.as.html"/>
+				<node icon="actionScriptIcon" label="UIComponentAccImpl.as" url="source/[source path] User Interface/fl/accessibility/UIComponentAccImpl.as.html"/>
+			</node>
+			<node icon="packageIcon" label="fl.containers" expanded="true">
+				<node icon="actionScriptIcon" label="BaseScrollPane.as" url="source/[source path] User Interface/fl/containers/BaseScrollPane.as.html"/>
+				<node icon="actionScriptIcon" label="ScrollPane.as" url="source/[source path] User Interface/fl/containers/ScrollPane.as.html"/>
+				<node icon="actionScriptIcon" label="UILoader.as" url="source/[source path] User Interface/fl/containers/UILoader.as.html"/>
+			</node>
+			<node icon="packageIcon" label="fl.controls" expanded="true">
+				<node icon="actionScriptIcon" label="BaseButton.as" url="source/[source path] User Interface/fl/controls/BaseButton.as.html"/>
+				<node icon="actionScriptIcon" label="Button.as" url="source/[source path] User Interface/fl/controls/Button.as.html"/>
+				<node icon="actionScriptIcon" label="ButtonLabelPlacement.as" url="source/[source path] User Interface/fl/controls/ButtonLabelPlacement.as.html"/>
+				<node icon="actionScriptIcon" label="CheckBox.as" url="source/[source path] User Interface/fl/controls/CheckBox.as.html"/>
+				<node icon="actionScriptIcon" label="ColorPicker.as" url="source/[source path] User Interface/fl/controls/ColorPicker.as.html"/>
+				<node icon="actionScriptIcon" label="ComboBox.as" url="source/[source path] User Interface/fl/controls/ComboBox.as.html"/>
+				<node icon="actionScriptIcon" label="DataGrid.as" url="source/[source path] User Interface/fl/controls/DataGrid.as.html"/>
+				<node icon="actionScriptIcon" label="Label.as" url="source/[source path] User Interface/fl/controls/Label.as.html"/>
+				<node icon="actionScriptIcon" label="LabelButton.as" url="source/[source path] User Interface/fl/controls/LabelButton.as.html"/>
+				<node icon="actionScriptIcon" label="List.as" url="source/[source path] User Interface/fl/controls/List.as.html"/>
+				<node icon="actionScriptIcon" label="NumericStepper.as" url="source/[source path] User Interface/fl/controls/NumericStepper.as.html"/>
+				<node icon="actionScriptIcon" label="ProgressBar.as" url="source/[source path] User Interface/fl/controls/ProgressBar.as.html"/>
+				<node icon="actionScriptIcon" label="ProgressBarDirection.as" url="source/[source path] User Interface/fl/controls/ProgressBarDirection.as.html"/>
+				<node icon="actionScriptIcon" label="ProgressBarMode.as" url="source/[source path] User Interface/fl/controls/ProgressBarMode.as.html"/>
+				<node icon="actionScriptIcon" label="RadioButton.as" url="source/[source path] User Interface/fl/controls/RadioButton.as.html"/>
+				<node icon="actionScriptIcon" label="RadioButtonGroup.as" url="source/[source path] User Interface/fl/controls/RadioButtonGroup.as.html"/>
+				<node icon="actionScriptIcon" label="ScrollBar.as" url="source/[source path] User Interface/fl/controls/ScrollBar.as.html"/>
+				<node icon="actionScriptIcon" label="ScrollBarDirection.as" url="source/[source path] User Interface/fl/controls/ScrollBarDirection.as.html"/>
+				<node icon="actionScriptIcon" label="ScrollPolicy.as" url="source/[source path] User Interface/fl/controls/ScrollPolicy.as.html"/>
+				<node icon="actionScriptIcon" label="SelectableList.as" url="source/[source path] User Interface/fl/controls/SelectableList.as.html"/>
+				<node icon="actionScriptIcon" label="Slider.as" url="source/[source path] User Interface/fl/controls/Slider.as.html"/>
+				<node icon="actionScriptIcon" label="SliderDirection.as" url="source/[source path] User Interface/fl/controls/SliderDirection.as.html"/>
+				<node icon="actionScriptIcon" label="TextArea.as" url="source/[source path] User Interface/fl/controls/TextArea.as.html"/>
+				<node icon="actionScriptIcon" label="TextInput.as" url="source/[source path] User Interface/fl/controls/TextInput.as.html"/>
+				<node icon="actionScriptIcon" label="TileList.as" url="source/[source path] User Interface/fl/controls/TileList.as.html"/>
+				<node icon="actionScriptIcon" label="UIScrollBar.as" url="source/[source path] User Interface/fl/controls/UIScrollBar.as.html"/>
+			</node>
+			<node icon="packageIcon" label="fl.controls.dataGridClasses" expanded="true">
+				<node icon="actionScriptIcon" label="DataGridCellEditor.as" url="source/[source path] User Interface/fl/controls/dataGridClasses/DataGridCellEditor.as.html"/>
+				<node icon="actionScriptIcon" label="DataGridColumn.as" url="source/[source path] User Interface/fl/controls/dataGridClasses/DataGridColumn.as.html"/>
+				<node icon="actionScriptIcon" label="HeaderRenderer.as" url="source/[source path] User Interface/fl/controls/dataGridClasses/HeaderRenderer.as.html"/>
+			</node>
+			<node icon="packageIcon" label="fl.controls.listClasses" expanded="true">
+				<node icon="actionScriptIcon" label="CellRenderer.as" url="source/[source path] User Interface/fl/controls/listClasses/CellRenderer.as.html"/>
+				<node icon="actionScriptIcon" label="ICellRenderer.as" url="source/[source path] User Interface/fl/controls/listClasses/ICellRenderer.as.html"/>
+				<node icon="actionScriptIcon" label="ImageCell.as" url="source/[source path] User Interface/fl/controls/listClasses/ImageCell.as.html"/>
+				<node icon="actionScriptIcon" label="ListData.as" url="source/[source path] User Interface/fl/controls/listClasses/ListData.as.html"/>
+				<node icon="actionScriptIcon" label="TileListData.as" url="source/[source path] User Interface/fl/controls/listClasses/TileListData.as.html"/>
+			</node>
+			<node icon="packageIcon" label="fl.controls.progressBarClasses" expanded="true">
+				<node icon="actionScriptIcon" label="IndeterminateBar.as" url="source/[source path] User Interface/fl/controls/progressBarClasses/IndeterminateBar.as.html"/>
+			</node>
+			<node icon="packageIcon" label="fl.core" expanded="true">
+				<node icon="actionScriptIcon" label="InvalidationType.as" url="source/[source path] User Interface/fl/core/InvalidationType.as.html"/>
+				<node icon="actionScriptIcon" label="UIComponent.as" url="source/[source path] User Interface/fl/core/UIComponent.as.html"/>
+			</node>
+			<node icon="packageIcon" label="fl.data" expanded="true">
+				<node icon="actionScriptIcon" label="DataProvider.as" url="source/[source path] User Interface/fl/data/DataProvider.as.html"/>
+				<node icon="actionScriptIcon" label="SimpleCollectionItem.as" url="source/[source path] User Interface/fl/data/SimpleCollectionItem.as.html"/>
+				<node icon="actionScriptIcon" label="TileListCollectionItem.as" url="source/[source path] User Interface/fl/data/TileListCollectionItem.as.html"/>
+			</node>
+			<node icon="packageIcon" label="fl.events" expanded="true">
+				<node icon="actionScriptIcon" label="ColorPickerEvent.as" url="source/[source path] User Interface/fl/events/ColorPickerEvent.as.html"/>
+				<node icon="actionScriptIcon" label="ComponentEvent.as" url="source/[source path] User Interface/fl/events/ComponentEvent.as.html"/>
+				<node icon="actionScriptIcon" label="DataChangeEvent.as" url="source/[source path] User Interface/fl/events/DataChangeEvent.as.html"/>
+				<node icon="actionScriptIcon" label="DataChangeType.as" url="source/[source path] User Interface/fl/events/DataChangeType.as.html"/>
+				<node icon="actionScriptIcon" label="DataGridEvent.as" url="source/[source path] User Interface/fl/events/DataGridEvent.as.html"/>
+				<node icon="actionScriptIcon" label="DataGridEventReason.as" url="source/[source path] User Interface/fl/events/DataGridEventReason.as.html"/>
+				<node icon="actionScriptIcon" label="InteractionInputType.as" url="source/[source path] User Interface/fl/events/InteractionInputType.as.html"/>
+				<node icon="actionScriptIcon" label="ListEvent.as" url="source/[source path] User Interface/fl/events/ListEvent.as.html"/>
+				<node icon="actionScriptIcon" label="ScrollEvent.as" url="source/[source path] User Interface/fl/events/ScrollEvent.as.html"/>
+				<node icon="actionScriptIcon" label="SliderEvent.as" url="source/[source path] User Interface/fl/events/SliderEvent.as.html"/>
+				<node icon="actionScriptIcon" label="SliderEventClickTarget.as" url="source/[source path] User Interface/fl/events/SliderEventClickTarget.as.html"/>
+			</node>
+			<node icon="packageIcon" label="fl.managers" expanded="true">
+				<node icon="actionScriptIcon" label="FocusManager.as" url="source/[source path] User Interface/fl/managers/FocusManager.as.html"/>
+				<node icon="actionScriptIcon" label="IFocusManager.as" url="source/[source path] User Interface/fl/managers/IFocusManager.as.html"/>
+				<node icon="actionScriptIcon" label="IFocusManagerComponent.as" url="source/[source path] User Interface/fl/managers/IFocusManagerComponent.as.html"/>
+				<node icon="actionScriptIcon" label="IFocusManagerGroup.as" url="source/[source path] User Interface/fl/managers/IFocusManagerGroup.as.html"/>
+				<node icon="actionScriptIcon" label="StyleManager.as" url="source/[source path] User Interface/fl/managers/StyleManager.as.html"/>
+			</node>
+			<node icon="flaIcon" label="ComponentShim.fla" url="source/[source path] User Interface/ComponentShim.fla"/>
+		</node>
+		<node label="bin">
+			<node label="history">
+				<node icon="cssIcon" label="history.css" url="source/bin/history/history.css.html"/>
+				<node label="history.js" url="source/bin/history/history.js.txt"/>
+				<node icon="htmlIcon" label="historyFrame.html" url="source/bin/history/historyFrame.html"/>
+			</node>
+			<node label="srcview">
+				<node label="source">
+					<node label="[source path] User Interface">
+						<node label="fl">
+							<node label="accessibility">
+							</node>
+							<node label="containers">
+							</node>
+							<node label="controls">
+								<node label="dataGridClasses">
+								</node>
+								<node label="listClasses">
+								</node>
+								<node label="progressBarClasses">
+								</node>
+							</node>
+							<node label="core">
+							</node>
+							<node label="data">
+							</node>
+							<node label="events">
+							</node>
+							<node label="managers">
+							</node>
+						</node>
+						<node icon="flaIcon" label="ComponentShim.fla" url="source/bin/srcview/source/[source path] User Interface/ComponentShim.fla"/>
+					</node>
+					<node label="bin">
+						<node label="history">
+							<node label="history.js.txt" url="source/bin/srcview/source/bin/history/history.js.txt"/>
+							<node icon="htmlIcon" label="historyFrame.html" url="source/bin/srcview/source/bin/history/historyFrame.html"/>
+						</node>
+						<node label="srcview">
+							<node label="source">
+								<node label="[source path] User Interface">
+									<node label="fl">
+										<node label="accessibility">
+										</node>
+									</node>
+								</node>
+							</node>
+						</node>
+					</node>
+				</node>
+				<node icon="swfIcon" label="playerProductInstall.swf" url="source/bin/srcview/playerProductInstall.swf"/>
+				<node icon="swfIcon" label="SourceTree.swf" url="source/bin/srcview/SourceTree.swf"/>
+				<node label="swfobject.js" url="source/bin/srcview/swfobject.js.txt"/>
+			</node>
+			<node icon="flaIcon" label="ComponentShim.fla" url="source/bin/ComponentShim.fla"/>
+			<node icon="htmlIcon" label="Gizmo.html" url="source/bin/Gizmo.html"/>
+			<node icon="swfIcon" label="Gizmo.swf" url="source/bin/Gizmo.swf"/>
+			<node icon="flaIcon" label="histogram.fla" url="source/bin/histogram.fla"/>
+			<node icon="swfIcon" label="histogram.swf" url="source/bin/histogram.swf"/>
+			<node icon="swfIcon" label="playerProductInstall.swf" url="source/bin/playerProductInstall.swf"/>
+			<node label="swfobject.js" url="source/bin/swfobject.js.txt"/>
+		</node>
+		<node label="html-template">
+			<node label="history">
+				<node icon="cssIcon" label="history.css" url="source/html-template/history/history.css.html"/>
+				<node label="history.js" url="source/html-template/history/history.js.txt"/>
+				<node icon="htmlIcon" label="historyFrame.html" url="source/html-template/history/historyFrame.html"/>
+			</node>
+			<node icon="htmlIcon" label="index.template.html" url="source/html-template/index.template.html"/>
+			<node icon="swfIcon" label="playerProductInstall.swf" url="source/html-template/playerProductInstall.swf"/>
+			<node label="swfobject.js" url="source/html-template/swfobject.js.txt"/>
+		</node>
+		<node label="src">
+			<node icon="packageIcon" label="com.shivolve.histogram.controller" expanded="true">
+				<node icon="actionScriptIcon" label="GizmoController.as" url="source/com/shivolve/histogram/controller/GizmoController.as.html"/>
+			</node>
+			<node icon="packageIcon" label="com.shivolve.histogram.model" expanded="true">
+				<node icon="actionScriptIcon" label="DataObj.as" url="source/com/shivolve/histogram/model/DataObj.as.html"/>
+				<node icon="actionScriptIcon" label="GizmoDataProvider.as" url="source/com/shivolve/histogram/model/GizmoDataProvider.as.html"/>
+			</node>
+			<node icon="packageIcon" label="com.shivolve.histogram.views" expanded="true">
+				<node icon="actionScriptIcon" label="ChartBar.as" url="source/com/shivolve/histogram/views/ChartBar.as.html"/>
+				<node icon="actionScriptIcon" label="ChartCell.as" url="source/com/shivolve/histogram/views/ChartCell.as.html"/>
+				<node icon="actionScriptIcon" label="GizmoChartView.as" url="source/com/shivolve/histogram/views/GizmoChartView.as.html"/>
+				<node icon="actionScriptIcon" label="GizmoGridView.as" url="source/com/shivolve/histogram/views/GizmoGridView.as.html"/>
+				<node icon="actionScriptIcon" label="GizmoTableView.as" url="source/com/shivolve/histogram/views/GizmoTableView.as.html"/>
+				<node icon="actionScriptIcon" label="GridBall.as" url="source/com/shivolve/histogram/views/GridBall.as.html"/>
+				<node icon="actionScriptIcon" label="GridCell.as" url="source/com/shivolve/histogram/views/GridCell.as.html"/>
+			</node>
+			<node icon="mxmlAppIcon" selected="true" label="Gizmo.as" url="source/Gizmo.as.html"/>
+		</node>
+	</nodes>
+	<zipfile label="Download source (ZIP, 1214K)" url="histogram.zip">
+	</zipfile>
+	<sdklink label="Download Flex SDK" url="http://www.adobe.com/go/flex4_sdk_download">
+	</sdklink>
+</index>

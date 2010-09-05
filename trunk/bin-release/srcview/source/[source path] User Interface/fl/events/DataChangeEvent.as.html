@@ -1,0 +1,240 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>DataChangeEvent.as</title>
+<link rel="stylesheet" type="text/css" href="../../../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="ActionScriptComment">// Copyright 2007. Adobe Systems Incorporated. All Rights Reserved.
+</span><span class="ActionScriptpackage">package</span> <span class="ActionScriptDefault_Text">fl</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">events</span> <span class="ActionScriptBracket/Brace">{</span>
+
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">events</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">Event</span>;
+
+    <span class="ActionScriptASDoc">/**
+     * The DataChangeEvent class defines the event that is dispatched when the data 
+     * that is associated with a component changes. This event is used by the List, 
+     * DataGrid, TileList, and ComboBox components.
+     *
+     * &lt;p&gt;This class provides the following event:&lt;/p&gt;
+     * &lt;ul&gt;
+     *     &lt;li&gt;&lt;code&gt;DataChangeEvent.DATA_CHANGE&lt;/code&gt;: dispatched when the component data changes.&lt;/li&gt;
+     * &lt;/ul&gt;
+     *
+     * @includeExample examples/DataChangeEventExample.as
+     *
+     * @see DataChangeType
+     *
+     * @langversion 3.0
+     * @playerversion Flash 9.0.28.0
+     */</span>
+    <span class="ActionScriptReserved">public</span> <span class="ActionScriptclass">class</span> <span class="ActionScriptDefault_Text">DataChangeEvent</span> <span class="ActionScriptReserved">extends</span> <span class="ActionScriptDefault_Text">Event</span> <span class="ActionScriptBracket/Brace">{</span>
+        <span class="ActionScriptASDoc">/**
+         * Defines the value of the &lt;code&gt;type&lt;/code&gt; property of a &lt;code&gt;dataChange&lt;/code&gt;
+         * event object. 
+         *
+         * &lt;p&gt;This event has the following properties:&lt;/p&gt;
+         *  &lt;table class="innertable" width="100%"&gt;
+         *     &lt;tr&gt;&lt;th&gt;Property&lt;/th&gt;&lt;th&gt;Value&lt;/th&gt;&lt;/tr&gt;
+         *        &lt;tr&gt;&lt;td&gt;&lt;code&gt;bubbles&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;false&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;cancelable&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;false&lt;/code&gt;; there is no default behavior to cancel.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;changeType&lt;/code&gt;&lt;/td&gt;&lt;td&gt;Identifies the type of change that was made.&lt;/td&gt;&lt;/tr&gt;
+         *       &lt;tr&gt;&lt;td&gt;&lt;code&gt;currentTarget&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The object that is actively processing 
+         *             the event object with an event listener.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;endIndex&lt;/code&gt;&lt;/td&gt;&lt;td&gt;Identifies the index of the last changed item.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;items&lt;/code&gt;&lt;/td&gt;&lt;td&gt;An array that lists the items that were changed.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;startIndex&lt;/code&gt;&lt;/td&gt;&lt;td&gt;Identifies the index of the first changed item.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;target&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The object that dispatched the event. The target is 
+         *           not always the object listening for the event. Use the &lt;code&gt;currentTarget&lt;/code&gt;
+         *             property to access the object that is listening for the event.&lt;/td&gt;&lt;/tr&gt;
+         *  &lt;/table&gt;
+         *
+         * @eventType dataChange
+         *
+         * @see #PRE_DATA_CHANGE
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">DATA_CHANGE</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"dataChange"</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * Defines the value of the &lt;code&gt;type&lt;/code&gt; property of a &lt;code&gt;preDataChange&lt;/code&gt;
+         * event object. This event object is dispatched before a change is made to component data.
+         *
+         * &lt;p&gt;This event has the following properties:&lt;/p&gt;
+         *  &lt;table class="innertable" width="100%"&gt;
+         *     &lt;tr&gt;&lt;th&gt;Property&lt;/th&gt;&lt;th&gt;Value&lt;/th&gt;&lt;/tr&gt;
+         *        &lt;tr&gt;&lt;td&gt;&lt;code&gt;bubbles&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;false&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;cancelable&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;false&lt;/code&gt;; there is no default behavior to cancel.&lt;/td&gt;&lt;/tr&gt;
+         *        &lt;tr&gt;&lt;td&gt;&lt;code&gt;changeType&lt;/code&gt;&lt;/td&gt;&lt;td&gt;Identifies the type of change to be made.&lt;/td&gt;&lt;/tr&gt;
+         *       &lt;tr&gt;&lt;td&gt;&lt;code&gt;currentTarget&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The object that is actively processing 
+         *             the event object with an event listener.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;endIndex&lt;/code&gt;&lt;/td&gt;&lt;td&gt;Identifies the index of the last item to be
+         *             changed.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;items&lt;/code&gt;&lt;/td&gt;&lt;td&gt;An array that lists the items to be changed.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;startIndex&lt;/code&gt;&lt;/td&gt;&lt;td&gt;Identifies the index of the first item to be
+         *         changed.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;target&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The object that dispatched the event. The target is 
+         *          not always the object listening for the event. Use the &lt;code&gt;currentTarget&lt;/code&gt;
+         *             property to access the object that is listening for the event.&lt;/td&gt;&lt;/tr&gt;
+         *  &lt;/table&gt;
+         * 
+         * @eventType preDataChange
+         *
+         * @see #DATA_CHANGE
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">PRE_DATA_CHANGE</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"preDataChange"</span>;
+
+
+        <span class="ActionScriptASDoc">/**
+         * @private (protected)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_startIndex</span>:<span class="ActionScriptDefault_Text">uint</span>;
+
+
+        <span class="ActionScriptASDoc">/**
+         * @private (protected)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_endIndex</span>:<span class="ActionScriptDefault_Text">uint</span>;
+
+
+        <span class="ActionScriptASDoc">/**
+         * @private (protected)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_changeType</span>:<span class="ActionScriptDefault_Text">String</span>;
+
+
+        <span class="ActionScriptASDoc">/**
+         * @private (protected)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_items</span>:<span class="ActionScriptDefault_Text">Array</span>;
+
+        <span class="ActionScriptASDoc">/**
+         * Creates a new DataChangeEvent object with the specified parameters.
+         *
+         * @param eventType The type of change event.
+         *
+         * @param changeType The type of change that was made. The DataChangeType class defines the possible values for
+         *        this parameter.
+         *
+         * @param items A list of items that were changed.
+         * 
+         * @param startIndex The index of the first item that was changed.
+         *
+         * @param endIndex The index of the last item that was changed.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">DataChangeEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">eventType</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">changeType</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">items</span>:<span class="ActionScriptDefault_Text">Array</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">startIndex</span>:<span class="ActionScriptDefault_Text">int</span><span class="ActionScriptOperator">=</span>-1<span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">endIndex</span>:<span class="ActionScriptDefault_Text">int</span><span class="ActionScriptOperator">=</span>-1<span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">super</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">eventType</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">_changeType</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">changeType</span>;
+            <span class="ActionScriptDefault_Text">_startIndex</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">startIndex</span>;
+            <span class="ActionScriptDefault_Text">_items</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">items</span>;
+            <span class="ActionScriptDefault_Text">_endIndex</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">endIndex</span> <span class="ActionScriptOperator">==</span> <span class="ActionScriptOperator">-</span>1<span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptOperator">?</span> <span class="ActionScriptDefault_Text">_startIndex</span> : <span class="ActionScriptDefault_Text">endIndex</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * Gets the type of the change that triggered the event. The DataChangeType class 
+         * defines the possible values for this property.
+         *
+         * @see DataChangeType
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">changeType</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">_changeType</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * Gets an array that contains the changed items.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">items</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">Array</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">_items</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * Gets the index of the first changed item in the array of items 
+         * that were changed.
+         *
+         * @see #endIndex
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         *                   
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">startIndex</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">uint</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">_startIndex</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * Gets the index of the last changed item in the array of items
+         * that were changed.
+         *
+         * @see #startIndex
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">endIndex</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">uint</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">_endIndex</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+
+        <span class="ActionScriptASDoc">/**
+         * Returns a string that contains all the properties of the DataChangeEvent object. The
+         * string is in the following format:
+         * 
+         * &lt;p&gt;[&lt;code&gt;DataChangeEvent type=&lt;em&gt;value&lt;/em&gt; changeType=&lt;em&gt;value&lt;/em&gt; 
+         * startIndex=&lt;em&gt;value&lt;/em&gt; endIndex=&lt;em&gt;value&lt;/em&gt;
+         * bubbles=&lt;em&gt;value&lt;/em&gt; cancelable=&lt;em&gt;value&lt;/em&gt;&lt;/code&gt;]&lt;/p&gt;
+         *
+         * @return A string that contains all the properties of the DataChangeEvent object.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">override</span> <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">toString</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">formatToString</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"DataChangeEvent"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptString">"type"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptString">"changeType"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptString">"startIndex"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptString">"endIndex"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptString">"bubbles"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptString">"cancelable"</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+
+
+        <span class="ActionScriptASDoc">/**
+         * Creates a copy of the DataEvent object and sets the value of each parameter to match
+         * that of the original.
+         *
+         * @return A new DataChangeEvent object with property values that match those of the
+         *         original.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">override</span> <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">clone</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">Event</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">DataChangeEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">type</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">_changeType</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">_items</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">_startIndex</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">_endIndex</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+    <span class="ActionScriptBracket/Brace">}</span>
+<span class="ActionScriptBracket/Brace">}</span></pre></body>
+</html>

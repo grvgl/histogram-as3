@@ -1,0 +1,114 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>InvalidationType.as</title>
+<link rel="stylesheet" type="text/css" href="../../../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="ActionScriptComment">// Copyright 2007. Adobe Systems Incorporated. All Rights Reserved.
+</span><span class="ActionScriptpackage">package</span> <span class="ActionScriptDefault_Text">fl</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">core</span> <span class="ActionScriptBracket/Brace">{</span>
+    
+    <span class="ActionScriptASDoc">/**
+     * The InvalidationType class defines &lt;code&gt;InvalidationType&lt;/code&gt; constants 
+     * that are used by the &lt;code&gt;type&lt;/code&gt; property of an event object that is 
+     * dispatched after a component is invalidated. These constants are used 
+     * by component developers to specify the portion of the component that is to be redrawn 
+     * after the component is invalidated.
+     *
+     * @langversion 3.0
+     * @playerversion Flash 9.0.28.0
+     */</span>
+    <span class="ActionScriptReserved">public</span> <span class="ActionScriptclass">class</span> <span class="ActionScriptDefault_Text">InvalidationType</span> <span class="ActionScriptBracket/Brace">{</span>
+        <span class="ActionScriptASDoc">/**
+         * The &lt;code&gt;InvalidationType.ALL&lt;/code&gt; constant defines the value of the &lt;code&gt;type&lt;/code&gt; 
+         * property of the event object that is dispatched to indicate that the component should
+         * redraw itself entirely. 
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">ALL</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"all"</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * The &lt;code&gt;InvalidationType.SIZE&lt;/code&gt; constant defines the value of the &lt;code&gt;type&lt;/code&gt; 
+         * property of the event object that is dispatched to indicate that the screen dimensions of
+         * the component are invalid. 
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         * @internal [kenos] This one implies that the dimensions of the component on the screen 
+         *                   should be redrawn, but should say so if that is correct.
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">SIZE</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"size"</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * The &lt;code&gt;InvalidationType.STYLES&lt;/code&gt; constant defines the value of the &lt;code&gt;type&lt;/code&gt; 
+         * property of the event object that is dispatched to indicate that the styles of the component 
+         * are invalid.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         * @internal [kenos] Would it be correct to say "that the component should redraw its styles?"
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">STYLES</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"styles"</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * The &lt;code&gt;InvalidationType.RENDERER_STYLES&lt;/code&gt; constant defines the value of
+         * the &lt;code&gt;type&lt;/code&gt; property of the event object that is dispatched to indicate that
+         * the renderer styles of the component are invalid.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         * @internal [kenos] Should this one say, "that the component should redraw its renderer styles?"
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">RENDERER_STYLES</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"rendererStyles"</span>;        
+        
+        <span class="ActionScriptASDoc">/**
+         * The &lt;code&gt;InvalidationType.STATE&lt;/code&gt; constant defines the value of the &lt;code&gt;type&lt;/code&gt; 
+         * property of the event object that is dispatched to indicate that the state of the component
+         * is invalid. For example, this constant is used when the &lt;code&gt;enabled&lt;/code&gt; state of a component
+         * is no longer valid.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         * @internal [kenos] What would be redrawn for a component with an invalid state?
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">STATE</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"state"</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * The &lt;code&gt;InvalidationType.DATA&lt;/code&gt; constant defines the value of the &lt;code&gt;type&lt;/code&gt; 
+         * property of the event object that is dispatched to indicate that the data that belongs to
+         * a component is invalid. 
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         * @internal [kenos] For this one, would the data require refreshing? Recreation? Replacement?
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">DATA</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"data"</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * The &lt;code&gt;InvalidationType.SCROLL&lt;/code&gt; constant defines the value of the &lt;code&gt;type&lt;/code&gt; 
+         * property of the event object that is dispatched to indicate that the scroll position of the
+         * component is invalid. 
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         * @internal [kenos] When the scroll position should be redrawn?
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">SCROLL</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"scroll"</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * The &lt;code&gt;InvalidationType.SELECTED&lt;/code&gt; constant defines the value of the &lt;code&gt;type&lt;/code&gt; 
+         * property of the event object that is dispatched to indicate that the &lt;code&gt;selected&lt;/code&gt; 
+         * property of the component is invalid.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         * @internal [kenos] For this one, does the component need to be redrawn to remove the focus indicator?
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">SELECTED</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"selected"</span>;
+    <span class="ActionScriptBracket/Brace">}</span>
+<span class="ActionScriptBracket/Brace">}</span></pre></body>
+</html>
