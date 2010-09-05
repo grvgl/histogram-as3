@@ -1,0 +1,84 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>TileListCollectionItem.as</title>
+<link rel="stylesheet" type="text/css" href="../../../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="ActionScriptComment">// Copyright 2007. Adobe Systems Incorporated. All Rights Reserved.
+</span><span class="ActionScriptpackage">package</span> <span class="ActionScriptDefault_Text">fl</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">data</span> <span class="ActionScriptBracket/Brace">{</span>
+    
+    <span class="ActionScriptASDoc">/**
+     * The TileListCollectionItem class defines a single item in an inspectable
+     * property that represents a data provider. A TileListCollectionItem object
+     * is a collection list item that contains only &lt;code&gt;label&lt;/code&gt; and
+     * &lt;code&gt;source&lt;/code&gt; properties, and is primarily used in the TileList
+     * component.
+     *
+     * @langversion 3.0
+     * @playerversion Flash 9.0.28.0
+     */</span>
+    <span class="ActionScriptReserved">dynamic</span> <span class="ActionScriptReserved">public</span> <span class="ActionScriptclass">class</span> <span class="ActionScriptDefault_Text">TileListCollectionItem</span> <span class="ActionScriptBracket/Brace">{</span>
+        
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Inspectable</span><span class="ActionScriptBracket/Brace">(</span>
+        <span class="ActionScriptASDoc">/**
+         * The &lt;code&gt;label&lt;/code&gt; property of the object.
+         *
+         * The default value is &lt;code&gt;label(&lt;em&gt;n&lt;/em&gt;)&lt;/code&gt;, where &lt;em&gt;n&lt;/em&gt; is the ordinal index.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">label</span>:<span class="ActionScriptDefault_Text">String</span>;
+        
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Inspectable</span><span class="ActionScriptBracket/Brace">(</span>
+        <span class="ActionScriptASDoc">/**
+         * The &lt;code&gt;source&lt;/code&gt; property of the object. This can be the path or a class
+         * name of the image that is displayed in the image cell of the TileList.
+         *
+         * @default null
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">source</span>:<span class="ActionScriptDefault_Text">String</span>;
+        
+        <span class="ActionScriptComment">/* *
+         * Indicates whether the loaded content maintains the original 
+         * aspect ratio of the source or is resized to the dimensions of
+         * the TileList image cell. A value of &lt;code&gt;true&lt;/code&gt; indicates
+         * that the original aspect ratio is to be maintained; a value of &lt;code&gt;false&lt;/code&gt;
+         * indicates that the content is to be resized.
+         *
+         * @review is this even part of the API?
+         *
+         * @default true
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         * /
+        public var maintainAspectRatio:Boolean = true;
+        */</span>
+        
+        <span class="ActionScriptASDoc">/**
+         * Creates a new TileListCollectionItem object.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">TileListCollectionItem</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span> {}    
+        
+        <span class="ActionScriptASDoc">/**
+         * @private
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">toString</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptString">"[TileListCollectionItem: "</span><span class="ActionScriptOperator">+</span><span class="ActionScriptDefault_Text">label</span><span class="ActionScriptOperator">+</span><span class="ActionScriptString">","</span><span class="ActionScriptOperator">+</span><span class="ActionScriptDefault_Text">source</span><span class="ActionScriptOperator">+</span><span class="ActionScriptString">"]"</span>;    
+        <span class="ActionScriptBracket/Brace">}</span>
+    <span class="ActionScriptBracket/Brace">}</span>    
+<span class="ActionScriptBracket/Brace">}</span></pre></body>
+</html>

@@ -1,0 +1,177 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>ScrollEvent.as</title>
+<link rel="stylesheet" type="text/css" href="../../../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="ActionScriptComment">// Copyright 2007. Adobe Systems Incorporated. All Rights Reserved.
+</span><span class="ActionScriptpackage">package</span> <span class="ActionScriptDefault_Text">fl</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">events</span> <span class="ActionScriptBracket/Brace">{</span>
+
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">events</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">Event</span>;
+
+    <span class="ActionScriptASDoc">/**
+     * The ScrollEvent class defines the scroll event that is associated with the ScrollBar component.
+     * 
+     * @see fl.controls.ScrollBar ScrollBar
+     * @see fl.controls.ScrollBarDirection ScrollBarDirection
+     * @see fl.core.UIComponent UIComponent
+     *
+     * @langversion 3.0
+     * @playerversion Flash 9.0.28.0
+     */</span>
+    <span class="ActionScriptReserved">public</span> <span class="ActionScriptclass">class</span> <span class="ActionScriptDefault_Text">ScrollEvent</span> <span class="ActionScriptReserved">extends</span> <span class="ActionScriptDefault_Text">Event</span> <span class="ActionScriptBracket/Brace">{</span>
+        
+        <span class="ActionScriptASDoc">/**
+         * Defines the value of the &lt;code&gt;type&lt;/code&gt; property of a &lt;code&gt;scroll&lt;/code&gt;
+         * event object.
+         *
+         * &lt;p&gt;This event has the following properties:&lt;/p&gt;
+         *  &lt;table class="innertable" width="100%"&gt;
+         *     &lt;tr&gt;&lt;th&gt;Property&lt;/th&gt;&lt;th&gt;Value&lt;/th&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;bubbles&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;false&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;cancelable&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;false&lt;/code&gt;; there is no default
+         *             behavior to cancel.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;currentTarget&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The object that is actively processing 
+         *             the event object with an event listener.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;delta&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;1&lt;/code&gt;; a value that indicates
+         *          how much scrolling was done.
+         *             &lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;direction&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;vertical&lt;/code&gt;; the direction of the
+         *            ScrollBar.&lt;/td&gt;&lt;/tr&gt;
+         *     &lt;tr&gt;&lt;td&gt;&lt;code&gt;position&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;0&lt;/code&gt;; the position of the
+         *             Scrollbar thumb after it was moved. &lt;/td&gt;&lt;/tr&gt;
+         *        &lt;tr&gt;&lt;td&gt;&lt;code&gt;target&lt;/code&gt;&lt;/td&gt;&lt;td&gt;The object that dispatched the event. The target is 
+         *           not always the object listening for the event. Use the &lt;code&gt;currentTarget&lt;/code&gt;
+         *             property to access the object that is listening for the event.&lt;/td&gt;&lt;/tr&gt;
+         *  &lt;/table&gt;
+         * 
+         * @eventType scroll
+         *
+         * @includeExample ../containers/examples/ScrollPane.scroll.1.as -noswf
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">SCROLL</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"scroll"</span>;
+
+        <span class="ActionScriptASDoc">/**
+         * @private
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_direction</span>:<span class="ActionScriptDefault_Text">String</span>;
+
+
+        <span class="ActionScriptASDoc">/**
+         * @private
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_delta</span>:<span class="ActionScriptDefault_Text">Number</span>;
+
+
+        <span class="ActionScriptASDoc">/**
+         * @private
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_position</span>:<span class="ActionScriptDefault_Text">Number</span>;
+
+        <span class="ActionScriptASDoc">/**
+         * Creates a new ScrollEvent object with the specified parameters.
+         *
+         * @param direction The direction of movement associated with the event. A value of 
+         * &lt;code&gt;ScrollBarDirection.HORIZONTAL&lt;/code&gt; indicates horizontal movement; a value of 
+         * &lt;code&gt;ScrollBarDirection.VERTICAL&lt;/code&gt; indicates vertical movement.
+         *
+         * @param delta The change in scroll position, in pixels. A positive value indicates that the direction 
+         *        of the scroll was down or to the right. A negative value indicates that the
+         *           direction of the scroll was up or to the left.
+         * 
+         * @param position The current scroll position.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">ScrollEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">direction</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">delta</span>:<span class="ActionScriptDefault_Text">Number</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">position</span>:<span class="ActionScriptDefault_Text">Number</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">super</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">ScrollEvent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">SCROLL</span><span class="ActionScriptOperator">,</span><span class="ActionScriptReserved">false</span><span class="ActionScriptOperator">,</span><span class="ActionScriptReserved">false</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">_direction</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">direction</span>;
+            <span class="ActionScriptDefault_Text">_delta</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">delta</span>;
+            <span class="ActionScriptDefault_Text">_position</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">position</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * Gets a constant value that indicates the direction of movement associated with the event. 
+         * A value of &lt;code&gt;ScrollBarDirection.HORIZONTAL&lt;/code&gt; indicates horizontal movement; a value 
+         * of &lt;code&gt;ScrollBarDirection.VERTICAL&lt;/code&gt; indicates vertical movement.
+         *
+         * @see fl.controls.ScrollBarDirection
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">direction</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">_direction</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * Gets the size of the change in scroll position, in pixels. A positive value 
+         * indicates that the direction of the scroll was down or to the right. A negative value indicates that
+         * the direction of the scroll was up or to the left.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">delta</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">_delta</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * Gets the current scroll position, in pixels.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">position</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">_position</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * Returns a string that contains all the properties of the ScrollEvent object. The
+         * string has the following format:
+         * 
+         * &lt;p&gt;[&lt;code&gt;ScrollEvent type=&lt;em&gt;value&lt;/em&gt; bubbles=&lt;em&gt;value&lt;/em&gt;
+         * cancelable=&lt;em&gt;value&lt;/em&gt; direction=&lt;em&gt;value&lt;/em&gt; delta=&lt;em&gt;value&lt;/em&gt;
+         * position=&lt;em&gt;value&lt;/em&gt;&lt;/code&gt;]&lt;/p&gt;
+         *
+         * @return A string representation of the ScrollEvent object.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">override</span> <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">toString</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">formatToString</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"ScrollEvent"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptString">"type"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptString">"bubbles"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptString">"cancelable"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptString">"direction"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptString">"delta"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptString">"position"</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * Creates a copy of the ScrollEvent object and sets the value of each parameter to 
+         * match the original.
+         *
+         * @return A new ScrollEvent object with parameter values that match the original.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">override</span> <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">clone</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">Event</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">ScrollEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">_direction</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">_delta</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">_position</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+    <span class="ActionScriptBracket/Brace">}</span>
+<span class="ActionScriptBracket/Brace">}</span>
+</pre></body>
+</html>

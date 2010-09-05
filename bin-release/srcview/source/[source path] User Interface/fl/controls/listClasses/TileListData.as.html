@@ -1,0 +1,90 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>TileListData.as</title>
+<link rel="stylesheet" type="text/css" href="../../../../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="ActionScriptComment">// Copyright 2007. Adobe Systems Incorporated. All Rights Reserved.
+</span><span class="ActionScriptpackage">package</span> <span class="ActionScriptDefault_Text">fl</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">controls</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">listClasses</span> <span class="ActionScriptBracket/Brace">{</span>
+    
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">fl</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">controls</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">listClasses</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ListData</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">fl</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">core</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">UIComponent</span>;
+    
+    <span class="ActionScriptASDoc">/**
+     * TileListData is a messenger class that holds information relevant to a specific 
+     * cell in the list-based TileListData component. This information includes the label 
+     * and image source that are associated with the cell; whether or not the cell is selected; 
+     * and the position of the cell in the list by row and column. 
+     *
+     * &lt;p&gt;A new TileListData component is created for a cell renderer 
+     * each time it is invalidated.&lt;/p&gt;
+     *
+     * @see fl.controls.listClasses.ListData ListData
+     *
+     * @includeExample examples/TileListDataExample.as
+     *
+     * @langversion 3.0
+     * @playerversion Flash 9.0.28.0
+     */</span>
+    <span class="ActionScriptReserved">public</span> <span class="ActionScriptclass">class</span> <span class="ActionScriptDefault_Text">TileListData</span> <span class="ActionScriptReserved">extends</span> <span class="ActionScriptDefault_Text">ListData</span> <span class="ActionScriptBracket/Brace">{</span>
+        
+        <span class="ActionScriptASDoc">/**
+         * @private (protected)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_source</span>:<span class="ActionScriptDefault_Text">Object</span>;
+    
+        <span class="ActionScriptASDoc">/**
+         * Creates a new instance of the TileListData class as specified by its 
+         * parameters. The TileListData class inherits the properties of the ListData
+         * class, and adds a source parameter for the path to the image that is
+         * associated with the cell.
+         *
+         * @param label The label to be displayed in this cell.
+         * @param icon The icon to be displayed in this cell.
+         * @param source The path or class that is associated with the content to be displayed in the cell.
+         * @param owner The component that owns this cell.
+         * @param index The index of the item in the data provider.
+         * @param row The row in which this item is being displayed. In a List or 
+         *        DataGrid, this corresponds to the index. In a TileList it may be 
+         *        different than the index.
+         * @param col The column in which this item is being displayed. In a List
+         *        this will always be equal to 0.
+         * 
+         * @see fl.controls.listClasses.ListData ListData
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">TileListData</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">label</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">icon</span>:<span class="ActionScriptDefault_Text">Object</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">source</span>:<span class="ActionScriptDefault_Text">Object</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">owner</span>:<span class="ActionScriptDefault_Text">UIComponent</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">index</span>:<span class="ActionScriptDefault_Text">uint</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">row</span>:<span class="ActionScriptDefault_Text">uint</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">col</span>:<span class="ActionScriptDefault_Text">uint</span><span class="ActionScriptOperator">=</span>0<span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">super</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">label</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">icon</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">owner</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">index</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">row</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">col</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">_source</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">source</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptASDoc">/**
+         * Gets or sets an absolute or relative URL that identifies the 
+         * location of the SWF or image file to load, the class name 
+         * of a movie clip in the library, or a reference to a display 
+         * object.  The TileListData does not load the source, it only
+         * passes the value of the source on to the ImageCell.
+         * 
+         * &lt;p&gt;Valid image file formats include GIF, PNG, and JPEG.&lt;/p&gt;
+         *
+         * @default null
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">source</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">Object</span> <span class="ActionScriptBracket/Brace">{</span> 
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">_source</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+    
+    <span class="ActionScriptBracket/Brace">}</span>
+    
+<span class="ActionScriptBracket/Brace">}</span></pre></body>
+</html>

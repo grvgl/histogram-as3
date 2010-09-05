@@ -1,0 +1,143 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>ICellRenderer.as</title>
+<link rel="stylesheet" type="text/css" href="../../../../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="ActionScriptComment">// Copyright 2007. Adobe Systems Incorporated. All Rights Reserved.
+</span><span class="ActionScriptpackage">package</span> <span class="ActionScriptDefault_Text">fl</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">controls</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">listClasses</span> <span class="ActionScriptBracket/Brace">{</span>
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">fl</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">controls</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">listClasses</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ListData</span>; 
+    <span class="ActionScriptASDoc">/**
+     * The ICellRenderer interface provides the methods and properties that a cell renderer requires.
+     * All user defined cell renderers should implement this interface.
+     *
+     * @includeExample examples/ICellRendererExample.as -noswf
+     * @includeExample examples/MyRenderer.as
+     *
+     * @see CellRenderer
+     *
+     * @langversion 3.0
+     * @playerversion Flash 9.0.28.0
+     */</span>    
+    <span class="ActionScriptReserved">public</span> <span class="ActionScriptinterface">interface</span> <span class="ActionScriptDefault_Text">ICellRenderer</span> <span class="ActionScriptBracket/Brace">{</span>        
+        <span class="ActionScriptASDoc">/**
+         * @private
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">set</span> <span class="ActionScriptDefault_Text">y</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">y</span>:<span class="ActionScriptDefault_Text">Number</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>;
+
+
+        <span class="ActionScriptASDoc">/**
+         * @private
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">set</span> <span class="ActionScriptDefault_Text">x</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">x</span>:<span class="ActionScriptDefault_Text">Number</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * Sets the size of the data according to the pixel values specified by the &lt;code&gt;width&lt;/code&gt;
+         * and &lt;code&gt;height&lt;/code&gt; parameters.
+         *
+         * @param width The width to display the cell renderer at, in pixels.
+         *
+         * @param height The height to display the cell renderer at, in pixels.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">setSize</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">width</span>:<span class="ActionScriptDefault_Text">Number</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">height</span>:<span class="ActionScriptDefault_Text">Number</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * Gets or sets the list properties that are applied to the cell--for example,
+         * the &lt;code&gt;index&lt;/code&gt; and &lt;code&gt;selected&lt;/code&gt; values. These list properties
+         * are automatically updated after the cell is invalidated.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">listData</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">ListData</span>;
+
+        <span class="ActionScriptASDoc">/**
+         * @private (setter)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">set</span> <span class="ActionScriptDefault_Text">listData</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">value</span>:<span class="ActionScriptDefault_Text">ListData</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>;        
+
+        <span class="ActionScriptASDoc">/**
+         * Gets or sets an Object that represents the data that is 
+         * associated with a component. When this value is set, the 
+         * component data is stored and the containing component is 
+         * invalidated. The invalidated component is then automatically 
+         * redrawn.
+         *
+         * &lt;p&gt;The data property represents an object containing the item
+         * in the DataProvider that the cell represents.  Typically, the
+         * data property contains standard properties, depending on the
+         * component type. In CellRenderer in a List or ComboBox component
+         * the data contains a label, icon, and data properties; a TileList: a 
+         * label and a source property; a DataGrid cell contains values
+         * for each column.  The data property can also contain user-specified
+         * data relevant to the specific cell. Users can extend a CellRenderer
+         * for a component to utilize different properties of the data 
+         * in the rendering of the cell.&lt;/p&gt;
+         *
+         * &lt;p&gt;Additionally, the &lt;code&gt;labelField&lt;/code&gt;, &lt;code&gt;labelFunction&lt;/code&gt;, 
+         * &lt;code&gt;iconField&lt;/code&gt;, &lt;code&gt;iconFunction&lt;/code&gt;, &lt;code&gt;sourceField&lt;/code&gt;, 
+         * and &lt;code&gt;sourceFunction&lt;/code&gt; elements can be used to specify which properties 
+         * are used to draw the label, icon, and source respectively.&lt;/p&gt;
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">data</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">Object</span>;
+
+        <span class="ActionScriptASDoc">/**
+         * @private
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">set</span> <span class="ActionScriptDefault_Text">data</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">value</span>:<span class="ActionScriptDefault_Text">Object</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * Gets or sets a Boolean value that indicates whether the
+         * current cell is selected. A value of &lt;code&gt;true&lt;/code&gt; indicates
+         * that the current cell is selected; a value of &lt;code&gt;false&lt;/code&gt; 
+         * indicates that it is not.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">selected</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">Boolean</span>;
+
+        <span class="ActionScriptASDoc">/**
+         * @private (setter)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">set</span> <span class="ActionScriptDefault_Text">selected</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">value</span>:<span class="ActionScriptDefault_Text">Boolean</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * Sets the current cell to a specific mouse state.  This method 
+         * is necessary for the DataGrid to set the mouse state on an entire
+         * row when the user interacts with a single cell.
+         *
+         * @param state A string that specifies a mouse state, such as "up" or "over". 
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+         <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">setMouseState</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">state</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>;
+    <span class="ActionScriptBracket/Brace">}</span>
+<span class="ActionScriptBracket/Brace">}</span>
+</pre></body>
+</html>

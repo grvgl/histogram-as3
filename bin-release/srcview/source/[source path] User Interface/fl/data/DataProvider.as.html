@@ -1,0 +1,641 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>DataProvider.as</title>
+<link rel="stylesheet" type="text/css" href="../../../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="ActionScriptComment">// Copyright 2007. Adobe Systems Incorporated. All Rights Reserved.
+</span><span class="ActionScriptpackage">package</span> <span class="ActionScriptDefault_Text">fl</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">data</span> <span class="ActionScriptBracket/Brace">{</span>
+
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">events</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">EventDispatcher</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">fl</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">events</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">DataChangeEvent</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">fl</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">events</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">DataChangeType</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">RangeError</span>;
+
+
+    <span class="ActionScriptComment">//--------------------------------------
+</span>    <span class="ActionScriptComment">//  Events
+</span>    <span class="ActionScriptComment">//--------------------------------------
+</span>    <span class="ActionScriptASDoc">/**
+     * Dispatched before the data is changed.
+     *
+     * @see #event:dataChange dataChange event
+     *
+     * @eventType fl.events.DataChangeEvent.PRE_DATA_CHANGE
+     *
+     * @langversion 3.0
+     * @playerversion Flash 9.0.28.0
+     */</span>
+    <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Event</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"preDataChange"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">type</span><span class="ActionScriptOperator">=</span><span class="ActionScriptString">"fl.events.DataChangeEvent"</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+
+    <span class="ActionScriptASDoc">/**
+     * Dispatched after the data is changed.
+     *
+     * @see #event:preDataChange preDataChange event
+     *
+     * @eventType fl.events.DataChangeEvent.DATA_CHANGE
+     *
+     * @langversion 3.0
+     * @playerversion Flash 9.0.28.0
+     */</span>
+    <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Event</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"dataChange"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">type</span><span class="ActionScriptOperator">=</span><span class="ActionScriptString">"fl.events.DataChangeEvent"</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+
+
+    <span class="ActionScriptComment">//--------------------------------------
+</span>    <span class="ActionScriptComment">//  Class description
+</span>    <span class="ActionScriptComment">//--------------------------------------
+</span>
+    <span class="ActionScriptASDoc">/**
+     * The DataProvider class provides methods and properties that allow you to query and modify
+     * the data in any list-based component--for example, in a List, DataGrid, TileList, or ComboBox
+     * component.
+     *
+     * &lt;p&gt;A &lt;em&gt;data provider&lt;/em&gt; is a linear collection of items that serve as a data source--for 
+     * example, an array. Each item in a data provider is an object or XML object that contains one or 
+     * more fields of data. You can access the items that are contained in a data provider by index, by 
+     * using the &lt;code&gt;DataProvider.getItemAt()&lt;/code&gt; method.&lt;/p&gt;
+     *
+     * @includeExample examples/DataProviderExample.as
+     *
+     * @langversion 3.0
+     * @playerversion Flash 9.0.28.0 
+     */</span>
+    <span class="ActionScriptReserved">public</span> <span class="ActionScriptclass">class</span> <span class="ActionScriptDefault_Text">DataProvider</span> <span class="ActionScriptReserved">extends</span> <span class="ActionScriptDefault_Text">EventDispatcher</span> <span class="ActionScriptBracket/Brace">{</span>
+        <span class="ActionScriptASDoc">/**
+         * @private (protected)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">data</span>:<span class="ActionScriptDefault_Text">Array</span>;
+
+
+        <span class="ActionScriptASDoc">/**
+         * Creates a new DataProvider object using a list, XML instance or an array of data objects
+         * as the data source. 
+         * 
+         * @param data The data that is used to create the DataProvider.
+         *
+         * @includeExample examples/DataProvider.constructor.1.as -noswf
+         * @includeExample examples/DataProvider.constructor.2.as -noswf
+         * @includeExample examples/DataProvider.constructor.3.as -noswf
+         * @includeExample examples/DataProvider.constructor.4.as -noswf
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">DataProvider</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">value</span>:<span class="ActionScriptDefault_Text">Object</span><span class="ActionScriptOperator">=</span><span class="ActionScriptReserved">null</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>            
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">value</span> <span class="ActionScriptOperator">==</span> <span class="ActionScriptReserved">null</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">data</span> <span class="ActionScriptOperator">=</span> [];
+            <span class="ActionScriptBracket/Brace">}</span> <span class="ActionScriptReserved">else</span> <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">data</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">getDataFromObject</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">value</span><span class="ActionScriptBracket/Brace">)</span>;                
+            <span class="ActionScriptBracket/Brace">}</span>
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * The number of items that the data provider contains.
+         *
+         * @includeExample examples/DataProvider.length.1.as -noswf
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">length</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">uint</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">data</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">length</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * Invalidates the item at the specified index. An item is invalidated after it is
+         * changed; the DataProvider automatically redraws the invalidated item. 
+         *
+         * @param index Index of the item to be invalidated.
+         *
+         * @throws RangeError The specified index is less than 0 or greater than 
+         *         or equal to the length of the data provider.
+         *
+         * @see #invalidate()
+         * @see #invalidateItem()
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">invalidateItemAt</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">index</span>:<span class="ActionScriptDefault_Text">int</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">checkIndex</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">index</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">data</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">length</span><span class="ActionScriptOperator">-</span>1<span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptDefault_Text">dispatchChangeEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">DataChangeType</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">INVALIDATE</span><span class="ActionScriptOperator">,</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptDefault_Text">data</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptDefault_Text">index</span><span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">index</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">index</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * Invalidates the specified item. An item is invalidated after it is
+         * changed; the DataProvider automatically redraws the invalidated item. 
+         *
+         * @param item Item to be invalidated.
+         *
+         * @see #invalidate()
+         * @see #invalidateItemAt()
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">invalidateItem</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">item</span>:<span class="ActionScriptDefault_Text">Object</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">index</span>:<span class="ActionScriptDefault_Text">uint</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">getItemIndex</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">item</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">index</span> <span class="ActionScriptOperator">==</span> <span class="ActionScriptOperator">-</span>1<span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span> <span class="ActionScriptReserved">return</span>; <span class="ActionScriptBracket/Brace">}</span>
+            <span class="ActionScriptDefault_Text">invalidateItemAt</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">index</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * Invalidates all the data items that the DataProvider contains and dispatches a 
+         * &lt;code&gt;DataChangeEvent.INVALIDATE_ALL&lt;/code&gt; event. Items are invalidated after they
+         * are changed; the DataProvider automatically redraws the invalidated items. 
+         *
+         * @see #invalidateItem()
+         * @see #invalidateItemAt()
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">invalidate</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">dispatchEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">DataChangeEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">DataChangeEvent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">DATA_CHANGE</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">DataChangeType</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">INVALIDATE_ALL</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">data</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">concat</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptOperator">,</span>0<span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">data</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">length</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+
+        <span class="ActionScriptASDoc">/**
+         * Adds a new item to the data provider at the specified index.
+         * If the index that is specified exceeds the length of the data provider,
+         * the index is ignored.
+         *
+         * @param item An object that contains the data for the item to be added.
+         *
+         * @param index  The index at which the item is to be added.
+         *
+         * @throws RangeError The specified index is less than 0 or greater than or equal 
+         *         to the length of the data provider.
+         *
+         * @see #addItem()
+         * @see #addItems()
+         * @see #addItemsAt()
+         * @see #getItemAt()
+         * @see #removeItemAt()
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">addItemAt</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">item</span>:<span class="ActionScriptDefault_Text">Object</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">index</span>:<span class="ActionScriptDefault_Text">uint</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">checkIndex</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">index</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">data</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">length</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">dispatchPreChangeEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">DataChangeType</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ADD</span><span class="ActionScriptOperator">,</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptDefault_Text">item</span><span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">index</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">index</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">data</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">splice</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">index</span><span class="ActionScriptOperator">,</span>0<span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">item</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">dispatchChangeEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">DataChangeType</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ADD</span><span class="ActionScriptOperator">,</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptDefault_Text">item</span><span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">index</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">index</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * Appends an item to the end of the data provider.
+         *
+         * @param item The item to be appended to the end of the current data provider.
+         *
+         * @includeExample examples/DataProvider.constructor.1.as -noswf
+         *
+         * @see #addItemAt()
+         * @see #addItems()
+         * @see #addItemsAt()
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">addItem</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">item</span>:<span class="ActionScriptDefault_Text">Object</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">dispatchPreChangeEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">DataChangeType</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ADD</span><span class="ActionScriptOperator">,</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptDefault_Text">item</span><span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">data</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">length</span><span class="ActionScriptOperator">-</span>1<span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">data</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">length</span><span class="ActionScriptOperator">-</span>1<span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">data</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">push</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">item</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">dispatchChangeEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">DataChangeType</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ADD</span><span class="ActionScriptOperator">,</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptDefault_Text">item</span><span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">data</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">length</span><span class="ActionScriptOperator">-</span>1<span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">data</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">length</span><span class="ActionScriptOperator">-</span>1<span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * Adds several items to the data provider at the specified index and dispatches
+         * a &lt;code&gt;DataChangeType.ADD&lt;/code&gt; event.
+         *
+         * @param items The items to be added to the data provider.
+         *
+         * @param index The index at which the items are to be inserted.
+         *
+         * @throws RangeError The specified index is less than 0 or greater than or equal 
+         *                    to the length of the data provider.
+         *
+         * @see #addItem()
+         * @see #addItemAt()
+         * @see #addItems()
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">addItemsAt</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">items</span>:<span class="ActionScriptDefault_Text">Object</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">index</span>:<span class="ActionScriptDefault_Text">uint</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">checkIndex</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">index</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">data</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">length</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">arr</span>:<span class="ActionScriptDefault_Text">Array</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">getDataFromObject</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">items</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">dispatchPreChangeEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">DataChangeType</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ADD</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">arr</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">index</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">index</span><span class="ActionScriptOperator">+</span><span class="ActionScriptDefault_Text">arr</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">length</span><span class="ActionScriptOperator">-</span>1<span class="ActionScriptBracket/Brace">)</span>;            
+            <span class="ActionScriptDefault_Text">data</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">splice</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">apply</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">data</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptDefault_Text">index</span><span class="ActionScriptOperator">,</span>0<span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">concat</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">arr</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">dispatchChangeEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">DataChangeType</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ADD</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">arr</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">index</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">index</span><span class="ActionScriptOperator">+</span><span class="ActionScriptDefault_Text">arr</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">length</span><span class="ActionScriptOperator">-</span>1<span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * Appends multiple items to the end of the DataProvider and dispatches
+         * a &lt;code&gt;DataChangeType.ADD&lt;/code&gt; event. The items are added in the order 
+         * in which they are specified.
+         *
+         * @param items The items to be appended to the data provider.
+         *
+         * @includeExample examples/DataProvider.addItems.1.as -noswf
+         * 
+         * @see #addItem()
+         * @see #addItemAt()
+         * @see #addItemsAt()
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">addItems</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">items</span>:<span class="ActionScriptDefault_Text">Object</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">addItemsAt</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">items</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">data</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">length</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * Concatenates the specified items to the end of the current data provider.
+         * This method dispatches a &lt;code&gt;DataChangeType.ADD&lt;/code&gt; event.
+         *
+         * @param items The items to be added to the data provider.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         *
+         * @see #addItems()
+         * @see #merge()
+         *
+         * @internal Is this method any different than addItems()? It's not clear.
+         *           I also thing "concatenates the items *to*" sounds odd. Perhaps
+         *           the concatenated items are added to the end of the data provider?
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">concat</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">items</span>:<span class="ActionScriptDefault_Text">Object</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">addItems</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">items</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * Appends the specified data into the data that the data provider
+         * contains and removes any duplicate items. This method dispatches
+         * a &lt;code&gt;DataChangeType.ADD&lt;/code&gt; event.
+         *
+         * @param data Data to be merged into the data provider.
+         *
+         * @see #concat()
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">merge</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">newData</span>:<span class="ActionScriptDefault_Text">Object</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">arr</span>:<span class="ActionScriptDefault_Text">Array</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">getDataFromObject</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">newData</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">l</span>:<span class="ActionScriptDefault_Text">uint</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">arr</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">length</span>;
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">startLength</span>:<span class="ActionScriptDefault_Text">uint</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">data</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">length</span>;
+            
+            <span class="ActionScriptDefault_Text">dispatchPreChangeEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">DataChangeType</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ADD</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">data</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">slice</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">startLength</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">data</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">length</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">startLength</span><span class="ActionScriptOperator">,</span><span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">data</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">length</span><span class="ActionScriptOperator">-</span>1<span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptReserved">for</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">i</span>:<span class="ActionScriptDefault_Text">uint</span><span class="ActionScriptOperator">=</span>0; <span class="ActionScriptDefault_Text">i</span><span class="ActionScriptOperator">&lt;</span><span class="ActionScriptDefault_Text">l</span>; <span class="ActionScriptDefault_Text">i</span><span class="ActionScriptOperator">++</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">item</span>:<span class="ActionScriptDefault_Text">Object</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">arr</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptDefault_Text">i</span><span class="ActionScriptBracket/Brace">]</span>;
+                <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">getItemIndex</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">item</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptOperator">==</span> <span class="ActionScriptOperator">-</span>1<span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+                    <span class="ActionScriptDefault_Text">data</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">push</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">item</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptBracket/Brace">}</span>
+            <span class="ActionScriptBracket/Brace">}</span>
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">data</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">length</span> <span class="ActionScriptOperator">&gt;</span> <span class="ActionScriptDefault_Text">startLength</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">dispatchChangeEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">DataChangeType</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ADD</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">data</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">slice</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">startLength</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">data</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">length</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">startLength</span><span class="ActionScriptOperator">,</span><span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">data</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">length</span><span class="ActionScriptOperator">-</span>1<span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptBracket/Brace">}</span> <span class="ActionScriptReserved">else</span> <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">dispatchChangeEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">DataChangeType</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ADD</span><span class="ActionScriptOperator">,</span>[]<span class="ActionScriptOperator">,</span><span class="ActionScriptOperator">-</span>1<span class="ActionScriptOperator">,</span><span class="ActionScriptOperator">-</span>1<span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * Returns the item at the specified index.
+         *
+         * @param index Location of the item to be returned.
+         *
+         * @return The item at the specified index.
+         *
+         * @throws RangeError The specified index is less than 0 or greater than 
+         *         or equal to the length of the data provider.
+         *
+         * @see #getItemIndex()
+         * @see #removeItemAt()
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">getItemAt</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">index</span>:<span class="ActionScriptDefault_Text">uint</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">Object</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">checkIndex</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">index</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">data</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">length</span><span class="ActionScriptOperator">-</span>1<span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">data</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptDefault_Text">index</span><span class="ActionScriptBracket/Brace">]</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * Returns the index of the specified item.
+         *
+         * @param item The item to be located.
+         *
+         * @return The index of the specified item, or -1 if the specified item is not found.
+         *
+         * @see #getItemAt()
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">getItemIndex</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">item</span>:<span class="ActionScriptDefault_Text">Object</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">int</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">data</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">indexOf</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">item</span><span class="ActionScriptBracket/Brace">)</span>;;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * Removes the item at the specified index and dispatches a &lt;code&gt;DataChangeType.REMOVE&lt;/code&gt;
+         * event.
+         *
+         * @param index Index of the item to be removed.
+         *
+         * @return The item that was removed.
+         *
+         * @throws RangeError The specified index is less than 0 or greater than
+         *         or equal to the length of the data provider.
+         *
+         * @see #removeAll()
+         * @see #removeItem()
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">removeItemAt</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">index</span>:<span class="ActionScriptDefault_Text">uint</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">Object</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">checkIndex</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">index</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">data</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">length</span><span class="ActionScriptOperator">-</span>1<span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">dispatchPreChangeEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">DataChangeType</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">REMOVE</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">data</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">slice</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">index</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">index</span><span class="ActionScriptOperator">+</span>1<span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">index</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">index</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">arr</span>:<span class="ActionScriptDefault_Text">Array</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">data</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">splice</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">index</span><span class="ActionScriptOperator">,</span>1<span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">dispatchChangeEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">DataChangeType</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">REMOVE</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">arr</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">index</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">index</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">arr</span><span class="ActionScriptBracket/Brace">[</span>0<span class="ActionScriptBracket/Brace">]</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * Removes the specified item from the data provider and dispatches a &lt;code&gt;DataChangeType.REMOVE&lt;/code&gt;
+         * event.
+         *
+         * @param item Item to be removed.
+         *
+         * @return The item that was removed.
+         *
+         * @see #removeAll()
+         * @see #removeItemAt()
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">removeItem</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">item</span>:<span class="ActionScriptDefault_Text">Object</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">Object</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">index</span>:<span class="ActionScriptDefault_Text">int</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">getItemIndex</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">item</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">index</span> <span class="ActionScriptOperator">!=</span> <span class="ActionScriptOperator">-</span>1<span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">removeItemAt</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">index</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptReserved">null</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * Removes all items from the data provider and dispatches a &lt;code&gt;DataChangeType.REMOVE_ALL&lt;/code&gt;
+         * event.
+         *
+         * @see #removeItem()
+         * @see #removeItemAt()
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">removeAll</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">arr</span>:<span class="ActionScriptDefault_Text">Array</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">data</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">concat</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptDefault_Text">dispatchPreChangeEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">DataChangeType</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">REMOVE_ALL</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">arr</span><span class="ActionScriptOperator">,</span>0<span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">arr</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">length</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">data</span> <span class="ActionScriptOperator">=</span> [];
+            <span class="ActionScriptDefault_Text">dispatchChangeEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">DataChangeType</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">REMOVE_ALL</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">arr</span><span class="ActionScriptOperator">,</span>0<span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">arr</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">length</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * Replaces an existing item with a new item and dispatches a &lt;code&gt;DataChangeType.REPLACE&lt;/code&gt;
+         * event.
+         *
+         * @param oldItem The item to be replaced.
+         *
+         * @param newItem The replacement item.
+         *
+         * @return The item that was replaced.
+         *
+         * @throws RangeError The item could not be found in the data provider.
+         *
+         * @see #replaceItemAt()
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">replaceItem</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">newItem</span>:<span class="ActionScriptDefault_Text">Object</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">oldItem</span>:<span class="ActionScriptDefault_Text">Object</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">Object</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">index</span>:<span class="ActionScriptDefault_Text">int</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">getItemIndex</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">oldItem</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">index</span> <span class="ActionScriptOperator">!=</span> <span class="ActionScriptOperator">-</span>1<span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">replaceItemAt</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">newItem</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">index</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptReserved">null</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         *  Replaces the item at the specified index and dispatches a &lt;code&gt;DataChangeType.REPLACE&lt;/code&gt;
+         *  event.
+         *
+         * @param newItem The replacement item.
+         *
+         * @param index The index of the item to be replaced.
+         *
+         * @return The item that was replaced.
+         * 
+         * @throws RangeError The specified index is less than 0 or greater than 
+         *         or equal to the length of the data provider.
+         *
+         * @see #replaceItem()
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">replaceItemAt</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">newItem</span>:<span class="ActionScriptDefault_Text">Object</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">index</span>:<span class="ActionScriptDefault_Text">uint</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">Object</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">checkIndex</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">index</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">data</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">length</span><span class="ActionScriptOperator">-</span>1<span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">arr</span>:<span class="ActionScriptDefault_Text">Array</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptDefault_Text">data</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptDefault_Text">index</span><span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptBracket/Brace">]</span>;
+            <span class="ActionScriptDefault_Text">dispatchPreChangeEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">DataChangeType</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">REPLACE</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">arr</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">index</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">index</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">data</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptDefault_Text">index</span><span class="ActionScriptBracket/Brace">]</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">newItem</span>;
+            <span class="ActionScriptDefault_Text">dispatchChangeEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">DataChangeType</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">REPLACE</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">arr</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">index</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">index</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">arr</span><span class="ActionScriptBracket/Brace">[</span>0<span class="ActionScriptBracket/Brace">]</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * Sorts the items that the data provider contains and dispatches a &lt;code&gt;DataChangeType.SORT&lt;/code&gt;
+         * event.
+         *
+         * @param sortArg The arguments to use for sorting.
+         *
+         * @return The return value depends on whether the method receives any arguments.  
+         *         See the &lt;code&gt;Array.sort()&lt;/code&gt; method for more information. 
+         *         This method returns 0 when the &lt;code&gt;sortOption&lt;/code&gt; property 
+         *         is set to &lt;code&gt;Array.UNIQUESORT&lt;/code&gt;.
+         *
+         * @see #sortOn()
+         * @see Array#sort() Array.sort()
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">sort</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptOperator">...</span><span class="ActionScriptDefault_Text">sortArgs</span>:<span class="ActionScriptDefault_Text">Array</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptOperator">*</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">dispatchPreChangeEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">DataChangeType</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">SORT</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">data</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">concat</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptOperator">,</span>0<span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">data</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">length</span><span class="ActionScriptOperator">-</span>1<span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">returnValue</span>:<span class="ActionScriptDefault_Text">Array</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">data</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">sort</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">apply</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">data</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">sortArgs</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">dispatchChangeEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">DataChangeType</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">SORT</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">data</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">concat</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptOperator">,</span>0<span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">data</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">length</span><span class="ActionScriptOperator">-</span>1<span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">returnValue</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * Sorts the items that the data provider contains by the specified 
+         * field and dispatches a &lt;code&gt;DataChangeType.SORT&lt;/code&gt; event.
+         * The specified field can be a string, or an array of string values that
+         * designate multiple fields to sort on in order of precedence.
+         *
+         * @param fieldName The item field by which to sort. This value can be a string 
+         *                  or an array of string values.
+         *
+         * @param options Options for sorting.
+         *
+         * @return The return value depends on whether the method receives any arguments. 
+         *         For more information, see the &lt;code&gt;Array.sortOn()&lt;/code&gt; method. 
+         *         If the &lt;code&gt;sortOption&lt;/code&gt; property is set to &lt;code&gt;Array.UNIQUESORT&lt;/code&gt;,
+         *         this method returns 0. 
+         *
+         * @see #sort()
+         * @see Array#sortOn() Array.sortOn()
+         *
+         * @internal If an array of string values is passed, does the sort take place in
+         * the order that the string values are specified?  Also, it might be helpful if "options
+         * for sorting" was more explicit. I wondered if that meant sort type, like merge sort
+         * or bubble sort, for example, but when I looked up "uniquesort" it seemed like not.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">sortOn</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">fieldName</span>:<span class="ActionScriptDefault_Text">Object</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">options</span>:<span class="ActionScriptDefault_Text">Object</span><span class="ActionScriptOperator">=</span><span class="ActionScriptReserved">null</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptOperator">*</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">dispatchPreChangeEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">DataChangeType</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">SORT</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">data</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">concat</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptOperator">,</span>0<span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">data</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">length</span><span class="ActionScriptOperator">-</span>1<span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">returnValue</span>:<span class="ActionScriptDefault_Text">Array</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">data</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">sortOn</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">fieldName</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">options</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">dispatchChangeEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">DataChangeType</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">SORT</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">data</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">concat</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptOperator">,</span>0<span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">data</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">length</span><span class="ActionScriptOperator">-</span>1<span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">returnValue</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * Creates a copy of the current DataProvider object.
+         *
+         * @return A new instance of this DataProvider object.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">clone</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">DataProvider</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">DataProvider</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">data</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * Creates an Array object representation of the data that the data provider contains.
+         *
+         * @return An Array object representation of the data that the data provider contains.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">toArray</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">Array</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">data</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">concat</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * Creates a string representation of the data that the data provider contains.
+         *
+         * @return A string representation of the data that the data provider contains.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">override</span> <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">toString</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptString">"DataProvider ["</span><span class="ActionScriptOperator">+</span><span class="ActionScriptDefault_Text">data</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">join</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">" , "</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptOperator">+</span><span class="ActionScriptString">"]"</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * @private (protected)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">getDataFromObject</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">obj</span>:<span class="ActionScriptDefault_Text">Object</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">Array</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">retArr</span>:<span class="ActionScriptDefault_Text">Array</span>;
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">obj</span> <span class="ActionScriptReserved">is</span> <span class="ActionScriptDefault_Text">Array</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">arr</span>:<span class="ActionScriptDefault_Text">Array</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">obj</span> <span class="ActionScriptReserved">as</span> <span class="ActionScriptDefault_Text">Array</span>;
+                <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">arr</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">length</span> <span class="ActionScriptOperator">&gt;</span> 0<span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+                    <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">arr</span><span class="ActionScriptBracket/Brace">[</span>0<span class="ActionScriptBracket/Brace">]</span> <span class="ActionScriptReserved">is</span> <span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">||</span> <span class="ActionScriptDefault_Text">arr</span><span class="ActionScriptBracket/Brace">[</span>0<span class="ActionScriptBracket/Brace">]</span> <span class="ActionScriptReserved">is</span> <span class="ActionScriptDefault_Text">Number</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+                        <span class="ActionScriptDefault_Text">retArr</span> <span class="ActionScriptOperator">=</span> [];
+                        <span class="ActionScriptComment">// convert to object array.
+</span>                        <span class="ActionScriptReserved">for</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">i</span>:<span class="ActionScriptDefault_Text">uint</span> <span class="ActionScriptOperator">=</span> 0; <span class="ActionScriptDefault_Text">i</span> <span class="ActionScriptOperator">&lt;</span> <span class="ActionScriptDefault_Text">arr</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">length</span>; <span class="ActionScriptDefault_Text">i</span><span class="ActionScriptOperator">++</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+                            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">o</span>:<span class="ActionScriptDefault_Text">Object</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptBracket/Brace">{</span><span class="ActionScriptDefault_Text">label</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">arr</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptDefault_Text">i</span><span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">data</span>:<span class="ActionScriptDefault_Text">arr</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptDefault_Text">i</span><span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptBracket/Brace">}</span>
+                            <span class="ActionScriptDefault_Text">retArr</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">push</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">o</span><span class="ActionScriptBracket/Brace">)</span>;
+                        <span class="ActionScriptBracket/Brace">}</span>
+                        <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">retArr</span>;
+                    <span class="ActionScriptBracket/Brace">}</span>
+                <span class="ActionScriptBracket/Brace">}</span>
+                <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">obj</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">concat</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptBracket/Brace">}</span> <span class="ActionScriptReserved">else</span> <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">obj</span> <span class="ActionScriptReserved">is</span> <span class="ActionScriptDefault_Text">DataProvider</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">obj</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">toArray</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptBracket/Brace">}</span> <span class="ActionScriptReserved">else</span> <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">obj</span> <span class="ActionScriptReserved">is</span> <span class="ActionScriptDefault_Text">XML</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">xml</span>:<span class="ActionScriptDefault_Text">XML</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">obj</span> <span class="ActionScriptReserved">as</span> <span class="ActionScriptDefault_Text">XML</span>;
+                <span class="ActionScriptDefault_Text">retArr</span> <span class="ActionScriptOperator">=</span> [];
+                <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">nodes</span>:<span class="ActionScriptDefault_Text">XMLList</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">xml</span><span class="ActionScriptOperator">.</span><span class="ActionScriptOperator">*</span>;
+                <span class="ActionScriptReserved">for each</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">node</span>:<span class="ActionScriptDefault_Text">XML</span> <span class="ActionScriptReserved">in</span> <span class="ActionScriptDefault_Text">nodes</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+                    <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">obj</span>:<span class="ActionScriptDefault_Text">Object</span> <span class="ActionScriptOperator">=</span> {};
+                    <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">attrs</span>:<span class="ActionScriptDefault_Text">XMLList</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">node</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">attributes</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+                    <span class="ActionScriptReserved">for each</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">attr</span>:<span class="ActionScriptDefault_Text">XML</span> <span class="ActionScriptReserved">in</span> <span class="ActionScriptDefault_Text">attrs</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+                        <span class="ActionScriptDefault_Text">obj</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptDefault_Text">attr</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">localName</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">attr</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">toString</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+                    <span class="ActionScriptBracket/Brace">}</span>
+                    <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">propNodes</span>:<span class="ActionScriptDefault_Text">XMLList</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">node</span><span class="ActionScriptOperator">.</span><span class="ActionScriptOperator">*</span>;
+                    <span class="ActionScriptReserved">for each</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">propNode</span>:<span class="ActionScriptDefault_Text">XML</span> <span class="ActionScriptReserved">in</span> <span class="ActionScriptDefault_Text">propNodes</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+                        <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">propNode</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">hasSimpleContent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+                            <span class="ActionScriptDefault_Text">obj</span><span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptDefault_Text">propNode</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">localName</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">propNode</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">toString</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+                        <span class="ActionScriptBracket/Brace">}</span>
+                    <span class="ActionScriptBracket/Brace">}</span>
+                    <span class="ActionScriptDefault_Text">retArr</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">push</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">obj</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptBracket/Brace">}</span>
+                <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">retArr</span>;
+            <span class="ActionScriptBracket/Brace">}</span> <span class="ActionScriptReserved">else</span> <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptReserved">throw</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">TypeError</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"Error: Type Coercion failed: cannot convert "</span><span class="ActionScriptOperator">+</span><span class="ActionScriptDefault_Text">obj</span><span class="ActionScriptOperator">+</span><span class="ActionScriptString">" to Array or DataProvider."</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptReserved">return</span> <span class="ActionScriptReserved">null</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptASDoc">/**
+         * @private (protected)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">checkIndex</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">index</span>:<span class="ActionScriptDefault_Text">int</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">maximum</span>:<span class="ActionScriptDefault_Text">int</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">index</span> <span class="ActionScriptOperator">&gt;</span> <span class="ActionScriptDefault_Text">maximum</span> <span class="ActionScriptOperator">||</span> <span class="ActionScriptDefault_Text">index</span> <span class="ActionScriptOperator">&lt;</span> 0<span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptReserved">throw</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">RangeError</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"DataProvider index ("</span><span class="ActionScriptOperator">+</span><span class="ActionScriptDefault_Text">index</span><span class="ActionScriptOperator">+</span><span class="ActionScriptString">") is not in acceptable range (0 - "</span><span class="ActionScriptOperator">+</span><span class="ActionScriptDefault_Text">maximum</span><span class="ActionScriptOperator">+</span><span class="ActionScriptString">")"</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * @private (protected)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">dispatchChangeEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">evtType</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">items</span>:<span class="ActionScriptDefault_Text">Array</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">startIndex</span>:<span class="ActionScriptDefault_Text">int</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">endIndex</span>:<span class="ActionScriptDefault_Text">int</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">dispatchEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">DataChangeEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">DataChangeEvent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">DATA_CHANGE</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">evtType</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">items</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">startIndex</span><span class="ActionScriptOperator">,</span><span class="ActionScriptDefault_Text">endIndex</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptASDoc">/**
+         * @private (protected)
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">dispatchPreChangeEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">evtType</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">items</span>:<span class="ActionScriptDefault_Text">Array</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">startIndex</span>:<span class="ActionScriptDefault_Text">int</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">endIndex</span>:<span class="ActionScriptDefault_Text">int</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">dispatchEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">DataChangeEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">DataChangeEvent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">PRE_DATA_CHANGE</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">evtType</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">items</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">startIndex</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">endIndex</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+    <span class="ActionScriptBracket/Brace">}</span>
+
+<span class="ActionScriptBracket/Brace">}</span></pre></body>
+</html>

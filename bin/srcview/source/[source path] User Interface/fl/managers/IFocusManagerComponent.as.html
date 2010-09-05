@@ -1,0 +1,172 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>IFocusManagerComponent.as</title>
+<link rel="stylesheet" type="text/css" href="../../../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="ActionScriptComment">// Copyright 2007. Adobe Systems Incorporated. All Rights Reserved.
+</span><span class="ActionScriptpackage">package</span> <span class="ActionScriptDefault_Text">fl</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">managers</span> <span class="ActionScriptBracket/Brace">{</span>
+    <span class="ActionScriptASDoc">/**
+     * The IFocusManagerComponent interface provides methods and properties
+     * that give components the capability to receive focus. Components
+     * must implement this interface to receive focus from the FocusManager.
+     *
+     * &lt;p&gt;The UIComponent class provides a base implementation of this interface
+     * but does not fully implement it because not all UIComponent objects 
+     * receive focus. Components that are derived from the UIComponent
+     * class must implement this interface to be capable of receiving focus.
+     * To enable focus, add the statement &lt;code&gt;implements IFocusManagerComponent&lt;/code&gt;
+     * to the class definition of a component that is derived from the UIComponent
+     * class.&lt;/p&gt;
+     * 
+     * @see FocusManager
+     *
+     * @langversion 3.0
+     * @playerversion Flash 9.0.28.0
+     */</span>
+    <span class="ActionScriptReserved">public</span> <span class="ActionScriptinterface">interface</span> <span class="ActionScriptDefault_Text">IFocusManagerComponent</span> <span class="ActionScriptBracket/Brace">{</span>
+        <span class="ActionScriptComment">//==========================================================================
+</span>        <span class="ActionScriptComment">//  Properties
+</span>        <span class="ActionScriptComment">//==========================================================================
+</span>    
+        <span class="ActionScriptComment">//----------------------------------
+</span>        <span class="ActionScriptComment">//  focusEnabled
+</span>        <span class="ActionScriptComment">//----------------------------------
+</span>    
+        <span class="ActionScriptASDoc">/**
+         * Gets or sets a Boolean value that indicates whether a selected component can receive 
+         * focus from the focus manager. 
+         * 
+         * &lt;p&gt;To make a component capable of receiving focus from the focus manager, 
+         * set this property to &lt;code&gt;true&lt;/code&gt;. To make the component incapable of receiving 
+         * focus, set this property to &lt;code&gt;false&lt;/code&gt;. When &lt;code&gt;focusEnabled&lt;/code&gt;  
+         * is set to &lt;code&gt;false&lt;/code&gt;, the focus manager ignores the component over the
+         * component's lifetime and does not monitor it for changes in the following 
+         * properties: &lt;code&gt;tabEnabled&lt;/code&gt;, &lt;code&gt;tabChildren&lt;/code&gt;, and 
+         * &lt;code&gt;mouseFocusEnabled&lt;/code&gt;.&lt;/p&gt;
+         * 
+         * &lt;p&gt;You can use the &lt;code&gt;focusEnabled&lt;/code&gt; property to prevent the child component of 
+         * a component that implements the IFocusManagerComponent interface 
+         * from receiving focus from the focus manager. To do so, set this property to &lt;code&gt;false&lt;/code&gt; 
+         * before using the &lt;code&gt;addChild()&lt;/code&gt; method to add the child component
+         * to the display list. Note that if you set this property to &lt;code&gt;false&lt;/code&gt; 
+         * before adding the component to the display list, the focus manager will continue to 
+         * ignore the component even if you set this property to &lt;code&gt;true&lt;/code&gt; 
+         * later on.&lt;/p&gt;
+         * 
+         * &lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; Even if you set this property to &lt;code&gt;false&lt;/code&gt;, 
+         * you can still set focus programmatically by using the &lt;code&gt;setFocus()&lt;/code&gt;
+         * method.&lt;/p&gt;
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">focusEnabled</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">Boolean</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * @private
+         */</span>
+        <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">set</span> <span class="ActionScriptDefault_Text">focusEnabled</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">value</span>:<span class="ActionScriptDefault_Text">Boolean</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>;
+    
+        <span class="ActionScriptComment">//----------------------------------
+</span>        <span class="ActionScriptComment">//  mouseFocusEnabled
+</span>        <span class="ActionScriptComment">//----------------------------------
+</span>    
+        <span class="ActionScriptASDoc">/**
+         * Gets a Boolean value that indicates whether a component that is
+         * selected by using a mouse device can receive focus.
+         * 
+         * &lt;p&gt;Set this property to &lt;code&gt;true&lt;/code&gt; to give focus
+         * to components that are selected by using a mouse device.
+         * Set this property to &lt;code&gt;false&lt;/code&gt; to prevent focus
+         * from being given to components that are selected by using
+         * a mouse device. If this property is set to &lt;code&gt;false&lt;/code&gt;
+         * when a component is selected by using a mouse device, focus
+         * is transferred to the first parent component for which
+         * this property is set to &lt;code&gt;true&lt;/code&gt;.&lt;/p&gt;
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">mouseFocusEnabled</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">Boolean</span>;
+    
+        <span class="ActionScriptComment">//----------------------------------
+</span>        <span class="ActionScriptComment">//  tabEnabled
+</span>        <span class="ActionScriptComment">//----------------------------------
+</span>    
+        <span class="ActionScriptASDoc">/**
+         * Gets a Boolean value that indicates whether pressing the Tab key can 
+         * move focus to this component. A value of &lt;code&gt;true&lt;/code&gt; indicates
+         * that pressing the Tab key can cause focus to be moved to this component;
+         * a value of &lt;code&gt;false&lt;/code&gt; indicates that the Tab key cannot be
+         * used to give this component focus. 
+         *
+         * &lt;p&gt;Even if this value is set to &lt;code&gt;false&lt;/code&gt;, the component can still 
+         * receive focus when it is selected by a mouse device or through a call to the 
+         * &lt;code&gt;setFocus()&lt;/code&gt; method.&lt;/p&gt;
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">tabEnabled</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">Boolean</span>;
+    
+        <span class="ActionScriptComment">//----------------------------------
+</span>        <span class="ActionScriptComment">//  tabIndex
+</span>        <span class="ActionScriptComment">//----------------------------------
+</span>    
+        <span class="ActionScriptASDoc">/**
+         * Gets the order in which the component receives focus, if &lt;code&gt;tabEnabled&lt;/code&gt;is set
+         * to &lt;code&gt;true&lt;/code&gt;. The &lt;code&gt;tabIndex&lt;/code&gt; property is -1 by default, meaning 
+         * that no tab index is set for the object and that the object receives focus based on z-order.
+         * 
+         * &lt;p&gt;The &lt;code&gt;tabIndex&lt;/code&gt; property can also be a non-negative integer. In this 
+         * case, the objects are ordered according to their &lt;code&gt;tabIndex&lt;/code&gt; properties, 
+         * in ascending order. An object with a &lt;code&gt;tabIndex&lt;/code&gt; value of 1 precedes an 
+         * object with a &lt;code&gt;tabIndex&lt;/code&gt; value of 2. If two objects have the same 
+         * &lt;code&gt;tabIndex&lt;/code&gt; value, the one that comes first in the default tab ordering 
+         * precedes the other.&lt;/p&gt;
+         *
+         * @default -1
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">tabIndex</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">int</span>;
+    
+
+        <span class="ActionScriptComment">//==========================================================================
+</span>        <span class="ActionScriptComment">//  Methods
+</span>        <span class="ActionScriptComment">//==========================================================================
+</span>    
+        <span class="ActionScriptASDoc">/**
+         * Sets focus for a component.
+         * 
+         * &lt;p&gt;This method is called by the focus manager when the component receives focus.
+         * The component may in turn set focus to an internal component.&lt;/p&gt;
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">setFocus</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>;
+    
+        <span class="ActionScriptASDoc">/**
+         * Draws a visual focus indicator.
+         * 
+         * &lt;p&gt;This method is called by the focus manager when the component receives focus. 
+         * The component should draw or hide a graphic that indicates that the component has focus.&lt;/p&gt;
+         *
+         * @param draw If &lt;code&gt;true&lt;/code&gt;, draw the focus indicator,
+         * otherwise hide it.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">drawFocus</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">draw</span>:<span class="ActionScriptDefault_Text">Boolean</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>;
+    <span class="ActionScriptBracket/Brace">}</span>
+<span class="ActionScriptBracket/Brace">}</span>
+
+</pre></body>
+</html>

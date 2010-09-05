@@ -1,0 +1,211 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>TileListAccImpl.as</title>
+<link rel="stylesheet" type="text/css" href="../../../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="ActionScriptComment">// Copyright 2007. Adobe Systems Incorporated. All Rights Reserved.
+</span><span class="ActionScriptpackage">package</span> <span class="ActionScriptDefault_Text">fl</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">accessibility</span> <span class="ActionScriptBracket/Brace">{</span>
+    
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">accessibility</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">Accessibility</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">events</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">Event</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">fl</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">controls</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">listClasses</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ICellRenderer</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">fl</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">controls</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TileList</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">fl</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">core</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">UIComponent</span>;
+
+    <span class="ActionScriptASDoc">/**
+     *  The TileListAccImpl class, also called the Tile List Accessibility Implementation class, is
+     *  used to make a TileList component accessible.  This class enables communication 
+     *  between a TileList component and a screen reader. Screen readers are used to translate 
+     *  screen content into synthesized speech or braille for visually impaired users. 
+     * 
+     * &lt;p&gt;The TileListAccImpl class supports system roles, object-based events, and states.&lt;/p&gt;
+     * 
+     * &lt;p&gt;A TileList reports the role &lt;code&gt;ROLE_SYSTEM_LIST&lt;/code&gt; (0x21) to a screen 
+     * reader. Items of a TileList report the role &lt;code&gt;ROLE_SYSTEM_LISTITEM&lt;/code&gt; (0x22).&lt;/p&gt;
+     *
+     * &lt;p&gt;A TileList reports the following states to a screen reader:&lt;/p&gt;
+     * &lt;ul&gt;
+     *     &lt;li&gt;&lt;code&gt;STATE_SYSTEM_NORMAL&lt;/code&gt; (0x00000000)&lt;/li&gt;
+     *     &lt;li&gt;&lt;code&gt;STATE_SYSTEM_UNAVAILABLE&lt;/code&gt; (0x00000001)&lt;/li&gt;
+     *     &lt;li&gt;&lt;code&gt;STATE_SYSTEM_FOCUSED&lt;/code&gt; (0x00000004)&lt;/li&gt;
+     *     &lt;li&gt;&lt;code&gt;STATE_SYSTEM_FOCUSABLE&lt;/code&gt; (0x00100000)&lt;/li&gt;
+     * &lt;/ul&gt;
+     * 
+     * &lt;p&gt;Additionally, items of a TileList report the following states:&lt;/p&gt;
+     * &lt;ul&gt;
+     *     &lt;li&gt;&lt;code&gt;STATE_SYSTEM_SELECTED&lt;/code&gt; (0x00000002)&lt;/li&gt;
+     *     &lt;li&gt;&lt;code&gt;STATE_SYSTEM_FOCUSED&lt;/code&gt; (0x00000004)&lt;/li&gt;
+     *     &lt;li&gt;&lt;code&gt;STATE_SYSTEM_INVISIBLE&lt;/code&gt; (0x00008000)&lt;/li&gt;
+     *     &lt;li&gt;&lt;code&gt;STATE_SYSTEM_OFFSCREEN&lt;/code&gt; (0x00010000)&lt;/li&gt;
+     *     &lt;li&gt;&lt;code&gt;STATE_SYSTEM_SELECTABLE&lt;/code&gt; (0x00200000)&lt;/li&gt;
+     * &lt;/ul&gt;
+     *
+     * &lt;p&gt;A TileList dispatches the following events to a screen reader:&lt;/p&gt;
+     * &lt;ul&gt;
+     *     &lt;li&gt;&lt;code&gt;EVENT_OBJECT_FOCUS&lt;/code&gt; (0x8005)&lt;/li&gt;
+     *     &lt;li&gt;&lt;code&gt;EVENT_OBJECT_SELECTION&lt;/code&gt; (0x8006)&lt;/li&gt;
+     *     &lt;li&gt;&lt;code&gt;EVENT_OBJECT_STATECHANGE&lt;/code&gt; (0x800A)&lt;/li&gt;
+     *     &lt;li&gt;&lt;code&gt;EVENT_OBJECT_NAMECHANGE&lt;/code&gt; (0x800C)&lt;/li&gt;
+     * &lt;/ul&gt;
+     *
+     * @see fl.controls.TileList TileList
+     *
+     * @langversion 3.0
+     * @playerversion Flash 9.0.28.0
+     */</span>
+    <span class="ActionScriptReserved">public</span> <span class="ActionScriptclass">class</span> <span class="ActionScriptDefault_Text">TileListAccImpl</span> <span class="ActionScriptReserved">extends</span> <span class="ActionScriptDefault_Text">SelectableListAccImpl</span> <span class="ActionScriptBracket/Brace">{</span>
+        <span class="ActionScriptASDoc">/**
+         *  @private
+         *  Static variable triggering the &lt;code&gt;hookAccessibility()&lt;/code&gt; method.
+         *  This is used for initializing TileListAccImpl class to hook its
+         *  &lt;code&gt;createAccessibilityImplementation()&lt;/code&gt; method to the TileList class 
+         *  before it gets called from UIComponent.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">accessibilityHooked</span>:<span class="ActionScriptDefault_Text">Boolean</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">hookAccessibility</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+
+        <span class="ActionScriptASDoc">/**
+         *  @private
+         *  Static method for swapping the &lt;code&gt;createAccessibilityImplementation()&lt;/code&gt;
+         *  method of the TileList class with the TileListAccImpl class.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span> 
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">hookAccessibility</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">Boolean</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">TileList</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">createAccessibilityImplementation</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">createAccessibilityImplementation</span>;
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptReserved">true</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptComment">//--------------------------------------------------------------------------
+</span>        <span class="ActionScriptComment">//  Class methods
+</span>        <span class="ActionScriptComment">//--------------------------------------------------------------------------
+</span>
+        <span class="ActionScriptASDoc">/**
+         *  @private
+         *  Method for creating the Accessibility class.
+         *  This method is called from UIComponent.
+         * 
+         *  @param component The UIComponent instance that this AccImpl instance
+         *  is making accessible.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">createAccessibilityImplementation</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">component</span>:<span class="ActionScriptDefault_Text">UIComponent</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">component</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">accessibilityImplementation</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">TileListAccImpl</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">component</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         *  Enables accessibility for a TileList component. This method is required for 
+         *  the compiler to activate the accessibility classes for a component. 
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">enableAccessibility</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptComment">//--------------------------------------------------------------------------
+</span>        <span class="ActionScriptComment">//  Constructor
+</span>        <span class="ActionScriptComment">//--------------------------------------------------------------------------
+</span>
+        <span class="ActionScriptASDoc">/**
+         * @private
+         * Creates a new TileList Accessibility Implementation.
+         *
+         * @param master The UIComponent instance that this AccImpl instance
+         *        makes accessible.
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">TileListAccImpl</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">master</span>:<span class="ActionScriptDefault_Text">UIComponent</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">super</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">master</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        
+        <span class="ActionScriptComment">//--------------------------------------------------------------------------
+</span>        <span class="ActionScriptComment">//  Overridden methods: AccessibilityImplementation
+</span>        <span class="ActionScriptComment">//--------------------------------------------------------------------------
+</span>
+        <span class="ActionScriptASDoc">/**
+         *  @private
+         *  IAccessible method for returning the value of the ListItem/TileList
+         *  which is spoken out by the screen reader
+         *  The TileList should return the name of the currently selected item
+         *  with m of n string as value when focus moves to TileList.
+         * 
+         *  @param childID The child id
+         *
+         *  @return String Value
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">override</span> <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">get_accValue</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">childID</span>:<span class="ActionScriptDefault_Text">uint</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">accValue</span>:<span class="ActionScriptDefault_Text">String</span>;
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">list</span>:<span class="ActionScriptDefault_Text">TileList</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">TileList</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">master</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">index</span>:<span class="ActionScriptDefault_Text">int</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">list</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">selectedIndex</span>;
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">childID</span> <span class="ActionScriptOperator">==</span> 0<span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">index</span> <span class="ActionScriptOperator">&gt;</span> <span class="ActionScriptOperator">-</span>1<span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+                    <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">ext</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">" "</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">index</span> <span class="ActionScriptOperator">+</span> 1<span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptString">" of "</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptDefault_Text">list</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">dataProvider</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">length</span>;
+                    <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">item</span>:<span class="ActionScriptDefault_Text">Object</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">list</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">getItemAt</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">index</span><span class="ActionScriptBracket/Brace">)</span>;
+                    <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">item</span> <span class="ActionScriptReserved">is</span> <span class="ActionScriptDefault_Text">String</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+                        <span class="ActionScriptDefault_Text">accValue</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">item</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptDefault_Text">ext</span>;
+                    <span class="ActionScriptBracket/Brace">}</span> <span class="ActionScriptReserved">else</span> <span class="ActionScriptBracket/Brace">{</span>
+                        <span class="ActionScriptDefault_Text">accValue</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">list</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">itemToLabel</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">item</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptDefault_Text">ext</span>;
+                    <span class="ActionScriptBracket/Brace">}</span>
+                <span class="ActionScriptBracket/Brace">}</span>
+            <span class="ActionScriptBracket/Brace">}</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">accValue</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptComment">//--------------------------------------------------------------------------
+</span>        <span class="ActionScriptComment">//  Overridden methods: AccImpl
+</span>        <span class="ActionScriptComment">//--------------------------------------------------------------------------
+</span>
+        <span class="ActionScriptASDoc">/**
+         *  @private
+         *  This method retrieves the name of the ListItem/TileList
+         *  component that is spoken out by the screen reader.
+         *  The ListItem should return the label as the name
+         *  with m of n string and TileList should return the name
+         *  that is specified in the Accessibility Panel.
+         *
+         *  @param childID The child id
+         *
+         *  @return String Name 
+         *
+         * @langversion 3.0
+         * @playerversion Flash 9.0.28.0
+         */</span>
+        <span class="ActionScriptReserved">override</span> <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">getName</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">childID</span>:<span class="ActionScriptDefault_Text">uint</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">childID</span> <span class="ActionScriptOperator">==</span> 0<span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptReserved">return</span> <span class="ActionScriptString">""</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">list</span>:<span class="ActionScriptDefault_Text">TileList</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">TileList</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">master</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptComment">// Assuming childID is always ItemID + 1
+</span>            <span class="ActionScriptComment">// because getChildIDArray is not always invoked.
+</span>            <span class="ActionScriptReserved">if</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">list</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">dataProvider</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">item</span>:<span class="ActionScriptDefault_Text">Object</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">list</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">getItemAt</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">childID</span> <span class="ActionScriptOperator">-</span> 1<span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">ext</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">" "</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptDefault_Text">childID</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptString">" of "</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptDefault_Text">list</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">dataProvider</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">length</span>;
+                <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">item</span> <span class="ActionScriptReserved">is</span> <span class="ActionScriptDefault_Text">String</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+                    <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">item</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptDefault_Text">ext</span>;
+                <span class="ActionScriptBracket/Brace">}</span> <span class="ActionScriptReserved">else</span> <span class="ActionScriptBracket/Brace">{</span>
+                    <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">list</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">itemToLabel</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">item</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptDefault_Text">ext</span>;
+                <span class="ActionScriptBracket/Brace">}</span>
+            <span class="ActionScriptBracket/Brace">}</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptString">""</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+    <span class="ActionScriptBracket/Brace">}</span>
+<span class="ActionScriptBracket/Brace">}</span>
+</pre></body>
+</html>
